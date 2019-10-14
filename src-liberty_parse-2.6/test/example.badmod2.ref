@@ -1,0 +1,27 @@
+
+
+
+reading example.badmod2.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+WARNING: The delay_model attribute was not a simple attribute. Ignoring the specification. 'generic_cmos' will be assumed.
+ERROR: The delay_model should be declared after the technology, but is not. Check lines example.badmod2.lib:3 and example.badmod2.lib:2. (Syntax Error Encountered)
+NOTE: Using the cmos syntax tables...
+ERROR: example.badmod2.lib:2, Attribute delay_model should be simple, but is complex here. (Syntax Error Encountered)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

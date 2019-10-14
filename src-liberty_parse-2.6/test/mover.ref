@@ -1,0 +1,90 @@
+lib (lib1) {
+	cell (g1) {
+	}
+	cell (g2) {
+	}
+	cell (g3) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g1) {
+	}
+	cell (g2) {
+	}
+	cell (g3) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g1) {
+	}
+	cell (g2) {
+	}
+	cell (g3) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g1) {
+	}
+	cell (g2) {
+	}
+	cell (g3) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g1) {
+	}
+	cell (g2) {
+	}
+	cell (g3) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g1) {
+	}
+	cell (g3) {
+	}
+	cell (g2) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g2) {
+	}
+	cell (g1) {
+	}
+	cell (g3) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g2) {
+	}
+	cell (g3) {
+	}
+	cell (g1) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g3) {
+	}
+	cell (g1) {
+	}
+	cell (g2) {
+	}
+	default_operating_conditions : "oc1";
+}
+lib (lib1) {
+	cell (g3) {
+	}
+	cell (g2) {
+	}
+	cell (g1) {
+	}
+	default_operating_conditions : "oc1";
+}

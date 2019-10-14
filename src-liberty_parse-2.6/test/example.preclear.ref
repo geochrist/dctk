@@ -1,0 +1,28 @@
+
+
+
+reading example.preclear.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.preclear.lib:44, The ff group in this context should have 2 nams, but 1 name(s) is(are) there. (Syntax Error Encountered)
+ERROR: example.preclear.lib:44, Group ff, with both 'clear', and 'preset' attributes,
+requires 'clear_preset_var1' and/or 'clear_preset_var2' attributes. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

@@ -1,0 +1,26 @@
+
+
+
+reading example.2libnam.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.2libnam.lib:1, The library group in this context should have 1 name, but 2 names are there. (Syntax Error Encountered)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library a:
+   cells: 2
+
+Quitting..
+Done....

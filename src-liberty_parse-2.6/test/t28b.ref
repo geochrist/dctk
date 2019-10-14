@@ -1,0 +1,26 @@
+
+
+
+reading t28.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: No technology attribute specified in the library; the technology 'cmos' is assumed.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: t28.lib:8, The aaa attribute should be of type 'integer'.(See the define at line 2 of file t28.lib.) (Syntax Error Encountered)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library t28:
+   cells: 1
+
+Quitting..
+Done....

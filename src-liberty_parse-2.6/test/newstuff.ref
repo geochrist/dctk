@@ -1,0 +1,33 @@
+
+
+
+reading newstuff.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: No technology attribute specified in the library; the technology 'cmos' is assumed.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: newstuff.lib:6, and newstuff.lib:7 -- retention_pin and power_gating_pin attributes are not allowed in the same pin. (Semantic Error found in data.)
+WARNING: newstuff.lib:6, and newstuff.lib:8 -- when retention_pin and map_to_logic attributes are spec'd on the same pin, the retention_pin's definition will have precedence.
+ERROR: newstuff.lib:11, and newstuff.lib:12 -- retention_pin cannot be defined on an output pin. (Semantic Error found in data.)
+ERROR: newstuff.lib:3, and newstuff.lib:4 -- retention_cell and power_gating_cell attributes are not allowed in the same cell. (Semantic Error found in data.)
+ERROR: newstuff.lib:33, Argument #2 of power_gating_pin should be an int, but it has non-integer characters in it (2.7). (Syntax Error Encountered)
+ERROR: newstuff.lib:30, output_voltage_range is defined, but not is_level_shifter. (Semantic Error found in data.)
+ERROR: newstuff.lib:29, input_voltage_range is defined, but not is_level_shifter. (Semantic Error found in data.)
+ERROR: newstuff.lib:28, level_shifter_type is defined, but not is_level_shifter. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library newstuff:
+   cells: 3
+
+Quitting..
+Done....

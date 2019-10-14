@@ -1,0 +1,46 @@
+library(typ) {
+
+   define_group ( my_template, library );
+
+   define ( index_1,    my_template,  string );
+   define ( variable_1, my_template,  string );
+
+   define_group ( my_group, pin );
+
+   define ( when, my_group, string );
+
+   define ( index_1, my_group, string );
+   define ( values,  my_group, string );
+
+   my_template(my_template_name) {
+      variable_1 : input_net_transition;
+      index_1 : "0.05, 0.1, 0.2, 0.3, 0.5";
+   }
+
+cell (AND2X1) {
+
+   pin(A) {
+     direction : input;
+   } /* pin A */
+
+   pin(B) {
+     direction : input;
+
+     my_group (my_template_name) {
+       when : "A" ;
+       values : "6.098e-11, 3.009e-10, 2.377e-10, 2.658e-10, 3.128e-10";
+     } /* end my_group */
+
+     my_group (my_template_name) {
+       when : "!A" ;
+       values : "8.098e-11, 1.009e-10, 1.377e-10, 1.658e-10, 2.128e-10";
+     } /* end my_group */
+
+   } /* pin B */
+
+   pin(Y) {
+     direction : output;
+   } /* pin Y */
+  } /* cell AND2X1 */
+} /* library typ */
+

@@ -1,0 +1,4 @@
+#!/bin/csh -f
+
+set library = "NangateOpenCellLibrary_typical_ccs.adjusted.lib"
+../build/delay_calc_tool --circuits test.circuits.yaml --liberty $library

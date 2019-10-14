@@ -1,0 +1,8 @@
+library (L) {
+   cell (C) {
+   }
+   scaled_cell (C, operating_cond1) {
+   }
+   scaled_cell (C, operating_cond2) {
+   }
+}

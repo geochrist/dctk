@@ -1,0 +1,26 @@
+
+
+
+reading defgroup.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: No technology attribute specified in the library; the technology 'cmos' is assumed.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: defgroup.lib:79, The sec_acore_internal_power group (a user defined group) should have a name associated with it . (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library test1:
+   cells: 1
+
+Quitting..
+Done....

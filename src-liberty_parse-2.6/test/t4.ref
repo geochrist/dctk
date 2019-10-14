@@ -1,0 +1,6 @@
+Found attr1, val=12
+Found attr2, val=1
+Found attr3, val=3.14159
+Found def1:  name=def1, allowed=cell1, type=2
+Found def2:  name=def2, allowed=cell1, type=2
+Found def3:  name=def3, allowed=cell1, type=2

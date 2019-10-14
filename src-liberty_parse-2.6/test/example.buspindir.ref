@@ -1,0 +1,30 @@
+
+
+
+reading example.buspindir.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.buspindir.lib:43, The group 'bun1' has the direction attribute (line 41) 'input', but (Semantic Error found in data.)
+ERROR:                   the pin 'p1' has the conflicting direction attribute 'output'. (Semantic Error found in data.)
+ERROR: example.buspindir.lib:49, The group 'bun1' has the direction attribute (line 47) 'input', but (Semantic Error found in data.)
+ERROR:                   the pin 'p1' has the conflicting direction attribute 'output'. (Semantic Error found in data.)
+ERROR: example.buspindir.lib:46, The 'bus_type' attribute is missing in bus 'bun1'. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

@@ -1,0 +1,26 @@
+
+
+
+reading example.badmod.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: delay_model specified was lookup_table.
+ERROR: The delay_model should be declared after the technology, but is not. Check lines example.badmod.lib:3 and example.badmod.lib:2. (Syntax Error Encountered)
+NOTE: Using the cmos syntax tables...
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

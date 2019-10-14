@@ -1,0 +1,25 @@
+
+
+
+reading si2testcase.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: No technology attribute specified in the library; the technology 'cmos' is assumed.
+NOTE: delay_model specified was table_lookup.
+NOTE: Using the cmos syntax tables...
+Passed
+
+... Done. 
+
+
+Stats:
+
+
+Library q:
+   cells: 1
+
+Quitting..
+Done....

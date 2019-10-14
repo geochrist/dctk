@@ -1,0 +1,37 @@
+
+
+
+reading example.powerlut.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.powerlut.lib:12, power references template pwr_bcm_rf, (Semantic Error found in data.)
+ERROR:                   which says there should be 1 string, with 3 numbers in it in the values table, (Semantic Error found in data.)
+ERROR:                   but in the group's values attribute (ending at line 13) has 2 numbers. (Semantic Error found in data.)
+ERROR: example.powerlut.lib:15, rise_power references template pwr_bcm_rf, (Semantic Error found in data.)
+ERROR:                   which says there should be 1 string, with 3 numbers in it in the values table, (Semantic Error found in data.)
+ERROR:                   but in the group's values attribute (ending at line 16) has 2 numbers. (Semantic Error found in data.)
+ERROR: example.powerlut.lib:18, fall_power references template pwr_bcm_rf, (Semantic Error found in data.)
+ERROR:                   which says there should be 1 string, with 3 numbers in it in the values table, (Semantic Error found in data.)
+ERROR:                   but in the group's values attribute (ending at line 19) has 2 numbers. (Semantic Error found in data.)
+ERROR: example.powerlut.lib:26, internal_power references template pwr_bcm_rf, (Semantic Error found in data.)
+ERROR:                   which says there should be 1 string, with 3 numbers in it in the values table, (Semantic Error found in data.)
+ERROR:                   but in the group's values attribute (ending at line 27) has 2 numbers. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 1
+
+Quitting..
+Done....

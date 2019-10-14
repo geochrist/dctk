@@ -1,0 +1,32 @@
+#!/bin/csh -f
+
+set object_files = ( \
+    PI.o  \
+    attr_lookup.o  \
+    group_lookup.o  \
+    liberty_front_lex.o  \
+    liberty_parse-PI.o  \
+    liberty_parse-attr_lookup.o  \
+    liberty_parse-group_lookup.o  \
+    liberty_parse-liberty_front_lex.o  \
+    liberty_parse-liberty_parser.o  \
+    liberty_parse-libhash.o  \
+    liberty_parse-libstrtab.o  \
+    liberty_parse-main.o  \
+    liberty_parse-mymalloc.o  \
+    liberty_parse-syntax_checks.o  \
+    liberty_parse-syntax_decls.o  \
+    liberty_parse-token.o  \
+    liberty_parser.o  \
+    libhash.o  \
+    libstrtab.o  \
+    mymalloc.o  \
+    syntax_checks.o  \
+    syntax_decls.o  \
+    syntax_parser.o  \
+    syntform.o  \
+    synttok.o  \
+    token.o  \
+)
+
+ar -ru liblibparse.a $object_files

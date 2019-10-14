@@ -1,0 +1,27 @@
+
+
+
+reading ugroup_bad.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: No technology attribute specified in the library; the technology 'cmos' is assumed.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: ugroup_bad.lib:40, The pg_state_data group is allowed in the cell group, but not allowed in the pin group in this case. (Semantic Error found in data.)
+ERROR: ugroup_bad.lib:47, The related_pin1x attribute is not allowed in the pg_timing_data group in this context. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library pg_sample:
+   cells: 1
+
+Quitting..
+Done....

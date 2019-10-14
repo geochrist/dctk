@@ -1,0 +1,106 @@
+
+
+
+reading example.ccs.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: No technology attribute specified in the library; the technology 'cmos' is assumed.
+NOTE: delay_model specified was table_lookup.
+NOTE: Using the cmos syntax tables...
+ERROR: example.ccs.lib:20, The library nom_voltage (1.7) doesn't match the voltage (1.72) in the operating_conditions(opcond1). (Semantic Error found in data.)
+ERROR: example.ccs.lib:90, The vector 'values' attribute contains 0.000933, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:97, The vector 'values' attribute contains one or more zero values. (Semantic Error found in data.)
+ERROR: example.ccs.lib:97, The vector 'values' attribute contains 0.000961, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:97, The vector 'values' attribute contains 0.000565, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:104, The vector 'values' attribute contains 0.000665, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:111, The vector 'values' attribute contains 0.000665, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:99, The reference_time attribute value (0.6239) differs from that used in the vector (0.6238) at line 92. (Semantic Error found in data.)
+ERROR: example.ccs.lib:106, The index_1 (0.0399) and index_2 (0.022382) values in this vector already appear in a previous vector group (line 99). (Semantic Error found in data.)
+ERROR: example.ccs.lib:82, There is no vector describing the current values for index_1 = 0.0397 and index_2 = 0.003392 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:82, There is no vector describing the current values for index_1 = 0.0397 and index_2 = 0.022382 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:82, There is no vector describing the current values for index_1 = 0.0399 and index_2 = 0.00233 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:146, The vector 'values' attribute contains -0.000611, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:160, The vector 'values' attribute contains -0.000389, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:206, The 'values' attribute contains the negative value '-0.010286'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:206, The vector 'values' attribute contains 0.000919, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:206, The vector 'values' attribute contains 0.000331, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:206, The vector 'values' attribute contains 0.000569, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:206, The vector 'values' attribute contains 5.8e-05, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:213, The 'values' attribute contains the negative value '-0.025991'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:213, The vector 'values' attribute contains 0.000399, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:213, The vector 'values' attribute contains 0.000213, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:220, The vector 'values' attribute contains 0.000636, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:220, The vector 'values' attribute contains 0.000553, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:227, The vector 'values' attribute contains 0.000909, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:227, The vector 'values' attribute contains 0.000623, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:234, The vector 'values' attribute contains 0.000822, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:243, The 'values' attribute contains the positive value '0.001532'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:243, The 'values' attribute contains the positive value '0.009918'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:243, The 'values' attribute contains the positive value '0.001356'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:243, The 'values' attribute contains the positive value '0.000533'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:243, The vector 'values' attribute contains 0.000533, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:243, The 'values' attribute contains the positive value '0.001092'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:243, The vector 'values' attribute contains -0.00032, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:250, The 'values' attribute contains the positive value '0.003591'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:250, The 'values' attribute contains the positive value '0.01939'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:250, The vector 'values' attribute contains -0.000305, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:257, The vector 'values' attribute contains -0.000862, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:257, The 'values' attribute contains the positive value '0.029856'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:257, The 'values' attribute contains the positive value '0.002395'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:257, The 'values' attribute contains the positive value '0.000501'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:257, The vector 'values' attribute contains 0.000501, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:264, The vector 'values' attribute contains -8.3e-05, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:271, The 'values' attribute contains the positive value '0.005623'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:286, The vector 'values' attribute contains 0.000639, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:286, The vector 'values' attribute contains 0.000393, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:286, The vector 'values' attribute contains 0.000233, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:286, The vector 'values' attribute contains 0.000133, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:293, The vector 'values' attribute contains 0.000915, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:293, The vector 'values' attribute contains 0.000358, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:293, The vector 'values' attribute contains 0.000139, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:300, The vector 'values' attribute contains 0.000659, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:300, The vector 'values' attribute contains 0.000392, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:307, The vector 'values' attribute contains 0.0008, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:316, The 'values' attribute contains the positive value '0.003389'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:323, The vector 'values' attribute contains -0.000135, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:366, The vector 'values' attribute contains 0.000893, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:366, The vector 'values' attribute contains 0.000513, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:366, The vector 'values' attribute contains 0.000325, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:373, The vector 'values' attribute contains 0.000881, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:373, The vector 'values' attribute contains 0.000601, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:373, The vector 'values' attribute contains 0.000622, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:380, The vector 'values' attribute contains 0.00082, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:387, The vector 'values' attribute contains 0.000933, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:387, The vector 'values' attribute contains 0.000306, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:394, The 'values' attribute contains the negative value '-0.000193'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:394, The vector 'values' attribute contains -0.000193, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:403, The vector 'values' attribute contains -0.000598, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:403, The 'values' attribute contains the positive value '0.000365'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:403, The vector 'values' attribute contains 0.000365, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:410, The 'values' attribute contains the positive value '0.000155'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:410, The vector 'values' attribute contains 0.000155, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:410, The 'values' attribute contains the positive value '0.000811'. (Semantic Error found in data.)
+ERROR: example.ccs.lib:410, The vector 'values' attribute contains 0.000811, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:417, The vector 'values' attribute contains -0.000989, which has less than 4 digits of precision. (Semantic Error found in data.)
+ERROR: example.ccs.lib:397, There is no vector describing the current values for index_1 = 0.0399 and index_2 = 0.108398 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:397, There is no vector describing the current values for index_1 = 0.0194 and index_2 = 0.00233 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:397, There is no vector describing the current values for index_1 = 0.0194 and index_2 = 0.003392 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:397, There is no vector describing the current values for index_1 = 0.0194 and index_2 = 0.012382 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:397, There is no vector describing the current values for index_1 = 0.0194 and index_2 = 0.026096 for this output_current group. (Semantic Error found in data.)
+ERROR: example.ccs.lib:397, There is no vector describing the current values for index_1 = 0.0194 and index_2 = 0.03339 for this output_current group. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example_ccs_1:
+   cells: 1
+
+Quitting..
+Done....

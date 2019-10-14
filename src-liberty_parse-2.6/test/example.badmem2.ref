@@ -1,0 +1,30 @@
+
+
+
+reading example.badmem2.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.badmem2.lib:20, The bun1 bundle needs to have its 'members' specified first.
+The group Q (line 17) is found before 'members'. (Semantic Error found in data.)
+ERROR: example.badmem2.lib:41, fall_transition references template scalar, so (Semantic Error found in data.)
+ERROR:                   the values attribute should have one string specified
+                  with a number in it, but what is there is not a string. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

@@ -1,0 +1,35 @@
+
+
+
+reading example.lut2.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.lut2.lib:13, The 'index_1' attribute contains the negative value '-1'. The template 't111' is therefore invalid. (Semantic Error found in data.)
+NOTE:          Here is a list of references to this invalid template:
+NOTE:            example.lut2.lib:74, group 'rise_transition'
+NOTE:            example.lut2.lib:83, group 'fall_transition'
+ERROR: example.lut2.lib:14, The 'index_2' attribute contains the negative value '-3'. The template 't111' is therefore invalid. (Semantic Error found in data.)
+NOTE:          Here is a list of references to this invalid template:
+NOTE:            example.lut2.lib:74, group 'rise_transition'
+NOTE:            example.lut2.lib:83, group 'fall_transition'
+ERROR: example.lut2.lib:142, This ff_bank, with width 5, does not match the referenced bundle H0A (line 118), whose width is 4 (Semantic Error found in data.)
+ERROR: example.lut2.lib:180, This ff_bank, with width 2, does not match the referenced bus Q with function IQ (line 200), whose width is 3 (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 3
+
+Quitting..
+Done....

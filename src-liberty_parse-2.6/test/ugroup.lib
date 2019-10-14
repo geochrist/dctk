@@ -1,0 +1,55 @@
+
+
+library(pg_sample) {
+    define_group(pg_cell_table, cell);
+    define(values, pg_cell_table, string);
+
+
+    define_group(pg_state_data, cell);
+    define(state, pg_state_data, string);
+    define(coefficients, pg_state_data, string);
+
+    define_group(pg_timing_data, pin);
+    define(related_pin, pg_timing_data, string);
+    define(coefficients, pg_timing_data, string);
+
+    cell (ad2) {
+
+    pg_cell_table(ramps) {
+    values : "0.1, 3.313, 6.626" ;
+    }
+
+    pg_cell_table(loads) {
+    values : "0, 0.02499, 0.156188, 0.312375, 0.62475,1.2495,2.499";
+    }
+
+    pin(A) {
+    pg_timing_data(fallSlewTab) {
+    related_pin : "y" ;
+    coefficients : " 0.110163, 0.141989, 0.11636, 0.0972482, \
+    0.0655029, 0.0673979, 0.161816, 0.147963, \
+    0.115873, 0.093776, 0.096074, 0.01363";
+    }
+    pg_timing_data(riseSlewTab) {
+    related_pin : "y" ;
+    coefficients : " 0.162563, 0.144023, 0.137538, 0.0821456, \
+    0.103689, 0.102928, 0.116279, 0.162594, \
+    0.155714, 0.0783956, 0.162574, \
+    0.042222";
+    }
+    }
+
+    pg_state_data(pg_state1) {
+    state : "R1R";
+    coefficients : " -1.388e-06, -1.20251e-06, -3.34395e-05, 2.75931e-07, \
+    -3.87367e-08, -3.79891e-08, -1.1437e-08, -7.70073e-08, \
+    3.394e-09";
+    }
+    pg_state_data(pg_state2) {
+    state : "FF1";
+    coefficients : " -2.89987e-06, -1.34106e-06, 1.45341e-07, 2.49066e-07, \
+    -2.18599e-08, -4.86238e-08, -4.94932e-09, -7.40283e-08, \
+    1.95244e-09";
+    }
+    }
+}

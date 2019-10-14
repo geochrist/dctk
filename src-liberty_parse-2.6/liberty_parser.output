@@ -1,0 +1,957 @@
+Gramática
+
+    0 $accept: file $end
+
+    1 $@1: /* vazio */
+
+    2 file: $@1 group
+
+    3 $@2: /* vazio */
+
+    4 group: head LCURLY $@2 statements RCURLY
+
+    5 $@3: /* vazio */
+
+    6 group: head LCURLY $@3 RCURLY
+
+    7 statements: statement
+    8           | statements statement
+
+    9 statement: simple_attr
+   10          | complex_attr
+   11          | define
+   12          | define_group
+   13          | group
+
+   14 $@4: /* vazio */
+
+   15 simple_attr: IDENT COLON attr_val_expr $@4 SEMI
+   16            | IDENT COLON attr_val_expr
+
+   17 $@5: /* vazio */
+
+   18 simple_attr: IDENT EQ attr_val_expr $@5 SEMI
+
+   19 complex_attr: head SEMI
+   20             | head
+
+   21 $@6: /* vazio */
+
+   22 head: IDENT LPAR $@6 param_list RPAR
+   23     | IDENT LPAR RPAR
+
+   24 param_list: attr_val
+   25           | param_list COMMA attr_val
+   26           | param_list attr_val
+
+   27 define: KW_DEFINE LPAR s_or_i COMMA s_or_i COMMA s_or_i RPAR SEMI
+
+   28 define_group: KW_DEFINE_GROUP LPAR s_or_i COMMA s_or_i RPAR SEMI
+
+   29 s_or_i: STRING
+   30       | IDENT
+
+   31 attr_val: NUM
+   32         | s_or_i
+   33         | s_or_i COLON s_or_i
+   34         | KW_TRUE
+   35         | KW_FALSE
+
+   36 attr_val_expr: STRING
+   37              | KW_TRUE
+   38              | KW_FALSE
+   39              | expr
+
+   40 expr: expr PLUS expr
+   41     | expr MINUS expr
+   42     | expr MULT expr
+   43     | expr DIV expr
+   44     | LPAR expr RPAR
+   45     | MINUS expr
+   46     | PLUS expr
+   47     | NUM
+   48     | IDENT
+
+
+Terminais, com as regras onde eles aparecem
+
+$end (0) 0
+error (256)
+COMMA (258) 25 27 28
+SEMI (259) 15 18 19 27 28
+LPAR (260) 22 23 27 28 44
+RPAR (261) 22 23 27 28 44
+LCURLY (262) 4 6
+RCURLY (263) 4 6
+COLON (264) 15 16 33
+KW_DEFINE (265) 27
+KW_DEFINE_GROUP (266) 28
+KW_TRUE (267) 34 37
+KW_FALSE (268) 35 38
+PLUS (269) 40 46
+MINUS (270) 41 45
+MULT (271) 42
+DIV (272) 43
+EQ (273) 18
+UNARY (274)
+NUM (275) 31 47
+STRING (276) 29 36
+IDENT (277) 15 16 18 22 23 30 48
+
+
+Não-terminais com as regras onde eles aparecem
+
+$accept (23)
+    à esquerda: 0
+file (24)
+    à esquerda: 2, à direita: 0
+$@1 (25)
+    à esquerda: 1, à direita: 2
+group (26)
+    à esquerda: 4 6, à direita: 2 13
+$@2 (27)
+    à esquerda: 3, à direita: 4
+$@3 (28)
+    à esquerda: 5, à direita: 6
+statements (29)
+    à esquerda: 7 8, à direita: 4 8
+statement (30)
+    à esquerda: 9 10 11 12 13, à direita: 7 8
+simple_attr (31)
+    à esquerda: 15 16 18, à direita: 9
+$@4 (32)
+    à esquerda: 14, à direita: 15
+$@5 (33)
+    à esquerda: 17, à direita: 18
+complex_attr (34)
+    à esquerda: 19 20, à direita: 10
+head (35)
+    à esquerda: 22 23, à direita: 4 6 19 20
+$@6 (36)
+    à esquerda: 21, à direita: 22
+param_list (37)
+    à esquerda: 24 25 26, à direita: 22 25 26
+define (38)
+    à esquerda: 27, à direita: 11
+define_group (39)
+    à esquerda: 28, à direita: 12
+s_or_i (40)
+    à esquerda: 29 30, à direita: 27 28 32 33
+attr_val (41)
+    à esquerda: 31 32 33 34 35, à direita: 24 25 26
+attr_val_expr (42)
+    à esquerda: 36 37 38 39, à direita: 15 16 18
+expr (43)
+    à esquerda: 40 41 42 43 44 45 46 47 48, à direita: 39 40 41 42
+    43 44 45 46
+
+
+estado 0
+
+    0 $accept: . file $end
+
+    $padrão  reduzir usando a regra 1 ($@1)
+
+    file  ir ao estado 1
+    $@1   ir ao estado 2
+
+
+estado 1
+
+    0 $accept: file . $end
+
+    $end  deslocar, e ir ao estado 3
+
+
+estado 2
+
+    2 file: $@1 . group
+
+    IDENT  deslocar, e ir ao estado 4
+
+    group  ir ao estado 5
+    head   ir ao estado 6
+
+
+estado 3
+
+    0 $accept: file $end .
+
+    $padrão  aceitar
+
+
+estado 4
+
+   22 head: IDENT . LPAR $@6 param_list RPAR
+   23     | IDENT . LPAR RPAR
+
+    LPAR  deslocar, e ir ao estado 7
+
+
+estado 5
+
+    2 file: $@1 group .
+
+    $padrão  reduzir usando a regra 2 (file)
+
+
+estado 6
+
+    4 group: head . LCURLY $@2 statements RCURLY
+    6      | head . LCURLY $@3 RCURLY
+
+    LCURLY  deslocar, e ir ao estado 8
+
+
+estado 7
+
+   22 head: IDENT LPAR . $@6 param_list RPAR
+   23     | IDENT LPAR . RPAR
+
+    RPAR  deslocar, e ir ao estado 9
+
+    $padrão  reduzir usando a regra 21 ($@6)
+
+    $@6  ir ao estado 10
+
+
+estado 8
+
+    4 group: head LCURLY . $@2 statements RCURLY
+    6      | head LCURLY . $@3 RCURLY
+
+    RCURLY    reduzir usando a regra 5 ($@3)
+    $padrão  reduzir usando a regra 3 ($@2)
+
+    $@2  ir ao estado 11
+    $@3  ir ao estado 12
+
+
+estado 9
+
+   23 head: IDENT LPAR RPAR .
+
+    $padrão  reduzir usando a regra 23 (head)
+
+
+estado 10
+
+   22 head: IDENT LPAR $@6 . param_list RPAR
+
+    KW_TRUE   deslocar, e ir ao estado 13
+    KW_FALSE  deslocar, e ir ao estado 14
+    NUM       deslocar, e ir ao estado 15
+    STRING    deslocar, e ir ao estado 16
+    IDENT     deslocar, e ir ao estado 17
+
+    param_list  ir ao estado 18
+    s_or_i      ir ao estado 19
+    attr_val    ir ao estado 20
+
+
+estado 11
+
+    4 group: head LCURLY $@2 . statements RCURLY
+
+    KW_DEFINE        deslocar, e ir ao estado 21
+    KW_DEFINE_GROUP  deslocar, e ir ao estado 22
+    IDENT            deslocar, e ir ao estado 23
+
+    group         ir ao estado 24
+    statements    ir ao estado 25
+    statement     ir ao estado 26
+    simple_attr   ir ao estado 27
+    complex_attr  ir ao estado 28
+    head          ir ao estado 29
+    define        ir ao estado 30
+    define_group  ir ao estado 31
+
+
+estado 12
+
+    6 group: head LCURLY $@3 . RCURLY
+
+    RCURLY  deslocar, e ir ao estado 32
+
+
+estado 13
+
+   34 attr_val: KW_TRUE .
+
+    $padrão  reduzir usando a regra 34 (attr_val)
+
+
+estado 14
+
+   35 attr_val: KW_FALSE .
+
+    $padrão  reduzir usando a regra 35 (attr_val)
+
+
+estado 15
+
+   31 attr_val: NUM .
+
+    $padrão  reduzir usando a regra 31 (attr_val)
+
+
+estado 16
+
+   29 s_or_i: STRING .
+
+    $padrão  reduzir usando a regra 29 (s_or_i)
+
+
+estado 17
+
+   30 s_or_i: IDENT .
+
+    $padrão  reduzir usando a regra 30 (s_or_i)
+
+
+estado 18
+
+   22 head: IDENT LPAR $@6 param_list . RPAR
+   25 param_list: param_list . COMMA attr_val
+   26           | param_list . attr_val
+
+    COMMA     deslocar, e ir ao estado 33
+    RPAR      deslocar, e ir ao estado 34
+    KW_TRUE   deslocar, e ir ao estado 13
+    KW_FALSE  deslocar, e ir ao estado 14
+    NUM       deslocar, e ir ao estado 15
+    STRING    deslocar, e ir ao estado 16
+    IDENT     deslocar, e ir ao estado 17
+
+    s_or_i    ir ao estado 19
+    attr_val  ir ao estado 35
+
+
+estado 19
+
+   32 attr_val: s_or_i .
+   33         | s_or_i . COLON s_or_i
+
+    COLON  deslocar, e ir ao estado 36
+
+    $padrão  reduzir usando a regra 32 (attr_val)
+
+
+estado 20
+
+   24 param_list: attr_val .
+
+    $padrão  reduzir usando a regra 24 (param_list)
+
+
+estado 21
+
+   27 define: KW_DEFINE . LPAR s_or_i COMMA s_or_i COMMA s_or_i RPAR SEMI
+
+    LPAR  deslocar, e ir ao estado 37
+
+
+estado 22
+
+   28 define_group: KW_DEFINE_GROUP . LPAR s_or_i COMMA s_or_i RPAR SEMI
+
+    LPAR  deslocar, e ir ao estado 38
+
+
+estado 23
+
+   15 simple_attr: IDENT . COLON attr_val_expr $@4 SEMI
+   16            | IDENT . COLON attr_val_expr
+   18            | IDENT . EQ attr_val_expr $@5 SEMI
+   22 head: IDENT . LPAR $@6 param_list RPAR
+   23     | IDENT . LPAR RPAR
+
+    LPAR   deslocar, e ir ao estado 7
+    COLON  deslocar, e ir ao estado 39
+    EQ     deslocar, e ir ao estado 40
+
+
+estado 24
+
+   13 statement: group .
+
+    $padrão  reduzir usando a regra 13 (statement)
+
+
+estado 25
+
+    4 group: head LCURLY $@2 statements . RCURLY
+    8 statements: statements . statement
+
+    RCURLY           deslocar, e ir ao estado 41
+    KW_DEFINE        deslocar, e ir ao estado 21
+    KW_DEFINE_GROUP  deslocar, e ir ao estado 22
+    IDENT            deslocar, e ir ao estado 23
+
+    group         ir ao estado 24
+    statement     ir ao estado 42
+    simple_attr   ir ao estado 27
+    complex_attr  ir ao estado 28
+    head          ir ao estado 29
+    define        ir ao estado 30
+    define_group  ir ao estado 31
+
+
+estado 26
+
+    7 statements: statement .
+
+    $padrão  reduzir usando a regra 7 (statements)
+
+
+estado 27
+
+    9 statement: simple_attr .
+
+    $padrão  reduzir usando a regra 9 (statement)
+
+
+estado 28
+
+   10 statement: complex_attr .
+
+    $padrão  reduzir usando a regra 10 (statement)
+
+
+estado 29
+
+    4 group: head . LCURLY $@2 statements RCURLY
+    6      | head . LCURLY $@3 RCURLY
+   19 complex_attr: head . SEMI
+   20             | head .
+
+    SEMI    deslocar, e ir ao estado 43
+    LCURLY  deslocar, e ir ao estado 8
+
+    $padrão  reduzir usando a regra 20 (complex_attr)
+
+
+estado 30
+
+   11 statement: define .
+
+    $padrão  reduzir usando a regra 11 (statement)
+
+
+estado 31
+
+   12 statement: define_group .
+
+    $padrão  reduzir usando a regra 12 (statement)
+
+
+estado 32
+
+    6 group: head LCURLY $@3 RCURLY .
+
+    $padrão  reduzir usando a regra 6 (group)
+
+
+estado 33
+
+   25 param_list: param_list COMMA . attr_val
+
+    KW_TRUE   deslocar, e ir ao estado 13
+    KW_FALSE  deslocar, e ir ao estado 14
+    NUM       deslocar, e ir ao estado 15
+    STRING    deslocar, e ir ao estado 16
+    IDENT     deslocar, e ir ao estado 17
+
+    s_or_i    ir ao estado 19
+    attr_val  ir ao estado 44
+
+
+estado 34
+
+   22 head: IDENT LPAR $@6 param_list RPAR .
+
+    $padrão  reduzir usando a regra 22 (head)
+
+
+estado 35
+
+   26 param_list: param_list attr_val .
+
+    $padrão  reduzir usando a regra 26 (param_list)
+
+
+estado 36
+
+   33 attr_val: s_or_i COLON . s_or_i
+
+    STRING  deslocar, e ir ao estado 16
+    IDENT   deslocar, e ir ao estado 17
+
+    s_or_i  ir ao estado 45
+
+
+estado 37
+
+   27 define: KW_DEFINE LPAR . s_or_i COMMA s_or_i COMMA s_or_i RPAR SEMI
+
+    STRING  deslocar, e ir ao estado 16
+    IDENT   deslocar, e ir ao estado 17
+
+    s_or_i  ir ao estado 46
+
+
+estado 38
+
+   28 define_group: KW_DEFINE_GROUP LPAR . s_or_i COMMA s_or_i RPAR SEMI
+
+    STRING  deslocar, e ir ao estado 16
+    IDENT   deslocar, e ir ao estado 17
+
+    s_or_i  ir ao estado 47
+
+
+estado 39
+
+   15 simple_attr: IDENT COLON . attr_val_expr $@4 SEMI
+   16            | IDENT COLON . attr_val_expr
+
+    LPAR      deslocar, e ir ao estado 48
+    KW_TRUE   deslocar, e ir ao estado 49
+    KW_FALSE  deslocar, e ir ao estado 50
+    PLUS      deslocar, e ir ao estado 51
+    MINUS     deslocar, e ir ao estado 52
+    NUM       deslocar, e ir ao estado 53
+    STRING    deslocar, e ir ao estado 54
+    IDENT     deslocar, e ir ao estado 55
+
+    attr_val_expr  ir ao estado 56
+    expr           ir ao estado 57
+
+
+estado 40
+
+   18 simple_attr: IDENT EQ . attr_val_expr $@5 SEMI
+
+    LPAR      deslocar, e ir ao estado 48
+    KW_TRUE   deslocar, e ir ao estado 49
+    KW_FALSE  deslocar, e ir ao estado 50
+    PLUS      deslocar, e ir ao estado 51
+    MINUS     deslocar, e ir ao estado 52
+    NUM       deslocar, e ir ao estado 53
+    STRING    deslocar, e ir ao estado 54
+    IDENT     deslocar, e ir ao estado 55
+
+    attr_val_expr  ir ao estado 58
+    expr           ir ao estado 57
+
+
+estado 41
+
+    4 group: head LCURLY $@2 statements RCURLY .
+
+    $padrão  reduzir usando a regra 4 (group)
+
+
+estado 42
+
+    8 statements: statements statement .
+
+    $padrão  reduzir usando a regra 8 (statements)
+
+
+estado 43
+
+   19 complex_attr: head SEMI .
+
+    $padrão  reduzir usando a regra 19 (complex_attr)
+
+
+estado 44
+
+   25 param_list: param_list COMMA attr_val .
+
+    $padrão  reduzir usando a regra 25 (param_list)
+
+
+estado 45
+
+   33 attr_val: s_or_i COLON s_or_i .
+
+    $padrão  reduzir usando a regra 33 (attr_val)
+
+
+estado 46
+
+   27 define: KW_DEFINE LPAR s_or_i . COMMA s_or_i COMMA s_or_i RPAR SEMI
+
+    COMMA  deslocar, e ir ao estado 59
+
+
+estado 47
+
+   28 define_group: KW_DEFINE_GROUP LPAR s_or_i . COMMA s_or_i RPAR SEMI
+
+    COMMA  deslocar, e ir ao estado 60
+
+
+estado 48
+
+   44 expr: LPAR . expr RPAR
+
+    LPAR   deslocar, e ir ao estado 48
+    PLUS   deslocar, e ir ao estado 51
+    MINUS  deslocar, e ir ao estado 52
+    NUM    deslocar, e ir ao estado 53
+    IDENT  deslocar, e ir ao estado 55
+
+    expr  ir ao estado 61
+
+
+estado 49
+
+   37 attr_val_expr: KW_TRUE .
+
+    $padrão  reduzir usando a regra 37 (attr_val_expr)
+
+
+estado 50
+
+   38 attr_val_expr: KW_FALSE .
+
+    $padrão  reduzir usando a regra 38 (attr_val_expr)
+
+
+estado 51
+
+   46 expr: PLUS . expr
+
+    LPAR   deslocar, e ir ao estado 48
+    PLUS   deslocar, e ir ao estado 51
+    MINUS  deslocar, e ir ao estado 52
+    NUM    deslocar, e ir ao estado 53
+    IDENT  deslocar, e ir ao estado 55
+
+    expr  ir ao estado 62
+
+
+estado 52
+
+   45 expr: MINUS . expr
+
+    LPAR   deslocar, e ir ao estado 48
+    PLUS   deslocar, e ir ao estado 51
+    MINUS  deslocar, e ir ao estado 52
+    NUM    deslocar, e ir ao estado 53
+    IDENT  deslocar, e ir ao estado 55
+
+    expr  ir ao estado 63
+
+
+estado 53
+
+   47 expr: NUM .
+
+    $padrão  reduzir usando a regra 47 (expr)
+
+
+estado 54
+
+   36 attr_val_expr: STRING .
+
+    $padrão  reduzir usando a regra 36 (attr_val_expr)
+
+
+estado 55
+
+   48 expr: IDENT .
+
+    $padrão  reduzir usando a regra 48 (expr)
+
+
+estado 56
+
+   15 simple_attr: IDENT COLON attr_val_expr . $@4 SEMI
+   16            | IDENT COLON attr_val_expr .
+
+    SEMI      reduzir usando a regra 14 ($@4)
+    $padrão  reduzir usando a regra 16 (simple_attr)
+
+    $@4  ir ao estado 64
+
+
+estado 57
+
+   39 attr_val_expr: expr .
+   40 expr: expr . PLUS expr
+   41     | expr . MINUS expr
+   42     | expr . MULT expr
+   43     | expr . DIV expr
+
+    PLUS   deslocar, e ir ao estado 65
+    MINUS  deslocar, e ir ao estado 66
+    MULT   deslocar, e ir ao estado 67
+    DIV    deslocar, e ir ao estado 68
+
+    $padrão  reduzir usando a regra 39 (attr_val_expr)
+
+
+estado 58
+
+   18 simple_attr: IDENT EQ attr_val_expr . $@5 SEMI
+
+    $padrão  reduzir usando a regra 17 ($@5)
+
+    $@5  ir ao estado 69
+
+
+estado 59
+
+   27 define: KW_DEFINE LPAR s_or_i COMMA . s_or_i COMMA s_or_i RPAR SEMI
+
+    STRING  deslocar, e ir ao estado 16
+    IDENT   deslocar, e ir ao estado 17
+
+    s_or_i  ir ao estado 70
+
+
+estado 60
+
+   28 define_group: KW_DEFINE_GROUP LPAR s_or_i COMMA . s_or_i RPAR SEMI
+
+    STRING  deslocar, e ir ao estado 16
+    IDENT   deslocar, e ir ao estado 17
+
+    s_or_i  ir ao estado 71
+
+
+estado 61
+
+   40 expr: expr . PLUS expr
+   41     | expr . MINUS expr
+   42     | expr . MULT expr
+   43     | expr . DIV expr
+   44     | LPAR expr . RPAR
+
+    RPAR   deslocar, e ir ao estado 72
+    PLUS   deslocar, e ir ao estado 65
+    MINUS  deslocar, e ir ao estado 66
+    MULT   deslocar, e ir ao estado 67
+    DIV    deslocar, e ir ao estado 68
+
+
+estado 62
+
+   40 expr: expr . PLUS expr
+   41     | expr . MINUS expr
+   42     | expr . MULT expr
+   43     | expr . DIV expr
+   46     | PLUS expr .
+
+    $padrão  reduzir usando a regra 46 (expr)
+
+
+estado 63
+
+   40 expr: expr . PLUS expr
+   41     | expr . MINUS expr
+   42     | expr . MULT expr
+   43     | expr . DIV expr
+   45     | MINUS expr .
+
+    $padrão  reduzir usando a regra 45 (expr)
+
+
+estado 64
+
+   15 simple_attr: IDENT COLON attr_val_expr $@4 . SEMI
+
+    SEMI  deslocar, e ir ao estado 73
+
+
+estado 65
+
+   40 expr: expr PLUS . expr
+
+    LPAR   deslocar, e ir ao estado 48
+    PLUS   deslocar, e ir ao estado 51
+    MINUS  deslocar, e ir ao estado 52
+    NUM    deslocar, e ir ao estado 53
+    IDENT  deslocar, e ir ao estado 55
+
+    expr  ir ao estado 74
+
+
+estado 66
+
+   41 expr: expr MINUS . expr
+
+    LPAR   deslocar, e ir ao estado 48
+    PLUS   deslocar, e ir ao estado 51
+    MINUS  deslocar, e ir ao estado 52
+    NUM    deslocar, e ir ao estado 53
+    IDENT  deslocar, e ir ao estado 55
+
+    expr  ir ao estado 75
+
+
+estado 67
+
+   42 expr: expr MULT . expr
+
+    LPAR   deslocar, e ir ao estado 48
+    PLUS   deslocar, e ir ao estado 51
+    MINUS  deslocar, e ir ao estado 52
+    NUM    deslocar, e ir ao estado 53
+    IDENT  deslocar, e ir ao estado 55
+
+    expr  ir ao estado 76
+
+
+estado 68
+
+   43 expr: expr DIV . expr
+
+    LPAR   deslocar, e ir ao estado 48
+    PLUS   deslocar, e ir ao estado 51
+    MINUS  deslocar, e ir ao estado 52
+    NUM    deslocar, e ir ao estado 53
+    IDENT  deslocar, e ir ao estado 55
+
+    expr  ir ao estado 77
+
+
+estado 69
+
+   18 simple_attr: IDENT EQ attr_val_expr $@5 . SEMI
+
+    SEMI  deslocar, e ir ao estado 78
+
+
+estado 70
+
+   27 define: KW_DEFINE LPAR s_or_i COMMA s_or_i . COMMA s_or_i RPAR SEMI
+
+    COMMA  deslocar, e ir ao estado 79
+
+
+estado 71
+
+   28 define_group: KW_DEFINE_GROUP LPAR s_or_i COMMA s_or_i . RPAR SEMI
+
+    RPAR  deslocar, e ir ao estado 80
+
+
+estado 72
+
+   44 expr: LPAR expr RPAR .
+
+    $padrão  reduzir usando a regra 44 (expr)
+
+
+estado 73
+
+   15 simple_attr: IDENT COLON attr_val_expr $@4 SEMI .
+
+    $padrão  reduzir usando a regra 15 (simple_attr)
+
+
+estado 74
+
+   40 expr: expr . PLUS expr
+   40     | expr PLUS expr .
+   41     | expr . MINUS expr
+   42     | expr . MULT expr
+   43     | expr . DIV expr
+
+    MULT  deslocar, e ir ao estado 67
+    DIV   deslocar, e ir ao estado 68
+
+    $padrão  reduzir usando a regra 40 (expr)
+
+
+estado 75
+
+   40 expr: expr . PLUS expr
+   41     | expr . MINUS expr
+   41     | expr MINUS expr .
+   42     | expr . MULT expr
+   43     | expr . DIV expr
+
+    MULT  deslocar, e ir ao estado 67
+    DIV   deslocar, e ir ao estado 68
+
+    $padrão  reduzir usando a regra 41 (expr)
+
+
+estado 76
+
+   40 expr: expr . PLUS expr
+   41     | expr . MINUS expr
+   42     | expr . MULT expr
+   42     | expr MULT expr .
+   43     | expr . DIV expr
+
+    $padrão  reduzir usando a regra 42 (expr)
+
+
+estado 77
+
+   40 expr: expr . PLUS expr
+   41     | expr . MINUS expr
+   42     | expr . MULT expr
+   43     | expr . DIV expr
+   43     | expr DIV expr .
+
+    $padrão  reduzir usando a regra 43 (expr)
+
+
+estado 78
+
+   18 simple_attr: IDENT EQ attr_val_expr $@5 SEMI .
+
+    $padrão  reduzir usando a regra 18 (simple_attr)
+
+
+estado 79
+
+   27 define: KW_DEFINE LPAR s_or_i COMMA s_or_i COMMA . s_or_i RPAR SEMI
+
+    STRING  deslocar, e ir ao estado 16
+    IDENT   deslocar, e ir ao estado 17
+
+    s_or_i  ir ao estado 81
+
+
+estado 80
+
+   28 define_group: KW_DEFINE_GROUP LPAR s_or_i COMMA s_or_i RPAR . SEMI
+
+    SEMI  deslocar, e ir ao estado 82
+
+
+estado 81
+
+   27 define: KW_DEFINE LPAR s_or_i COMMA s_or_i COMMA s_or_i . RPAR SEMI
+
+    RPAR  deslocar, e ir ao estado 83
+
+
+estado 82
+
+   28 define_group: KW_DEFINE_GROUP LPAR s_or_i COMMA s_or_i RPAR SEMI .
+
+    $padrão  reduzir usando a regra 28 (define_group)
+
+
+estado 83
+
+   27 define: KW_DEFINE LPAR s_or_i COMMA s_or_i COMMA s_or_i RPAR . SEMI
+
+    SEMI  deslocar, e ir ao estado 84
+
+
+estado 84
+
+   27 define: KW_DEFINE LPAR s_or_i COMMA s_or_i COMMA s_or_i RPAR SEMI .
+
+    $padrão  reduzir usando a regra 27 (define)

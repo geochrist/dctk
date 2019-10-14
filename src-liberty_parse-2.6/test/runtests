@@ -1,0 +1,1000 @@
+#!/bin/csh
+
+echo Running tests:
+
+
+echo -n example.............
+
+../liberty_parse example.lib > example.out 
+grep -v -i 'seconds' example.out | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.out
+diff -q example.out example.ref >& /dev/null 
+
+if ($status == 0 )  then
+	echo PASSED
+	rm example.out
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n example.badcurly....
+
+../liberty_parse example.badcurly.lib > example.badcurly.out 
+grep -v -i 'seconds' example.badcurly.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badcurly.out
+diff -q example.badcurly.out example.badcurly.ref >& /dev/null 
+
+if ($status == 0 )  then
+	echo PASSED
+	rm example.badcurly.out
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n t28a................
+
+../liberty_parse --write t28.lib >& /dev/null
+diff t28.lib t28_blatantcopy1.lib > t28a.out
+diff -q t28a.out t28a.ref >& /dev/null 
+
+if ($status == 0 )  then
+	echo PASSED
+	rm t28a.out t28_blatantcopy1.lib
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n t28b................
+
+../liberty_parse t28.lib > t28b.out
+grep -v -i 'seconds' t28b.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x t28b.out
+diff -q t28b.out t28b.ref >& /dev/null 
+
+if ($status == 0 )  then
+	echo PASSED
+	rm t28b.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n example.badtech.....
+
+../liberty_parse example.badtech.lib > example.badtech.out 
+grep -v -i 'seconds' example.badtech.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badtech.out
+diff -q example.badtech.out example.badtech.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badtech.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.dup1........
+
+../liberty_parse example.dup1.lib > example.dup1.out 
+grep -v -i 'seconds' example.dup1.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.dup1.out
+diff -q example.dup1.out example.dup1.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.dup1.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.dup2........
+
+../liberty_parse example.dup2.lib > example.dup2.out 
+grep -v -i 'seconds' example.dup2.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.dup2.out
+diff -q example.dup2.out example.dup2.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.dup2.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.numident....
+
+../liberty_parse example.numident.lib > example.numident.out 
+grep -v -i 'seconds' example.numident.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.numident.out
+diff -q example.numident.out example.numident.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.numident.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.fpga........
+
+../liberty_parse example.fpga.lib > example.fpga.out 
+grep -v -i 'seconds' example.fpga.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.fpga.out
+diff -q example.fpga.out example.fpga.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.fpga.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.nolibnam....
+
+../liberty_parse example.nolibnam.lib > example.nolibnam.out 
+grep -v -i 'seconds' example.nolibnam.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.nolibnam.out
+diff -q example.nolibnam.out example.nolibnam.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.nolibnam.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.2libnam.....
+
+../liberty_parse example.2libnam.lib > example.2libnam.out 
+grep -v -i 'seconds' example.2libnam.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.2libnam.out
+diff -q example.2libnam.out example.2libnam.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.2libnam.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.2clibnam....
+
+../liberty_parse example.2clibnam.lib > example.2clibnam.out 
+grep -v -i 'seconds' example.2clibnam.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.2clibnam.out
+diff -q example.2clibnam.out example.2clibnam.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.2clibnam.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+
+echo -n example.baddir......
+
+../liberty_parse example.baddir.lib > example.baddir.out 
+grep -v -i 'seconds' example.baddir.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.baddir.out
+diff -q example.baddir.out example.baddir.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.baddir.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+
+echo -n example.2pin........
+
+../liberty_parse example.2pin.lib > example.2pin.out 
+grep -v -i 'seconds' example.2pin.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.2pin.out
+diff -q example.2pin.out example.2pin.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.2pin.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+
+echo -n example.rangerr.....
+
+../liberty_parse example.rangerr.lib > example.rangerr.out 
+grep -v -i 'seconds' example.rangerr.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.rangerr.out
+diff -q example.rangerr.out example.rangerr.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.rangerr.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badval......
+
+../liberty_parse example.badval.lib > example.badval.out 
+grep -v -i 'seconds' example.badval.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badval.out
+diff -q example.badval.out example.badval.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badval.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+
+echo -n example.badval2.....
+
+../liberty_parse example.badval2.lib > example.badval2.out 
+grep -v -i 'seconds' example.badval2.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badval2.out
+diff -q example.badval2.out example.badval2.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badval2.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badval3.....
+
+../liberty_parse example.badval3.lib > example.badval3.out 
+grep -v -i 'seconds' example.badval3.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badval3.out
+diff -q example.badval3.out example.badval3.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badval3.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badiface....
+
+../liberty_parse example.badiface.lib > example.badiface.out 
+grep -v -i 'seconds' example.badiface.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badiface.out
+diff -q example.badiface.out example.badiface.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badiface.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badmem......
+
+../liberty_parse example.badmem.lib > example.badmem.out 
+grep -v -i 'seconds' example.badmem.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badmem.out
+diff -q example.badmem.out example.badmem.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badmem.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badmem2.....
+
+../liberty_parse example.badmem2.lib > example.badmem2.out 
+grep -v -i 'seconds' example.badmem2.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badmem2.out
+diff -q example.badmem2.out example.badmem2.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badmem2.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.preclear....
+
+../liberty_parse example.preclear.lib > example.preclear.out 
+grep -v -i 'seconds' example.preclear.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.preclear.out
+diff -q example.preclear.out example.preclear.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.preclear.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.preclear2...
+
+../liberty_parse example.preclear2.lib > example.preclear2.out 
+grep -v -i 'seconds' example.preclear2.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.preclear2.out
+diff -q example.preclear2.out example.preclear2.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.preclear2.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badtim......
+
+../liberty_parse example.badtim.lib > example.badtim.out 
+grep -v -i 'seconds' example.badtim.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badtim.out
+diff -q example.badtim.out example.badtim.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badtim.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badmod......
+
+../liberty_parse example.badmod.lib > example.badmod.out 
+grep -v -i 'seconds' example.badmod.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badmod.out
+diff -q example.badmod.out example.badmod.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badmod.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.badmod2.....
+
+../liberty_parse example.badmod2.lib > example.badmod2.out 
+grep -v -i 'seconds' example.badmod2.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.badmod2.out
+diff -q example.badmod2.out example.badmod2.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.badmod2.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n example.buspindir...
+
+../liberty_parse example.buspindir.lib > example.buspindir.out 
+grep -v -i 'seconds' example.buspindir.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.buspindir.out
+diff -q example.buspindir.out example.buspindir.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.buspindir.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.ccs.........
+
+../liberty_parse example.ccs.lib > example.ccs.out 
+grep -v -i 'seconds' example.ccs.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.ccs.out
+diff -q example.ccs.out example.ccs.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.ccs.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.driver......
+
+../liberty_parse example.driver.lib > example.driver.out 
+grep -v -i 'seconds' example.driver.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.driver.out
+diff -q example.driver.out example.driver.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.driver.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+
+echo -n example.ffbank......
+
+../liberty_parse example.ffbank.lib > example.ffbank.out 
+grep -v -i 'seconds' example.ffbank.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.ffbank.out
+diff -q example.ffbank.out example.ffbank.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.ffbank.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n example.lut.........
+
+../liberty_parse example.lut.lib > example.lut.out 
+grep -v -i 'seconds' example.lut.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.lut.out
+diff -q example.lut.out example.lut.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.lut.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.lut2........
+
+../liberty_parse example.lut2.lib > example.lut2.out 
+grep -v -i 'seconds' example.lut2.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.lut2.out
+diff -q example.lut2.out example.lut2.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.lut2.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.include.....
+
+../liberty_parse example.include.lib >& example.include.out 
+grep -v -i 'seconds' example.include.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.include.out
+diff -q example.include.out example.include.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.include.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.closesemi...
+
+../liberty_parse example.closesemi.lib >& example.closesemi.out 
+grep -v -i 'seconds' example.closesemi.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.closesemi.out
+diff -q example.closesemi.out example.closesemi.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.closesemi.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.pin.........
+
+../liberty_parse example.pin.lib >& example.pin.out 
+grep -v -i 'seconds' example.pin.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.pin.out
+diff -q example.pin.out example.pin.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.pin.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.access......
+
+../liberty_parse example.access.lib >& example.access.out 
+grep -v -i 'seconds' example.access.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.access.out
+diff -q example.access.out example.access.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.access.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n ugroup..............
+
+../liberty_parse ugroup.lib > ugroup.out 
+grep -v -i 'seconds' ugroup.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x ugroup.out
+diff -q ugroup.out ugroup.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm ugroup.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n ugroup_bad..........
+
+../liberty_parse ugroup_bad.lib > ugroup_bad.out 
+grep -v -i 'seconds' ugroup_bad.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x ugroup_bad.out
+diff -q ugroup_bad.out ugroup_bad.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm ugroup_bad.out
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n si2testcase.........
+
+../liberty_parse si2testcase.lib > si2testcase.out 
+grep -v -i 'seconds' si2testcase.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x si2testcase.out
+diff -q si2testcase.out si2testcase.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm si2testcase.out
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n "t2 (deletion)......."
+gcc -g -o t2 t2.c -I.. ../.libs/libsi2dr_liberty.a -lm # -ldmalloc
+
+./t2
+if ( $status == 0 ) then
+	echo PASSED
+	rm t2
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n syntax_err..........
+
+../liberty_parse example.syntaxerr.lib > example.syntaxerr.out 
+grep -v -i 'seconds' example.syntaxerr.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.syntaxerr.out
+diff -q example.syntaxerr.out example.syntaxerr.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.syntaxerr.out
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n "t3 (name deletion).."
+gcc -g -o t3 t3.c -I.. ../.libs/libsi2dr_liberty.a -lm ## -ldmalloc
+
+./t3 > t3.out
+grep -v -i 'seconds' t3.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x t3.out
+diff -q t3.out t3.ref >& /dev/null 
+
+if ( $status == 0 ) then
+	echo PASSED
+	rm t3.out t3
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n "t4 (attr lookup)...."
+gcc -g -o t4 t4.c -I.. ../.libs/libsi2dr_liberty.a -lm ## -ldmalloc
+
+./t4 > t4.out
+grep -v -i 'seconds' t4.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x t4.out
+diff -q t4.out t4.ref >& /dev/null 
+
+if ( $status == 0 ) then
+	echo PASSED
+	rm t4.out t4
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n  example.powerlut....
+
+../liberty_parse example.powerlut.lib >& example.powerlut.out 
+grep -v -i 'seconds' example.powerlut.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.powerlut.out
+diff -q example.powerlut.out example.powerlut.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.powerlut.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n  inverter_nldm.......
+
+../liberty_parse inverter_nldm.lib >& inverter_nldm.out 
+grep -v -i 'seconds' inverter_nldm.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x inverter_nldm.out
+diff -q inverter_nldm.out inverter_nldm.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm inverter_nldm.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n  inverter_spdm.......
+
+../liberty_parse inverter_spdm.lib >& inverter_spdm.out 
+grep -v -i 'seconds' inverter_spdm.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x inverter_spdm.out
+diff -q inverter_spdm.out inverter_spdm.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm inverter_spdm.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n "move (group move)"
+gcc -g -o mover move.c -I.. ../.libs/libsi2dr_liberty.a -lm ## -ldmalloc
+
+echo -n "."
+./mover > mover.out
+cat g1g2g3.lib >> mover.out
+cat g1g2g3a.lib >> mover.out
+cat g1g2g3b.lib >> mover.out
+cat g1g2g3c.lib >> mover.out
+cat g1g2g3d.lib >> mover.out
+
+cat g1g3g2.lib >> mover.out
+cat g2g1g3.lib >> mover.out
+cat g2g3g1.lib >> mover.out
+cat g3g1g2.lib >> mover.out
+cat g3g2g1.lib >> mover.out
+
+echo -n "."
+
+grep -v -i 'seconds' mover.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x mover.out
+echo -n "."
+diff -q mover.out mover.ref >& /dev/null 
+
+if ( $status == 0 ) then
+	echo PASSED
+	rm mover.out mover g1g3g2.lib g2g1g3.lib g1g2g3.lib g2g3g1.lib g3g1g2.lib g3g2g1.lib g1g2g3a.lib g1g2g3b.lib g1g2g3c.lib g1g2g3d.lib
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n example.var.........
+
+../liberty_parse example.var.lib > example.var.out 
+grep -v -i 'seconds' example.var.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.var.out
+diff -q example.var.out example.var.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.var.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+echo -n example.colonc......
+
+../liberty_parse example.coloncell.lib > example.coloncell.out 
+grep -v -i 'seconds' example.coloncell.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.coloncell.out
+diff -q example.coloncell.out example.coloncell.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.coloncell.out
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n example.colont......
+
+../liberty_parse example.colontempl.lib > example.colontempl.out 
+grep -v -i 'seconds' example.colontempl.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.colontempl.out
+diff -q example.colontempl.out example.colontempl.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.colontempl.out
+else
+	echo %%FAILED%%
+endif
+
+
+
+
+echo -n example.sppm........
+
+../liberty_parse example.sppm.lib > example.sppm.out 
+grep -v -i 'seconds' example.sppm.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x example.sppm.out
+diff -q example.sppm.out example.sppm.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm example.sppm.out
+else
+	echo %%FAILED%%
+endif
+
+
+echo -n var9................
+gcc -g -o var9 var.c -I.. ../.libs/libsi2dr_liberty.a -lm ## -ldmalloc
+rm -f var9.out
+foreach  i (example.2clibnam.lib \
+	example.2libnam.lib \
+	example.2pin.lib \
+	example.access.lib \
+	example.badcurly.lib \
+	example.baddir.lib \
+	example.badiface.lib \
+	example.badmem2.lib \
+	example.badmem.lib \
+	example.badmod2.lib \
+	example.badmod.lib \
+	example.badtech.lib \
+	example.badtim.lib \
+	example.badval2.lib \
+	example.badval3.lib \
+	example.badval.lib \
+	example.buspindir.lib \
+	example.closesemi.lib \
+	example.coloncell.lib \
+	example.colontempl.lib \
+	example.driver.lib \
+	example.dup1.lib \
+	example.dup2.lib \
+	example.ffbank.lib \
+	example.fpga.lib \
+	example.include.lib \
+	example.lib \
+	example.lut2.lib \
+	example.lut.lib \
+	example.nolibnam.lib \
+	example.numident.lib \
+	example.pin.lib \
+	example.powerlut.lib \
+	example.preclear2.lib \
+	example.preclear.lib \
+	example.rangerr.lib \
+	example.sppm.lib \
+	example.syntaxerr.lib \
+	example.var.lib \
+	inverter_nldm.lib \
+	inverter_spdm.lib \
+	t2.lib \
+	ugroup_bad.lib \
+	si2testcase.lib \
+	ugroup.lib)
+	echo $i --------------  >> var9.out
+	./var9 $i		>> var9.out
+end
+diff -q var9.out var9.ref >& /dev/null
+if( $status == 0 ) then
+	echo PASSED
+	rm var9.out
+else
+	echo %%FAILED%%
+endif
+rm out.lib
+rm var9
+
+
+echo -n writer-comments.....
+../liberty_parse --write example.2pin.lib >& /dev/null
+diff -wb example.2pin.lib example_blatantcopy1.lib > writer-comments.out
+diff -q writer-comments.out writer-comments.ref >& /dev/null
+if( $status == 0 ) then
+	echo PASSED
+	rm writer-comments.out
+else
+	echo %%FAILED%%
+endif
+rm example_blatantcopy1.lib
+
+echo -n my_group.lib........
+
+../liberty_parse my_group.lib > my_group.out 
+grep -v -i 'seconds' my_group.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x my_group.out
+diff -q my_group.out my_group.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm my_group.out
+else
+	echo %%FAILED%%
+endif
+
+echo -n newstuff.lib........
+
+../liberty_parse newstuff.lib > newstuff.out 
+grep -v -i 'seconds' newstuff.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x newstuff.out
+diff -q newstuff.out newstuff.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm newstuff.out
+else
+	echo %%FAILED%%
+endif
+
+echo -n defgroup.lib........
+
+../liberty_parse defgroup.lib > defgroup.out 
+grep -v -i 'seconds' defgroup.out  | grep -v -i 'version' | grep -v -i 'alloc' > x
+mv x defgroup.out
+diff -q defgroup.out defgroup.ref >& /dev/null 
+
+if ( $status == 0 )  then
+	echo PASSED
+	rm defgroup.out
+else
+	echo %%FAILED%%
+endif
+
+

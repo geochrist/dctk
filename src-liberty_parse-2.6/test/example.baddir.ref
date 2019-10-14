@@ -1,0 +1,27 @@
+
+
+
+reading example.baddir.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.baddir.lib:25, Attribute direction has value inoutput, which does not match any of the following values:
+      (Syntax Error Encountered)
+inout  input  internal  output  tristate  Passed
+
+... Done. 
+
+
+Stats:
+
+
+Library a:
+   cells: 2
+
+Quitting..
+Done....

@@ -1,0 +1,19 @@
+library (em222e) {
+   nom_process     : 1.000;
+   nom_temperature : 25.000;
+   nom_voltage     : 2.500;
+  lu_table_template(em222e:timing_by_trans_and_cap_0) { /* colon in template name */
+    variable_1 : input_net_transition ;
+    index_1("0.08,0.6,1.2,3");
+    variable_2 : total_output_net_capacitance ;
+    index_2("0.015,0.046,0.114,0.531");
+  }
+  lu_table_template(em222e:timing_by_trans_and_cap_1) { /* colon in template name */
+    variable_1 : input_net_transition ;
+    index_1("0.08,0.6,1.2,3");
+    variable_2 : total_output_net_capacitance ;
+    index_2("0.015,0.053,0.129,0.683");
+  }
+}
+
+

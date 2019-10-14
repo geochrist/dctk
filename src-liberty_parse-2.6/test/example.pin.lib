@@ -1,0 +1,6 @@
+library(temp) {
+   cell(ex) {
+     pin(Q[0]) {  
+     }
+   }
+}

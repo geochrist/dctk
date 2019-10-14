@@ -1,0 +1,6 @@
+library(sample) {
+nom_voltage : 5;
+  cell(example) {
+    area : 12.00 ;
+  }
+}

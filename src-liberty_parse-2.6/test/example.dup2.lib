@@ -1,0 +1,8 @@
+library (L) {
+  cell (C) { }
+  cell (c) {         /* error msg: group mame 'c' is already being used
+*/
+   pin (Pp) { }  /* similarly group name pp ... */
+    pin (pP)  { }
+  }
+}

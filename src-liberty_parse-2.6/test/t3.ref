@@ -1,0 +1,18 @@
+Before
+Lib Name: lib1
+Lib Name: lib2
+Lib Name: lib3
+Lib Name: lib4
+Lib Name: lib5
+Cell Name: cell1
+======================================
+
+After
+Lib Name: lib1
+Lib Name: lib2
+Lib Name: lib3
+Lib Name: lib4
+Lib Name: lib5a
+Cell Name: cell1a
+======================================
+

@@ -1,0 +1,10 @@
+
+
+
+reading example.syntaxerr.lib...
+ERROR: ===
+ERROR === syntax error, unexpected LCURLY file: example.syntaxerr.lib, line number 2
+ERROR === (Syntax Error Encountered)
+
+Syntax Errors were detected in the input file!
+

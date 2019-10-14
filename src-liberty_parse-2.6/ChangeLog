@@ -1,0 +1,67 @@
+Change list for liberty parse 2.6
+
+Improvements/support
+-	Added support for transition degradation groups in liberty_get_value function.
+-	Added support for rise/fall propagation in liberty_get_values.
+-	Added additional checks for complementary_pin attribute.
+-	Added support for data retrieval from CCS noise groups
+-	Added support for multiple power_rail attributes.
+-	Added support for retention cell/pin syntax.
+-	Added support for reading/writing input driver waveform into liberty files.
+-	 Added support for multi voltage_map.
+-	Added support for define_group output .
+-	Added support for multiple intrinsic_resistance groups.
+-	Added support for variation aware syntax.
+-	Added support for multiple va_compact_ccs_rise/fall va_receiver_capacitance1/2_rise/fall va_rise/fall_constraint group attribute.
+-	Added support for for retaining_fall/retaining_rise group. 
+-	Added support for attributes for switch cell (MTCMOS).
+-	Added support support for multiple normalized_driver_waveform .
+-	Added support for retain_rise_slew/ retain_fall_slew in  liberty_get_values_data function .
+-	Add support for is_unbuffered attribute. 
+
+Bug fixes
+-	Fix is to modify the liberty writer to use %g when printing library attributes: MAXX and MAXY.
+-	Memory errors and leaks.
+-	Recognize normalized_driver_waveform group when retrieving values using liberty_get_values_data
+Liberty format changes
+1.	Lib has new attribute(s)
+a.	switch_cell_type  = string ("coarse_grain")
+2.	cell ->pg_pin has attributes 
+a.	direction : enum(inout, input, output or tristate)
+b.	switch function : virtual_atrribute
+c.	pg_function :  virtual_atrribute
+d.	std_cell_main_rail : boolean
+3.	cell ->bundle subgroup has two new attributes:
+a.	pull_up_function: virtual_atrribute
+b.	pull_down_function: virtual_atrribute
+4.	cell->internal_power group changed 
+a.	pg_pin type from "virtual_attribute" to "string"
+5.	cell->pin group has added/changed new attributes
+a.	pull_up_function: virtual_atrribute
+b.	pull_down_function: virtual_atrribute
+c.	power_down_function: virtual_atrribute
+d.	switch_pin: boolean
+e.	input_voltage_range(float, float)
+f.	output_voltage_range(float, float)
+g.	retention_pin(string, string) changes to retention_pin(string, int)
+6.	cell->pin->receiver_capacitance  subgroup  has added new attribute
+a.	when : : virtual_atrribute
+7.	cell->pin->pin_based_variations subgroup has added new attribute
+a.	when : : virtual_atrribute
+b.	
+8.	cell->bus has added new attributes
+a.	pull_up_function: virtual_atrribute
+b.	pull_down_function: virtual_atrribute
+c.	compact compact_ccs_power ( [compact_ccs_power_template_name] ) {
+             index_output : string; 
+              values( <unknown_arguments> );
+9.	test_cell has added new subgroup:
+       dc_current( [dc_current_name] ) {
+           related_switch_pin      : virtual_attribute;
+           related_pg_pin          : virtual_attribute;
+           related_internal_pg_pin : virtual_attribute;
+           index_1(list);
+           index_2(list);
+           values( <unknown_arguments> );
+        }
+

@@ -1,0 +1,42 @@
+library(example) {	
+	technology(fpga);
+
+	cell(AN2){
+		area : 2;
+		pin(A, B){
+			direction : input;
+			capacitance : 1;
+		}
+		pin(Z){
+			direction : output;
+			function : "A ^ B";
+			timing () {
+				intrinsic_rise  : 0.49;
+				intrinsic_fall  : 0.77;
+				rise_resistance : 0.1443;
+				fall_resistance : 0.0523;
+				related_pin : "A B";
+			}
+		}	
+	}
+	cell(OR2){
+		area : 2;
+		pin(A, B){
+			direction : input;
+			capacitance : 1;
+		}
+		pin(Z){
+			direction : output;
+			function : "A + B";
+			timing () {
+				intrinsic_rise  : 0.38;
+				intrinsic_fall  : 0.85;
+				rise_resistance : 0.1443;
+				fall_resistance : 0.0589;
+			    slope_rise : 0.0;
+			    slope_fall : 0.0;
+				related_pin : "A B";
+			}
+		}	
+	}
+}

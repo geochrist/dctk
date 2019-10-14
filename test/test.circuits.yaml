@@ -1,0 +1,19 @@
+#
+# test file
+Circuits:
+  -
+    name: first 
+    driver: and/a/y
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load:  or/a/y
+    load_interconnect: 2.2 200 2.2
+  -
+    name: second
+    voltage_source: vs2
+    driver: nand/a/y
+    driver_interconnect: 3.1 300 3.1
+    load:  nor/a/y
+    load_interconnect: 4.2 400 5.2
+
+

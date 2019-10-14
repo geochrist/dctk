@@ -1,0 +1,85 @@
+
+library (test1) {
+
+   define_group(sec_acore_internal_power,pin);
+
+   define(sec_acore_rise_power, sec_acore_internal_power, float);
+
+   define(sec_acore_fall_power, sec_acore_internal_power, float);
+
+   define(sec_acore_when, sec_acore_internal_power, string);
+
+
+  cell (test1) {
+
+    pin (TST) {
+
+     direction : "input";
+
+     capacitance : 0.1;
+
+     sec_acore_internal_power (TST) {
+
+      sec_acore_rise_power : 1000;
+
+      sec_acore_fall_power : 0;
+
+      sec_acore_when : "CNT' ";
+
+     }
+
+     sec_acore_internal_power (TST) {
+
+      sec_acore_rise_power : 1000.00;
+
+      sec_acore_fall_power : 0.00;
+
+      sec_acore_when : "CNT  ";
+
+     }
+
+    }
+
+    pin (TST2) {
+
+     direction : "input";
+
+     capacitance : 0.1;
+
+     sec_acore_internal_power (TST) {
+
+      sec_acore_rise_power : 1000.00;
+
+      sec_acore_fall_power : 0.00;
+
+      sec_acore_when : "CNT' ";
+
+     }
+
+     sec_acore_internal_power (TST1) {
+
+      sec_acore_rise_power : 1000.00;
+
+ 
+
+      sec_acore_fall_power : 0.00;
+
+      sec_acore_when : "CNT  ";
+
+     }
+
+    }
+
+    pin (TST3) {
+
+     direction : "input";
+
+     capacitance : 0.1;
+
+     sec_acore_internal_power () {
+
+            sec_acore_rise_power : 1000;
+     }
+    }
+  }
+}

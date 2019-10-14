@@ -1,0 +1,14 @@
+library(temp) {
+  type (bus4) {
+    bit_width : 4;
+    bit_from : 0 ;
+    bit_to : 3 ;
+  }
+  cell(ex) {
+    bus (A) {
+        bus_type : bus4 ;
+        pin (A[3]) {
+        }
+    }
+  }
+}

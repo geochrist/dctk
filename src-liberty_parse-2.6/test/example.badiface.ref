@@ -1,0 +1,27 @@
+
+
+
+reading example.badiface.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.badiface.lib:23, The cell 'AN2' has the interface_timing attribute (line 16), but is not a black box. (Semantic Error found in data.)
+ERROR:                   -- pin groups should not have the function attribute specified when interface_timing is true. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

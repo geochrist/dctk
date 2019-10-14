@@ -1,0 +1,6 @@
+Revision history for Perl extension si2dr_liberty.
+
+0.01  Wed Aug 22 20:11:18 2007
+	- original version; created by h2xs 1.23 with options
+		-X -n liberty
+

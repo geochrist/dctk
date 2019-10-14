@@ -1,0 +1,31 @@
+library(example) {	
+	technology(cmos);
+
+   power_lut_template(pwr_bcm_rf) {
+            variable_1 : input_transition_time;
+            index_1 ("0.15, 0.5, 0.7");
+    }
+	cell(AN2){
+		area : 2;
+		pin(A, B){
+           internal_power() {
+				power(pwr_bcm_rf) {
+                 values ( "4.7, 4.9" );
+				}
+				rise_power(pwr_bcm_rf) {
+                 values ( "4.7, 4.9" );
+				}
+				fall_power(pwr_bcm_rf) {
+                 values ( "4.7, 4.9" );
+				}
+            }
+			direction : input;
+			capacitance : 1;
+		}
+        pin (P) {
+           internal_power(pwr_bcm_rf) {
+                 values ( "4.7, 4.9" );
+            }
+        }
+    }
+}

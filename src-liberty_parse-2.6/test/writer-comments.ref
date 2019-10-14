@@ -1,0 +1,48 @@
+2d1
+< 
+4c3
+< 	technology(cmos);
+---
+> 	technology("cmos");
+9c8
+< 			direction : input;
+---
+> 			direction : "input";
+13c12
+< 			direction : output;
+---
+> 			direction : "output";
+16,19c15,18
+< 				intrinsic_rise  : 0.49;
+< 				intrinsic_fall  : 0.77;
+< 				rise_resistance : 0.1443;
+< 				fall_resistance : 0.0523;
+---
+> 				intrinsic_rise : 0.490000;
+> 				intrinsic_fall : 0.770000;
+> 				rise_resistance : 0.144300;
+> 				fall_resistance : 0.052300;
+30c29
+< 			direction : input;
+---
+> 			direction : "input";
+34c33
+< 			direction : input;
+---
+> 			direction : "input";
+40c39
+< 			direction : output;
+---
+> 			direction : "output";
+44,46c43,45
+< 				intrinsic_rise  : 0.38;
+< 				intrinsic_fall  : 0.85;
+< 				rise_resistance : 0.1443;
+---
+> 				intrinsic_rise : 0.380000;
+> 				intrinsic_fall : 0.850000;
+> 				rise_resistance : 0.144300;
+48c47
+< 				fall_resistance : 0.0589;
+---
+> 				fall_resistance : 0.058900;

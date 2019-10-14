@@ -1,0 +1,28 @@
+
+
+
+reading example.badtech.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology bmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+ERROR: I cannot check the syntax of this particular technology/delay_model combination! (Syntax Error Encountered)
+NOTE:  Here is a list of technologies/delay_models I can handle:
+NOTE:   cmos
+NOTE:   fpga
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

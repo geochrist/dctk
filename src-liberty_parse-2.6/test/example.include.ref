@@ -1,0 +1,13 @@
+
+
+
+reading example.include.lib...
+       ... including file fragment_good
+       ... including file fragment_bad
+ERROR: fragment_bad:2: The group name t112 is already being used in this context. (Syntax Error Encountered)
+ERROR: ===
+ERROR === syntax error, unexpected SEMI, expecting LPAR or COLON or EQ file: fragment_bad, line number 4
+ERROR === (Syntax Error Encountered)
+
+Syntax Errors were detected in the input file!
+

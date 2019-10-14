@@ -1,0 +1,32 @@
+
+
+
+reading example.driver.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.driver.lib:14, The driver_types 'pull_up' and 'pull_down' cannot be specified on the same pin (Semantic Error found in data.)
+ERROR: example.driver.lib:14, The driver_types 'pull_up' and 'bus_hold' cannot be specified on the same pin (Semantic Error found in data.)
+ERROR: example.driver.lib:14, The driver_types 'pull_down' and 'bus_hold' cannot be specified on the same pin (Semantic Error found in data.)
+ERROR: example.driver.lib:14, The driver_types 'open_source' and 'open_drain' cannot be specified on the same pin (Semantic Error found in data.)
+ERROR: example.driver.lib:14, The driver_types 'open_drain' and 'bus_hold' cannot be specified on the same pin (Semantic Error found in data.)
+ERROR: example.driver.lib:14, The driver_types 'open_source' and 'bus_hold' cannot be specified on the same pin (Semantic Error found in data.)
+ERROR: example.driver.lib:13, The 'open_source' driver_type (line 14) cannot be specified on an input pin (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

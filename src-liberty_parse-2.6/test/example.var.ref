@@ -1,0 +1,25 @@
+
+
+
+reading example.var.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: No technology attribute specified in the library; the technology 'cmos' is assumed.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+Passed
+
+... Done. 
+
+
+Stats:
+
+
+Library test:
+   cells: 1
+
+Quitting..
+Done....

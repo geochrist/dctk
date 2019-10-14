@@ -1,0 +1,25 @@
+
+
+
+reading example.fpga.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology fpga was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the fpga syntax tables...
+Passed
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

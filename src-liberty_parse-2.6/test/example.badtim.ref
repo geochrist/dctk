@@ -1,0 +1,29 @@
+
+
+
+reading example.badtim.lib...
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+ERROR: example.badtim.lib:30 and example.badtim.lib:51: It is illegal to specify both cell_rise and fall_propagation in the same timing group. (Semantic Error found in data.)
+ERROR: example.badtim.lib:39 and example.badtim.lib:42: It is illegal to specify both cell_fall and rise_propagation in the same timing group. (Semantic Error found in data.)
+ERROR: example.badtim.lib:30: It is illegal to specify cell_rise without a rise_transition in the same timing group. (Semantic Error found in data.)
+ERROR: example.badtim.lib:39: It is illegal to specify cell_fall without a fall_transition in the same timing group. (Semantic Error found in data.)
+Errors detected
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

@@ -1,0 +1,33 @@
+
+
+
+reading example.badcurly.lib...
+Warning: line 5: Opening Curly must be on same line as group declaration!
+Warning: line 8: Opening Curly must be on same line as group declaration!
+Warning: line 13: Opening Curly must be on same line as group declaration!
+Warning: line 17: Opening Curly must be on same line as group declaration!
+Warning: line 27: Opening Curly must be on same line as group declaration!
+Warning: line 30: Opening Curly must be on same line as group declaration!
+Warning: line 35: Opening Curly must be on same line as group declaration!
+Warning: line 39: Opening Curly must be on same line as group declaration!
+... Done. 
+
+
+Checking the database...
+
+NOTE: The technology cmos was specified.
+NOTE: No delay_model attribute specified in the library; the delay_model 'generic_cmos' is assumed.
+NOTE: Using the cmos syntax tables...
+Passed
+
+... Done. 
+
+
+Stats:
+
+
+Library example:
+   cells: 2
+
+Quitting..
+Done....

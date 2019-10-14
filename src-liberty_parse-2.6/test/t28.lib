@@ -1,0 +1,11 @@
+library (t28) {
+	define(aaa,pin,integer);
+	cell (c1) {
+		pin (A) {
+			aaa : 1;
+		}
+		pin (BB) {
+			aaa : 1.0000;
+		}
+	}
+}

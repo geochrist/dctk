@@ -1,0 +1,39 @@
+library(newstuff) {
+	cell(cell1) {
+		retention_cell : "x";
+		power_gating_cell : "y";
+		pin(pin1) {
+			retention_pin( "pin2","z");
+			power_gating_pin("pin2",2);
+			map_to_logic : "1";
+		}
+		pin(pin2) {
+			retention_pin( "pin1","z");
+			direction : "output";
+		}
+	}
+	cell(cell2) {
+		is_level_shifter : true;
+		level_shifter_type : "LH";
+		input_voltage_range(1,2);	
+		output_voltage_range(1,2);
+		pin(pin1) {
+			power_gating_pin("pin2","2");
+		}
+		pg_pin(pin2) {
+			std_cell_main_rail : true;
+		}
+	}
+	cell(cell3) {
+		level_shifter_type : "HL";
+		input_voltage_range(1,2);	
+		output_voltage_range(1,2);
+			
+		pin(pin1) {
+			power_gating_pin("pin2","2.7");
+		}
+		pg_pin(pin2) {
+			std_cell_main_rail : true;
+		}
+	}
+}

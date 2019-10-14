@@ -1,0 +1,25 @@
+/* this lib provided as a testcase by David Mallis of SI2 
+   and tests for the case where an error was wrongly generated,
+   when a newly defined group could be contained in multiple
+   places. */
+
+library(q) {
+
+  delay_model : table_lookup;
+
+  define_group( sii, cell );
+  define_group( sii, pin );
+  define(siiattrib, sii, string);
+
+  cell (siiCell) {
+  pin(A)  {
+    direction : input;
+    capacitance : 0.3;
+    rise_capacitance : 0.1;
+    fall_capacitance : 0.2;
+    sii("9") {
+      siiattrib : "1" ;
+    }
+  }
+}
+}
