@@ -30,8 +30,8 @@ Kernel configured for up to 8 processors.
 Processor type: x86_64h (Intel x86-64h Haswell)
 Processors active: 0 1 2 3 4 5 6 7
 Primary memory available: 16.00 gigabytes
-Default processor set: 434 tasks, 2100 threads, 8 processors
-Load average: 2.91, Mach factor: 5.08
+Default processor set: 445 tasks, 2166 threads, 8 processors
+Load average: 2.13, Mach factor: 5.85
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -214,9 +214,9 @@ configure:4493: checking lex library
 configure:4512: clang -o conftest -Wno-return-type   conftest.c   >&5
 Undefined symbols for architecture x86_64:
   "_yywrap", referenced from:
-      _yylex in conftest-49c572.o
-      _input in conftest-49c572.o
-      _main in conftest-49c572.o
+      _yylex in conftest-f1390b.o
+      _input in conftest-f1390b.o
+      _main in conftest-f1390b.o
 ld: symbol(s) not found for architecture x86_64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:4518: $? = 1
@@ -4386,15 +4386,15 @@ lt_lt_cv_sys_global_symbol_to_cdecl='"sed -n -e '\''s/^. .* \\(.*\\)\$/extern in
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} /Users/gjchen/projects/tau/tau2020/src/dctk/src-liberty_parse-2.6/missing --run aclocal-1.10'
+ACLOCAL='${SHELL} /Users/gjchen/projects/tau/tau2020/github/dctk/src-liberty_parse-2.6/missing --run aclocal-1.10'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
-AMTAR='${SHELL} /Users/gjchen/projects/tau/tau2020/src/dctk/src-liberty_parse-2.6/missing --run tar'
+AMTAR='${SHELL} /Users/gjchen/projects/tau/tau2020/github/dctk/src-liberty_parse-2.6/missing --run tar'
 AR='ar'
-AUTOCONF='${SHELL} /Users/gjchen/projects/tau/tau2020/src/dctk/src-liberty_parse-2.6/missing --run autoconf'
-AUTOHEADER='${SHELL} /Users/gjchen/projects/tau/tau2020/src/dctk/src-liberty_parse-2.6/missing --run autoheader'
-AUTOMAKE='${SHELL} /Users/gjchen/projects/tau/tau2020/src/dctk/src-liberty_parse-2.6/missing --run automake-1.10'
+AUTOCONF='${SHELL} /Users/gjchen/projects/tau/tau2020/github/dctk/src-liberty_parse-2.6/missing --run autoconf'
+AUTOHEADER='${SHELL} /Users/gjchen/projects/tau/tau2020/github/dctk/src-liberty_parse-2.6/missing --run autoheader'
+AUTOMAKE='${SHELL} /Users/gjchen/projects/tau/tau2020/github/dctk/src-liberty_parse-2.6/missing --run automake-1.10'
 AWK='awk'
 BISON='/usr/bin/bison'
 CC='clang'
@@ -4431,7 +4431,7 @@ LIBS=''
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 LN_S='ln -s'
 LTLIBOBJS=''
-MAKEINFO='${SHELL} /Users/gjchen/projects/tau/tau2020/src/dctk/src-liberty_parse-2.6/missing --run makeinfo'
+MAKEINFO='${SHELL} /Users/gjchen/projects/tau/tau2020/github/dctk/src-liberty_parse-2.6/missing --run makeinfo'
 OBJEXT='o'
 PACKAGE='liberty_parser'
 PACKAGE_BUGREPORT=''
@@ -4480,7 +4480,7 @@ host_vendor='apple'
 htmldir='${docdir}'
 includedir='${prefix}/include'
 infodir='${datarootdir}/info'
-install_sh='$(SHELL) /Users/gjchen/projects/tau/tau2020/src/dctk/src-liberty_parse-2.6/install-sh'
+install_sh='$(SHELL) /Users/gjchen/projects/tau/tau2020/github/dctk/src-liberty_parse-2.6/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='${exec_prefix}/libexec'
 localedir='${datarootdir}/locale'
