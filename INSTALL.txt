@@ -1,0 +1,97 @@
+Installation Instructions
+=========================
+
+Overview
+--------
+
+1.  Install yaml-cpp in a directory parallel to this one.
+
+2.  Build src-liberty_parse-2.6.
+
+3.  Compile dctk.
+
+Details
+-------
+
+$DIR = the directory of dctk download.
+
+yaml-cpp:
+
+  Download yaml-cpp in a directory parallel this one:
+
+    cd $DIR/..
+
+    git clone https://github.com/jbeder/yaml-cpp.git
+
+  To build it using standard cmake build process:
+
+    cd $DIR/../cpp-yaml
+    mkdir build
+    cd build
+    cmake ..
+    make
+
+src-liberty_parse-2.6:
+
+  First set the CFLAGS to skip no-return-type errors.  It is
+  needed for most modern versions of compilers:
+
+    setenv CFLAGS -Wno-return-type
+
+  Then go through the standard configure build process:
+
+    cd $DIR/src-liberty_parse-2.6
+    ./configure
+    make
+
+  Finally, dctk requires static libraries.  Run the custom library
+  archiving script in the directory:
+
+    makelib
+
+  The result should be a file named liblibparse.a in the src-liberty_parse-2.6
+  directory.
+
+dctk:
+
+  Go through the standard process for cmake:
+
+    cd $DIR
+    mkdir build
+    cd build
+    cmake ..
+
+  The result should be build/delay_calc_tool executable
+
+  Test this executable:
+
+    cd $DIR/test
+    ./runme
+
+  The results should be a list of all the cells in the library, followed by
+  something that looks like:
+
+Reading Test Circuits file test.circuits.yaml
+Generating spice netlists for test.circuits.yaml
+Processing 2 circuits.
+Name = first
+Voltage Source = vs1
+Driver = and/a/y
+Driver Interconnect = 1.1 100 1.1
+Load = or/a/y
+load_interconnect = 2.2 200 2.2
+----------
+Name = second
+Voltage Source = vs2
+Driver = nand/a/y
+Driver Interconnect = 3.1 300 3.1
+Load = nor/a/y
+load_interconnect = 4.2 400 5.2
+----------
+Computing Delays for 2 circuits.
+
+
+
+
+
+
