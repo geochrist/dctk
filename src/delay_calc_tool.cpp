@@ -138,6 +138,11 @@ main(int argc, char **argv)
 	exit(1);
     }
 
+    // test code to see if values got captured
+    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+        circuitMgr[i]->dump();
+    }
+
     // clean up
     if (liberty_file) {
 	free(liberty_file);
