@@ -5,6 +5,6 @@
 
 #include "CellLib.hpp"
 
-int read_liberty(char *filename, dctk::CellLib* cell_lib);
+int read_liberty(char *filename, dctk::CellLib*& cell_lib);
 
 #endif
