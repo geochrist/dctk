@@ -24,3 +24,10 @@ generate their own testcases.
    but it shouldn't be too significant at this point. **
 
 
+TODO
+
+* add a spef reader to delay_calc_tool
+* add a SPICE deck writer to delay_calc_tool
+* add call to spice simulator into delay_calc_tool
+* add comparator to delay_calc_tool
+* add net reduction code to gen_random_nets
