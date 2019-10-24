@@ -1,4 +1,18 @@
 #!/bin/csh -f
 
+# This script shows how to generate a random set of parasitics and
+# then read it into the delay calculator
+
+# dataset name
+set dataset = tau2020v1
+
+
+# File containing Liberty models in CCS form
 set library = "NangateOpenCellLibrary_typical_ccs.adjusted.lib"
-../build/delay_calc_tool --circuits test.circuits.yaml --liberty $library
+
+# Generate random dataset
+# output will be $dataset.circuits.yaml and $dataset.spef
+../build/gen_random_nets --liberty $library --dataset $dataset -n 100
+
+# Read results into delay calculation tool
+../build/delay_calc_tool --circuits $dataset.circuits.yaml --liberty $library

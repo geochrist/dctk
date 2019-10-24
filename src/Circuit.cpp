@@ -27,6 +27,10 @@ Circuit& Circuit::set_driver(const std::string& s) {
     this->_driver = s;
     return *this;
 }
+Circuit& Circuit::set_driver_celltype(const std::string& s) {
+    this->_driver_celltype = s;
+    return *this;
+}
 
 Circuit& Circuit::set_driver_interconnect(const std::string& s) {
 
@@ -46,6 +50,12 @@ Circuit& Circuit::set_driver_interconnect(const std::string& s) {
 Circuit& Circuit::set_load(const std::string& s) {
 
     this->_load = s;
+    return *this;
+}
+
+Circuit& Circuit::set_load_celltype(const std::string& s) {
+
+    this->_load_celltype = s;
     return *this;
 }
 
@@ -80,6 +90,41 @@ void Circuit::dump() {
     std::cout << "----------" << std::endl;
 }
 
+void Circuit::gen_yaml(YAML::Emitter& emitter) {
+
+    emitter << YAML::BeginMap;
+
+    emitter << YAML::Key << "name" << YAML::Value << this->_name;
+
+    emitter << YAML::Key << "driver" << YAML::Value << this->_driver;
+
+    emitter << YAML::Key << "driver_celltype" << YAML::Value << this->_driver_celltype;
+
+    emitter << YAML::Key << "voltage_source" << YAML::Value << this->_input_voltage_source;
+
+    // build string for driver PI model
+    std::stringstream ss1;
+    ss1 << this->_driver_interconnect.get_cnear()
+	<< " " << this->_driver_interconnect.get_res()
+	<< " " << this->_driver_interconnect.get_cfar();
+
+    emitter << YAML::Key << "driver_interconnect" << YAML::Value << ss1.str();
+
+    emitter << YAML::Key << "load" << YAML::Value << this->_load;
+
+    emitter << YAML::Key << "load_celltype" << YAML::Value << this->_load_celltype;
+
+    std::stringstream ss2;
+    ss2 << this->_load_interconnect.get_cnear()
+	<< " " << this->_load_interconnect.get_res()
+	<< " " << this->_load_interconnect.get_cfar();
+
+    emitter << YAML::Key << "load_interconnect" << YAML::Value << ss2.str();
+
+    emitter << YAML::Key << "delay" << YAML::Value << this->_delay;
+    emitter << YAML::Key << "slew" << YAML::Value << this->_slew;
+    
+    emitter << YAML::EndMap;
+
 }
-
-
+}

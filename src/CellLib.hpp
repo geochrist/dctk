@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <iostream>
 #include "Cell.hpp"
 
 namespace dctk {
@@ -17,6 +18,11 @@ public:
 
     void dump();
 
+    Cell* get_random_cell() {
+	std::map<std::string, Cell*>::iterator item = _cellMap.begin();
+	std::advance( item, rand() % _cellMap.size() );
+	return item->second;
+    }
 
 private:
 

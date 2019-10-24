@@ -63,6 +63,43 @@ bool Cell::fixup_pins_in_arcs() {
 
 }
 
+CellPin* Cell::get_output_pin() {
+    // returns first output pin found
+
+    std::map<std::string, dctk::CellPin*>::iterator pin_iter = _pinMap.begin();
+
+    for ( ; pin_iter != _pinMap.end(); pin_iter++) {
+	if (pin_iter->second->get_direction() == "output") {
+	    return pin_iter->second;
+	}
+    }
+
+    return NULL;
+
 }
 
+CellPin* Cell::get_random_input_pin() {
+
+    // collects all input pins, and then randomly chooses one
+
+    std::map<std::string, dctk::CellPin*>::iterator pin_iter = _pinMap.begin();
+    std::vector<dctk::CellPin*> input_pins;
+
+    for ( ; pin_iter != _pinMap.end(); pin_iter++) {
+	if (pin_iter->second->get_direction() == "input") {
+	    input_pins.push_back(pin_iter->second);
+	}
+    }
+
+    int num_input_pins = input_pins.size();
+    if (input_pins.size() == 0) {
+	return NULL;
+    }
+
+    int random_input_pin = rand() % num_input_pins;
+    return input_pins[random_input_pin];
+
+}
+
+}
 

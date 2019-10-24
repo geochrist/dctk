@@ -64,10 +64,7 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
 
         circuitMgr->push_back(cir);
     }
-
-    for (std::size_t i = 0; i < circuitMgr->size(); i++) {
-        (*circuitMgr)[i]->dump();
-    }
+ 
 
     return 0;
 

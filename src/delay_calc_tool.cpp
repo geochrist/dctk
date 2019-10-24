@@ -1,11 +1,14 @@
 #include <stdio.h>     /* for printf */
 #include <stdlib.h>    /* for exit */
 #include <getopt.h>
-#include "string.h"
+#include <string.h>
+#include <fstream>
+#include <iostream>
+
+#include <yaml-cpp/yaml.h>
 
 // dctk definitions
 #include "dctk.hpp"
-
 
 // Liberty reader
 #include "liberty_reader.hpp"
@@ -85,7 +88,6 @@ main(int argc, char **argv)
 	    test_circuits_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
 	    strcpy(test_circuits_file, optarg);
             break;
-
         case '?':
             break;
 
@@ -139,9 +141,27 @@ main(int argc, char **argv)
     }
 
     // test code to see if values got captured
+
     for (std::size_t i = 0; i < circuitMgr.size(); i++) {
         circuitMgr[i]->dump();
     }
+
+    // create YAML buffer
+    YAML::Emitter emitter;
+    emitter << YAML::BeginMap;
+    emitter << YAML::Key << "Circuits";
+    emitter << YAML::BeginSeq;
+    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+        circuitMgr[i]->gen_yaml(emitter);
+    }
+    emitter << YAML::EndSeq;
+    emitter << YAML::EndMap;
+
+    // dump to debug file
+    std::ofstream yaml_fout("debug.circuits.yaml");
+    yaml_fout << emitter.c_str() << std::endl;
+    yaml_fout.close();
+
 
     // clean up
     if (liberty_file) {

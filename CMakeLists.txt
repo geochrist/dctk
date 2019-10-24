@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(USE_WERROR ON)
+#set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2")
 message(STATUS "CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 message(STATUS "CMAKE_CXX_COMPILER: " ${CMAKE_CXX_COMPILER})
@@ -53,6 +54,10 @@ add_library(dut src-dut/delay_calculator.cpp)
 # benchmarking executable
 add_executable(delay_calc_tool src/delay_calc_tool.cpp)
 target_link_libraries(delay_calc_tool dctk yaml-cpp libparse dut)
+
+# Random Net Generator
+add_executable(gen_random_nets src/gen_random_nets.cpp)
+target_link_libraries(gen_random_nets dctk libparse yaml-cpp)
 
 
 

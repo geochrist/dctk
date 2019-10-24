@@ -1,0 +1,1001 @@
+Circuits:
+  - name: net_0
+    driver: I1/A/Z
+    driver_celltype: CLKBUF_X3
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I2/SN/Q
+    load_celltype: DFFS_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_1
+    driver: I5/B/ZN
+    driver_celltype: OAI211_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I6/D/Q
+    load_celltype: DFF_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_2
+    driver: I8/A4/ZN
+    driver_celltype: OR4_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I9/A/Z
+    load_celltype: MUX2_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_3
+    driver: I11/A3/ZN
+    driver_celltype: AND3_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I12/CK/GCK
+    load_celltype: CLKGATE_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_4
+    driver: I14/SI/Q
+    driver_celltype: SDFFS_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I15/C1/ZN
+    load_celltype: AOI221_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_5
+    driver: I17/A3/ZN
+    driver_celltype: NAND3_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I18/A2/ZN
+    load_celltype: AOI22_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_6
+    driver: I22/B2/ZN
+    driver_celltype: OAI21_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I23/A/ZN
+    load_celltype: INV_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_7
+    driver: I25/SN/Q
+    driver_celltype: SDFFS_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I26/EN/ZN
+    load_celltype: TINV_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_8
+    driver: I27/A2/ZN
+    driver_celltype: OAI222_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I28/A3/ZN
+    load_celltype: NOR4_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_9
+    driver: I29/A2/ZN
+    driver_celltype: AND2_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I30/A2/ZN
+    load_celltype: NOR3_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_10
+    driver: I33/RN/Q
+    driver_celltype: SDFFR_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I34/D/Q
+    load_celltype: DFF_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_11
+    driver: I37/A3/ZN
+    driver_celltype: NOR3_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I38/CK/Q
+    load_celltype: DFFS_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_12
+    driver: I41/A/ZN
+    driver_celltype: INV_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I42/A/ZN
+    load_celltype: INV_X16
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_13
+    driver: I43/SE/GCK
+    driver_celltype: CLKGATETST_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I44/A1/ZN
+    load_celltype: AOI222_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_14
+    driver: I48/SN/Q
+    driver_celltype: DFFS_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I49/A4/ZN
+    load_celltype: OR4_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_15
+    driver: I53/B1/ZN
+    driver_celltype: AOI21_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I54/B/Z
+    load_celltype: XOR2_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_16
+    driver: I55/A1/ZN
+    driver_celltype: OR4_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I56/A/Z
+    load_celltype: BUF_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_17
+    driver: I58/A3/ZN
+    driver_celltype: NAND4_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I59/A/ZN
+    load_celltype: AOI221_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_18
+    driver: I60/A1/ZN
+    driver_celltype: NAND2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I61/A1/ZN
+    load_celltype: OAI222_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_19
+    driver: I62/A/ZN
+    driver_celltype: INV_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I63/D/Q
+    load_celltype: DFFRS_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_20
+    driver: I64/A/ZN
+    driver_celltype: INV_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I65/D/Q
+    load_celltype: DFFRS_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_21
+    driver: I68/A/Z
+    driver_celltype: CLKBUF_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I69/SI/Q
+    load_celltype: SDFFS_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_22
+    driver: I71/C2/ZN
+    driver_celltype: OAI221_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I72/B2/ZN
+    load_celltype: OAI21_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_23
+    driver: I74/A1/ZN
+    driver_celltype: NOR3_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I75/B/ZN
+    load_celltype: XNOR2_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_24
+    driver: I78/CK/GCK
+    driver_celltype: CLKGATE_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I79/A/Z
+    load_celltype: BUF_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_25
+    driver: I82/A2/ZN
+    driver_celltype: OR2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I83/A3/ZN
+    load_celltype: AND4_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_26
+    driver: I86/A4/ZN
+    driver_celltype: AND4_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I87/C2/ZN
+    load_celltype: AOI221_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_27
+    driver: I88/A2/ZN
+    driver_celltype: NAND3_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I89/B/ZN
+    load_celltype: OAI211_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_28
+    driver: I91/B2/ZN
+    driver_celltype: OAI21_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I92/A1/ZN
+    load_celltype: OAI222_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_29
+    driver: I95/A1/ZN
+    driver_celltype: NAND2_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I96/C2/ZN
+    load_celltype: OAI222_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_30
+    driver: I99/A1/ZN
+    driver_celltype: AND2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I100/C2/ZN
+    load_celltype: OAI222_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_31
+    driver: I102/A2/ZN
+    driver_celltype: NOR2_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I103/SE/GCK
+    load_celltype: CLKGATETST_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_32
+    driver: I107/A3/ZN
+    driver_celltype: OR4_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I108/CK/GCK
+    load_celltype: CLKGATE_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_33
+    driver: I109/A3/ZN
+    driver_celltype: OR4_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I110/B2/ZN
+    load_celltype: AOI21_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_34
+    driver: I112/EN/Z
+    driver_celltype: TBUF_X8
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I113/A3/ZN
+    load_celltype: AND3_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_35
+    driver: I116/CK/GCK
+    driver_celltype: CLKGATETST_X8
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I117/A2/ZN
+    load_celltype: OR4_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_36
+    driver: I118/A/ZN
+    driver_celltype: AOI221_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I119/A/ZN
+    load_celltype: INV_X32
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_37
+    driver: I121/CK/Q
+    driver_celltype: DFF_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I122/D/Q
+    load_celltype: SDFFS_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_38
+    driver: I125/A/Z
+    driver_celltype: TBUF_X16
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I126/B/CO
+    load_celltype: FA_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_39
+    driver: I128/B/ZN
+    driver_celltype: AOI211_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I129/A1/ZN
+    load_celltype: OR4_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_40
+    driver: I133/A/Z
+    driver_celltype: BUF_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I134/C2/ZN
+    load_celltype: OAI221_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_41
+    driver: I136/A3/ZN
+    driver_celltype: OR3_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I137/SE/Q
+    load_celltype: SDFFS_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_42
+    driver: I138/A/Z
+    driver_celltype: TBUF_X16
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I139/C2/ZN
+    load_celltype: OAI211_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_43
+    driver: I141/B1/ZN
+    driver_celltype: OAI21_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I142/A4/ZN
+    load_celltype: AND4_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_44
+    driver: I146/D/Q
+    driver_celltype: SDFFRS_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I147/A1/ZN
+    load_celltype: NAND4_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_45
+    driver: I150/A4/ZN
+    driver_celltype: AND4_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I151/D/Q
+    load_celltype: DFF_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_46
+    driver: I153/A/ZN
+    driver_celltype: INV_X32
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I154/B2/ZN
+    load_celltype: OAI22_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_47
+    driver: I158/A/ZN
+    driver_celltype: AOI21_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I159/A1/ZN
+    load_celltype: NOR2_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_48
+    driver: I160/CK/Q
+    driver_celltype: DFFS_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I161/CK/Q
+    load_celltype: DFF_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_49
+    driver: I164/A/Z
+    driver_celltype: CLKBUF_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I165/A/ZN
+    load_celltype: INV_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_50
+    driver: I167/A2/ZN
+    driver_celltype: NOR2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I168/S/Z
+    load_celltype: MUX2_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_51
+    driver: I169/A/ZN
+    driver_celltype: INV_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I170/A/ZN
+    load_celltype: XNOR2_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_52
+    driver: I171/A2/ZN
+    driver_celltype: AOI22_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I172/A4/ZN
+    load_celltype: OR4_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_53
+    driver: I176/A2/ZN
+    driver_celltype: AND3_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I177/A2/ZN
+    load_celltype: AND2_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_54
+    driver: I179/A1/ZN
+    driver_celltype: NAND4_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I180/G/Q
+    load_celltype: DLH_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_55
+    driver: I183/CK/GCK
+    driver_celltype: CLKGATE_X8
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I184/A/Z
+    load_celltype: TBUF_X8
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_56
+    driver: I185/A1/ZN
+    driver_celltype: OAI33_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I186/C1/ZN
+    load_celltype: OAI222_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_57
+    driver: I189/C1/ZN
+    driver_celltype: OAI222_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I190/A4/ZN
+    load_celltype: NOR4_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_58
+    driver: I193/A2/ZN
+    driver_celltype: AND2_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I194/A/ZN
+    load_celltype: INV_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_59
+    driver: I198/A2/ZN
+    driver_celltype: NOR4_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I199/A/CO
+    load_celltype: HA_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_60
+    driver: I202/A/Z
+    driver_celltype: XOR2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I203/SE/Q
+    load_celltype: SDFF_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_61
+    driver: I204/C1/ZN
+    driver_celltype: AOI211_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I205/D/Q
+    load_celltype: DLL_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_62
+    driver: I209/A/Z
+    driver_celltype: XOR2_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I210/B2/ZN
+    load_celltype: OAI221_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_63
+    driver: I211/A2/ZN
+    driver_celltype: AND2_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I212/A4/ZN
+    load_celltype: NAND4_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_64
+    driver: I214/D/Q
+    driver_celltype: DLH_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I215/B1/ZN
+    load_celltype: OAI22_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_65
+    driver: I216/A/ZN
+    driver_celltype: INV_X8
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I217/CK/GCK
+    load_celltype: CLKGATE_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_66
+    driver: I220/A1/ZN
+    driver_celltype: NAND2_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I221/A/ZN
+    load_celltype: INV_X8
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_67
+    driver: I225/SI/Q
+    driver_celltype: SDFF_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I226/A1/ZN
+    load_celltype: AND4_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_68
+    driver: I227/A3/ZN
+    driver_celltype: NOR3_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I228/A2/ZN
+    load_celltype: NAND2_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_69
+    driver: I229/B1/ZN
+    driver_celltype: AOI22_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I230/C1/ZN
+    load_celltype: OAI211_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_70
+    driver: I234/B/Z
+    driver_celltype: XOR2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I235/B1/ZN
+    load_celltype: OAI22_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_71
+    driver: I238/A/ZN
+    driver_celltype: INV_X16
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I239/A/ZN
+    load_celltype: INV_X16
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_72
+    driver: I242/A3/ZN
+    driver_celltype: OR4_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I243/A/Z
+    load_celltype: TBUF_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_73
+    driver: I244/SN/Q
+    driver_celltype: DFFS_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I245/C1/ZN
+    load_celltype: OAI211_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_74
+    driver: I246/B/Z
+    driver_celltype: MUX2_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I247/SE/Q
+    load_celltype: SDFFRS_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_75
+    driver: I249/A/ZN
+    driver_celltype: AOI211_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I250/RN/Q
+    load_celltype: DFFR_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_76
+    driver: I252/A1/ZN
+    driver_celltype: NAND3_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I253/A2/ZN
+    load_celltype: OR3_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_77
+    driver: I254/A/Z
+    driver_celltype: BUF_X16
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I255/A2/ZN
+    load_celltype: NOR3_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_78
+    driver: I256/A4/ZN
+    driver_celltype: OR4_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I257/B1/ZN
+    load_celltype: OAI21_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_79
+    driver: I261/CK/Q
+    driver_celltype: DFF_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I262/A3/ZN
+    load_celltype: NAND4_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_80
+    driver: I266/A3/ZN
+    driver_celltype: NOR4_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I267/A2/ZN
+    load_celltype: NAND4_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_81
+    driver: I269/A/ZN
+    driver_celltype: INV_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I270/A1/ZN
+    load_celltype: AND2_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_82
+    driver: I274/C1/ZN
+    driver_celltype: AOI211_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I275/EN/ZN
+    load_celltype: TINV_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_83
+    driver: I277/E/GCK
+    driver_celltype: CLKGATE_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I278/A1/ZN
+    load_celltype: NAND4_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_84
+    driver: I279/A2/ZN
+    driver_celltype: NOR3_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I280/A2/ZN
+    load_celltype: NOR3_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_85
+    driver: I281/A1/ZN
+    driver_celltype: NOR2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I282/A/Z
+    load_celltype: BUF_X16
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_86
+    driver: I284/B/ZN
+    driver_celltype: AOI211_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I285/A2/ZN
+    load_celltype: NOR2_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_87
+    driver: I288/A2/ZN
+    driver_celltype: OR4_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I289/A1/ZN
+    load_celltype: NAND3_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_88
+    driver: I293/A1/ZN
+    driver_celltype: NOR3_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I294/G/Q
+    load_celltype: DLH_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_89
+    driver: I297/A/Z
+    driver_celltype: BUF_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I298/A/ZN
+    load_celltype: INV_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_90
+    driver: I301/EN/ZN
+    driver_celltype: TINV_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I302/A1/ZN
+    load_celltype: NOR2_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_91
+    driver: I305/B2/ZN
+    driver_celltype: AOI221_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I306/A/ZN
+    load_celltype: AOI211_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_92
+    driver: I307/D/Q
+    driver_celltype: DLH_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I308/A1/ZN
+    load_celltype: NOR3_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_93
+    driver: I312/A2/ZN
+    driver_celltype: AND2_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I313/B2/ZN
+    load_celltype: AOI221_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_94
+    driver: I314/A2/ZN
+    driver_celltype: NAND2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I315/C1/ZN
+    load_celltype: OAI211_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_95
+    driver: I319/A/Z
+    driver_celltype: BUF_X8
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I320/A/Z
+    load_celltype: BUF_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_96
+    driver: I323/B/Z
+    driver_celltype: MUX2_X1
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I324/GN/Q
+    load_celltype: DLL_X2
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_97
+    driver: I326/A/ZN
+    driver_celltype: XNOR2_X2
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I327/D/Q
+    load_celltype: DLH_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_98
+    driver: I329/A/Z
+    driver_celltype: BUF_X16
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I330/A4/ZN
+    load_celltype: OR4_X1
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0
+  - name: net_99
+    driver: I331/A/ZN
+    driver_celltype: AOI221_X4
+    voltage_source: vs1
+    driver_interconnect: 1.1 100 1.1
+    load: I332/A2/ZN
+    load_celltype: OR2_X4
+    load_interconnect: 100 0 0
+    delay: 0
+    slew: 0

@@ -1,5 +1,7 @@
 // Liberty reader routines
 
+
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -130,6 +132,20 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                 // add pin to cell
                 dctk::CellPin* pin = new dctk::CellPin(pin_group_name);
                 cell->add_pin(pin_group_name, pin);
+
+		// look for direction attribute
+		si2drAttrsIdT pin_attrs = si2drGroupGetAttrs(pin_group, &err);
+		si2drAttrIdT pin_attr;
+		while( !si2drObjectIsNull((pin_attr=si2drIterNextAttr(pin_attrs, &err)), &err)) {
+		    std::string pin_attr_name = si2drAttrGetName(pin_attr, &err);
+
+		    // look for direction
+		    if (pin_attr_name == "direction") {
+			std::string direction_str = si2drSimpleAttrGetStringValue(pin_attr, &err);
+			pin->set_direction(direction_str);
+		    }
+		}			
+		si2drIterQuit(pin_attrs, &err);
 
                 // get the arcs attached to the pin
                 si2drGroupsIdT arc_groups = si2drGroupGetGroups(pin_group, &err);
@@ -322,7 +338,7 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
     si2drIterQuit(library_groups, &err);
 
     // dump the cell library that we just created
-    cell_lib->dump();
+    // cell_lib->dump();
 
     //
     // Print stats

@@ -1,0 +1,10 @@
+# ignore all object files from Liberty parser
+src-liberty_parse-2.6/*.o
+src-liberty_parse-2.6/*.lo
+src-liberty_parse-2.6/.deps/*
+src-liberty_parse-2.6/.libs/*
+src-liberty_parse-2.6/liblibparse.a
+src-liberty_parse-2.6/libsi2dr_liberty.la
+src-liberty_parse-2.6/liberty_parse
+src-liberty_parse-2.6/syntax_parse
+build/*

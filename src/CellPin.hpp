@@ -19,6 +19,14 @@ public:
         return _name;
     }
 
+    void set_direction(std::string d) {
+	_direction = d;
+    }
+
+    const std::string& get_direction() {
+	return _direction;
+    }
+
     void add_arc(CellArc* arc);
 
     void dump();
@@ -28,6 +36,7 @@ private:
 
     friend class Cell;
     std::string _name;
+    std::string _direction;
     std::vector<CellArc*> _arcs;
 
 };

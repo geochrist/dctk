@@ -15,6 +15,13 @@ public:
 
     void add_pin(const std::string&, dctk::CellPin*);
     bool fixup_pins_in_arcs();
+    std::string& get_name() {
+	return _name;
+    };
+
+    dctk::CellPin* get_output_pin();
+    dctk::CellPin* get_random_input_pin();
+
     void dump();
 
 
