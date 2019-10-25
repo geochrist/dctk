@@ -14,12 +14,14 @@ namespace dctk {
 
 Circuit::Circuit(const std::string& s) {
     _name = s;
-    _delay = 0.0;
-    _slew = 0.0;
+    _spice_delay = 0.0;
+    _spice_slew = 0.0;
+    _ccs_delay = 0.0;
+    _ccs_slew = 0.0;
 }
 
-Circuit& Circuit::set_input_voltage_source(const std::string& s) {
-    this->_input_voltage_source = s;
+Circuit& Circuit::set_input_waveform(const std::string& s) {
+    this->_input_waveform = s;
     return *this;
 }
 
@@ -74,7 +76,7 @@ Circuit& Circuit::set_load_interconnect(const std::string& s) {
 
 void Circuit::dump() {
     std::cout << "Name = " << this->_name << std::endl;
-    std::cout << "Voltage Source = " << this->_input_voltage_source << std::endl;
+    std::cout << "Input Waveform = " << this->_input_waveform << std::endl;
     std::cout << "Driver = " << this->_driver << std::endl;
     std::cout << "Driver Interconnect = " << this->_driver_interconnect.get_cnear()
 	      << " " << this->_driver_interconnect.get_res()
@@ -85,8 +87,10 @@ void Circuit::dump() {
 	      << " " << this->_load_interconnect.get_res()
 	      << " " << this->_load_interconnect.get_cfar()
 	      << std::endl;
-    std::cout << "delay = " << this->_delay << std::endl;
-    std::cout << "slew = " << this->_slew << std::endl;
+    std::cout << "spice delay = " << this->_spice_delay << std::endl;
+    std::cout << "spice slew = " << this->_spice_slew << std::endl;
+    std::cout << "ccs delay = " << this->_ccs_delay << std::endl;
+    std::cout << "ccs slew = " << this->_ccs_slew << std::endl;
     std::cout << "----------" << std::endl;
 }
 
@@ -100,7 +104,7 @@ void Circuit::gen_yaml(YAML::Emitter& emitter) {
 
     emitter << YAML::Key << "driver_celltype" << YAML::Value << this->_driver_celltype;
 
-    emitter << YAML::Key << "voltage_source" << YAML::Value << this->_input_voltage_source;
+    emitter << YAML::Key << "input_waveform" << YAML::Value << this->_input_waveform;
 
     // build string for driver PI model
     std::stringstream ss1;
@@ -121,8 +125,10 @@ void Circuit::gen_yaml(YAML::Emitter& emitter) {
 
     emitter << YAML::Key << "load_interconnect" << YAML::Value << ss2.str();
 
-    emitter << YAML::Key << "delay" << YAML::Value << this->_delay;
-    emitter << YAML::Key << "slew" << YAML::Value << this->_slew;
+    emitter << YAML::Key << "spice_delay" << YAML::Value << this->_spice_delay;
+    emitter << YAML::Key << "spice_slew" << YAML::Value << this->_spice_slew;
+    emitter << YAML::Key << "ccs_delay" << YAML::Value << this->_ccs_delay;
+    emitter << YAML::Key << "ccs_slew" << YAML::Value << this->_ccs_slew;
     
     emitter << YAML::EndMap;
 

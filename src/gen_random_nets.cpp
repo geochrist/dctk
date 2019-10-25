@@ -639,7 +639,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 	// TBD: need to find input pin, but live with input pin named "a"
 	dctk::Circuit* c = new dctk::Circuit(net_name);
 
-	c->set_input_voltage_source("vs1");
+	c->set_input_waveform("ramp 50");
 
 	// driver
 	c->set_driver(driver_input_output_str);

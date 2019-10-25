@@ -47,8 +47,8 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
 
         dctk::Circuit* cir = new dctk::Circuit(name);
 
-        const std::string& str_vs=circuit["voltage_source"].as<std::string>();
-        cir->set_input_voltage_source(str_vs);
+        const std::string& str_vs=circuit["input_waveform"].as<std::string>();
+        cir->set_input_waveform(str_vs);
 
         const std::string& str_driver=circuit["driver"].as<std::string>();
         cir->set_driver(str_driver);
@@ -61,6 +61,18 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
 
         const std::string& str_load_interconnect=circuit["load_interconnect"].as<std::string>();
         cir->set_load_interconnect(str_load_interconnect);
+
+	const std::string& str_spice_delay=circuit["spice_delay"].as<std::string>();
+        cir->set_spice_delay(atof(str_spice_delay.c_str()));
+
+	const std::string& str_spice_slew=circuit["spice_slew"].as<std::string>();
+        cir->set_spice_slew(atof(str_spice_slew.c_str()));
+
+	const std::string& str_ccs_delay=circuit["ccs_delay"].as<std::string>();
+        cir->set_ccs_delay(atof(str_ccs_delay.c_str()));
+
+	const std::string& str_ccs_slew=circuit["ccs_slew"].as<std::string>();
+        cir->set_ccs_slew(atof(str_ccs_slew.c_str()));
 
         circuitMgr->push_back(cir);
     }

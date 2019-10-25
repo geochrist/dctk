@@ -12,7 +12,7 @@ class Circuit {
 public:
 
     Circuit(const std::string&);
-    Circuit& set_input_voltage_source(const std::string&);
+    Circuit& set_input_waveform(const std::string&);
 
     // driver info
     Circuit& set_driver(const std::string&); // instance name
@@ -27,10 +27,15 @@ public:
     void dump();
 
     // return values
-    void set_slew(float f) { _slew = f; }
-    void set_delay(float f) { _delay = f; }
-    float get_slew(float f) { return _slew; }
-    float get_delay(float f) { return _delay; }
+    void set_spice_slew(float f) { _spice_slew = f; }
+    void set_spice_delay(float f) { _spice_delay = f; }
+    float get_spice_slew(float f) { return _spice_slew; }
+    float get_spice_delay(float f) { return _spice_delay; }
+
+    void set_ccs_slew(float f) { _ccs_slew = f; }
+    void set_ccs_delay(float f) { _ccs_delay = f; }
+    float get_ccs_slew(float f) { return _ccs_slew; }
+    float get_ccs_delay(float f) { return _ccs_delay; }
 
     void gen_yaml(YAML::Emitter& e);
 
@@ -38,7 +43,7 @@ public:
 private:
 
     std::string _name;
-    std::string _input_voltage_source;
+    std::string _input_waveform;
     std::string _driver;
     std::string _driver_celltype;
     PiModel _driver_interconnect;
@@ -47,8 +52,10 @@ private:
     PiModel _load_interconnect;
 
     // return values
-    float _delay;
-    float _slew;
+    float _spice_delay;
+    float _spice_slew;
+    float _ccs_delay;
+    float _ccs_slew;
 
 
 };
