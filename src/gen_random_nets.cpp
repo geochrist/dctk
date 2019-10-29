@@ -419,7 +419,7 @@ void RandomRCNet::dump_spef_dnet( std::ofstream & ofs, double res_scale, double 
                     dev_it !=  all_rc_devices_.end(); ++dev_it ){
         const RCDevice & dev = *dev_it;
         if( dev.dev_typ_ == 3 ){
-            ofs << "*" << dev.dev_index_ << " " << dev.dev_n1_ << " " << dev.dev_val_*cap_scale << std::endl;
+            ofs << dev.dev_index_ << " " << dev.dev_n1_ << " " << dev.dev_val_*cap_scale << std::endl;
         }
     }
 
@@ -428,7 +428,7 @@ void RandomRCNet::dump_spef_dnet( std::ofstream & ofs, double res_scale, double 
                     dev_it !=  all_rc_devices_.end(); ++dev_it ){
         const RCDevice & dev = *dev_it;
         if( dev.dev_typ_ == 1 || dev.dev_typ_ == 2 ){
-            ofs << "*" << dev.dev_index_ << " " << dev.dev_n1_ 
+            ofs << dev.dev_index_ << " " << dev.dev_n1_ 
 		    << " " << dev.dev_n2_ << " " << dev.dev_val_*res_scale << std::endl;
         } 
     }
@@ -440,12 +440,12 @@ void RandomRCNet::dump_spef_dnet( std::ofstream & ofs, double res_scale, double 
 
 bool RCNetsData::write_spef_header( std::ofstream & ofs, std::string & design_name ) const
 {
-	ofs << "*SPEF 1.0" << std::endl;
-	ofs << "*Design " << design_name << std::endl;
-        ofs << "*PROGRAM RandomNets" << std::endl;
-        ofs << "*T_UNIT 1n" << std::endl;
-	ofs << "*C_UNIT 1f" << std::endl;
-	ofs << "*R_UNIT 1" << std::endl;
+	ofs << "*SPEF \"1.0\"" << std::endl;
+	ofs << "*DESIGN \"" << design_name << "\"" << std::endl;
+        ofs << "*PROGRAM \"RandomNets\"" << std::endl;
+        ofs << "*T_UNIT 1 NS" << std::endl;
+	ofs << "*C_UNIT 1 FF" << std::endl;
+	ofs << "*R_UNIT 1 OHM" << std::endl;
 	ofs << std::endl;
 
 	return true;

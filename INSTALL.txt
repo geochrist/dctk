@@ -4,16 +4,31 @@ Installation Instructions
 Overview
 --------
 
-1.  Install yaml-cpp in a directory parallel to this one.
+1.  Install Parser-SPEF in a directory parallel to this one.
 
-2.  Build src-liberty_parse-2.6.
+2.  Install yaml-cpp in a directory parallel to this one.
 
-3.  Compile dctk.
+3.  Build src-liberty_parse-2.6.
+
+4.  Compile dctk.
 
 Details
 -------
 
 $DIR = the directory of dctk download.
+
+Parser-SPEF:
+
+  Download Parser-SPEF in a directory parallel this one:
+
+    cd $DIR/..
+
+    git clone https://github.com/OpenTimer/Parser-SPEF.git
+
+  The sub-directory Parser-SPEF will appear.
+
+  No compilation is necessary -- all files are header files to be
+  included by the calling code.
 
 yaml-cpp:
 

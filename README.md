@@ -16,17 +16,15 @@ src-dut/delay_calculator.cpp and its call in src/delay_calc_tool.cpp
 to see what the API is expected to look like.
 
 test/ shows how random circuits will be generated, for testing
-purposes. The source code is in src/. Contestants can use this code to
-generate their own testcases.
+purposes. The source code gen_random_nets.cpp is in src.  Contestants
+can use this code to generate their own testcases.
 
 
 ** Note that this code is still under development and APIs may change,
    but it shouldn't be too significant at this point. **
 
-
 TODO
 
-* add a spef reader to delay_calc_tool
 * add a SPICE deck writer to delay_calc_tool
 * add call to spice simulator into delay_calc_tool
 * add comparator to delay_calc_tool

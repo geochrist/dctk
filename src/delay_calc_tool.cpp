@@ -4,8 +4,11 @@
 #include <string.h>
 #include <fstream>
 #include <iostream>
+#include <optional>
+//#include <algorithm>
 
 #include <yaml-cpp/yaml.h>
+#include <parser-spef.hpp>
 
 // dctk definitions
 #include "dctk.hpp"
@@ -55,6 +58,11 @@ main(int argc, char **argv)
     dctk::CellLib* cell_lib = NULL;
     int read_lib_retval = 0;
 
+    // SPEF
+    bool read_spef_file = false;
+    char* spef_file = NULL;
+    spef::Spef* spef = NULL;
+
     // Test Circuits
     bool read_test_circuits_file = false;
     char* test_circuits_file = NULL;
@@ -68,11 +76,12 @@ main(int argc, char **argv)
     int option_index = 0;
     static struct option long_options[] = {
 					   {"liberty", required_argument, 0, 'l'},
+					   {"spef", required_argument, 0, 's'},
 					   {"circuits", required_argument, 0, 'c'},
 					   {0,         0,                 0,  0 }
     };
 
-    while  ((c = getopt_long(argc, argv, "l:c:", long_options, &option_index))) {
+    while  ((c = getopt_long(argc, argv, "l:s:c:", long_options, &option_index))) {
 
         if (c == -1)
             break;
@@ -87,6 +96,11 @@ main(int argc, char **argv)
 	    read_test_circuits_file = true;
 	    test_circuits_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
 	    strcpy(test_circuits_file, optarg);
+            break;
+        case 's':
+	    read_spef_file = true;
+	    spef_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+	    strcpy(spef_file, optarg);
             break;
         case '?':
             break;
@@ -117,6 +131,19 @@ main(int argc, char **argv)
 	exit(1);
     }
 
+    // Read Spef
+    if (read_spef_file) {
+	
+    	printf("Reading SPEF file %s\n", spef_file);
+	spef = new spef::Spef();
+	if (not spef->read(spef_file)) {
+	    std::cerr << "Error during SPEF processing" << *spef->error << std::endl;
+	    exit(1);
+   	}
+    } else {
+    	printf("Error:  SPEF option required!");
+	exit(1);
+    }
 
     // Read Test Circuits
     if (read_test_circuits_file) {
@@ -134,7 +161,7 @@ main(int argc, char **argv)
 
 
     // Compute delays
-    compute_delay_retval = compute_delays(cell_lib, &circuitMgr);
+    compute_delay_retval = compute_delays(cell_lib, &circuitMgr, spef);
     if (compute_delay_retval != 0) {
 	printf("Error %d during delay calculation.  Exiting.", compute_delay_retval);
 	exit(1);
@@ -166,6 +193,10 @@ main(int argc, char **argv)
     // clean up
     if (liberty_file) {
 	free(liberty_file);
+    }
+
+    if (spef_file) {
+	free(spef_file);
     }
 
     if (cell_lib) {

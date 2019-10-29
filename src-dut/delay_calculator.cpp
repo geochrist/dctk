@@ -3,8 +3,9 @@
 #include "dctk.hpp"
 #include "CellLib.hpp"
 #include "Circuit.hpp"
+#include <parser-spef.hpp>
 
-int compute_delays(dctk::CellLib* cell_lib, dctk::CircuitPtrVec* circuitMgr) {
+int compute_delays(dctk::CellLib* cell_lib, dctk::CircuitPtrVec* circuitMgr, spef::Spef* spef) {
 
     std::cout << "Computing Delays for " << circuitMgr->size()
 	      << " circuits." << std::endl;

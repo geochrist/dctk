@@ -10,7 +10,7 @@ include(CTest)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # CXX target properties
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(USE_WERROR ON)
@@ -27,6 +27,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(../yaml-cpp/include)
 include_directories(src-liberty_parse-2.6)
 include_directories(src)
+include_directories(../Parser-SPEF/parser-spef)
 
 # -----------------------------------------------------------------------------
 # Example program 
@@ -58,8 +59,4 @@ target_link_libraries(delay_calc_tool dctk yaml-cpp libparse dut)
 # Random Net Generator
 add_executable(gen_random_nets src/gen_random_nets.cpp)
 target_link_libraries(gen_random_nets dctk libparse yaml-cpp)
-
-
-
-
 
