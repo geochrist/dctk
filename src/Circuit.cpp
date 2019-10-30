@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <iterator>
 #include <src/Circuit.hpp>
 
 namespace dctk {
