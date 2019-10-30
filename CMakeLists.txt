@@ -54,7 +54,14 @@ add_library(dut src-dut/delay_calculator.cpp)
 
 # benchmarking executable
 add_executable(delay_calc_tool src/delay_calc_tool.cpp)
-target_link_libraries(delay_calc_tool dctk yaml-cpp libparse dut)
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  target_link_libraries(delay_calc_tool dctk yaml-cpp libparse dut)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  target_link_libraries(delay_calc_tool dctk yaml-cpp libparse dut stdc++fs)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 # Random Net Generator
 add_executable(gen_random_nets src/gen_random_nets.cpp)
