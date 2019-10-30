@@ -201,7 +201,41 @@ int LayerRCData::get_wire_segment_vrcdata( int parent_layer_index, int segment_l
 }
 
 
-bool RandomRCNet:: populate_net_data( const std::string & net_name,
+bool RandomRCNet::populate_pimodel_data( const std::string & net_name,
+                        const std::string & drv_node, const std::string & rcvr_node,
+                        double total_length, int max_layer_index, const LayerRCData & layer_data )
+{
+    if( max_layer_index < 0 or max_layer_index >= layer_data.get_num_layers() ){
+	return false;
+    }
+
+    net_index_ = net_name;
+    pi_model_ = true;
+    all_rc_devices_.clear();
+    all_node_types_.clear();
+
+    double via_val = layer_data.get_via_stack_res( -1, max_layer_index );
+    double shape_res = layer_data.get_shape_layer_res(max_layer_index, total_length);
+    shape_res = shape_res + 2.0 * via_val;
+    double shape_cap = layer_data.get_shape_layer_cap(max_layer_index, total_length);
+  
+    std::string gnd_node = "gnd";
+    RCDevice near_cap( 3, 1, drv_node, gnd_node, shape_cap*0.5 );
+    all_rc_devices_.push_back( near_cap );
+
+    RCDevice shp_res( 2, 2, drv_node, rcvr_node, shape_res);
+    all_rc_devices_.push_back( shp_res );
+    RCDevice far_cap( 3, 2, rcvr_node, gnd_node, shape_cap*0.5 );
+    all_rc_devices_.push_back( far_cap );
+
+    all_node_types_.insert( std::map<std::string, int>::value_type( gnd_node, 0 ) );  // gnd
+    all_node_types_.insert( std::map<std::string, int>::value_type( drv_node, 1 ) );  // drv
+    all_node_types_.insert( std::map<std::string, int>::value_type( rcvr_node, 2 ) );  // rcvr
+
+    return true;
+}
+
+bool RandomRCNet::populate_net_data( const std::string & net_name,
                         const std::string & drv_node, const std::vector<std::string > & receivers,
                         double total_length, int max_layer_index, const LayerRCData & layer_data )
 {
@@ -210,6 +244,7 @@ bool RandomRCNet:: populate_net_data( const std::string & net_name,
     }
 
     net_index_ = net_name;
+    pi_model_ = false;
     all_rc_devices_.clear();
     all_node_types_.clear();
     if( receivers.size() == 1 ){
@@ -471,14 +506,15 @@ bool RCNetsData::create_random_net( const std::string& net_name,
 				    const std::string& driver_celltype,
 				    const std::vector<std::string> & receivers,
 				    const std::vector<std::string> & receivers_celltypes,
-				    double total_length, int max_layer_num )
+				    double total_length, int max_layer_num,
+				    bool pimodel_net )
 {
    if( have_net( net_name ) ){
 	   std::cout << "Error: net " << net_name << "is already present" << std::endl;
 	   return false;
    }
 
-   RandomRCNet *new_net = new RandomRCNet( net_name, drv_node, receivers, total_length, max_layer_num, layer_data_);
+   RandomRCNet *new_net = new RandomRCNet( net_name, drv_node, receivers, total_length, max_layer_num, layer_data_, pimodel_net);
    all_nets_data_.insert( std::map<std::string, RandomRCNet& >::value_type( net_name, *new_net ) );
 
    return true;
@@ -494,6 +530,7 @@ bool RCNetsData::have_net( const std::string & net_name) const
 		return false;
 	}
 }
+
 
 bool RCNetsData::add_new_port( const std::string & port_name, const char port_type )
 {
@@ -555,7 +592,7 @@ bool RCNetsData::dump_spice( std::ofstream & ofs ) const
  * ****************************************************************************************/
 
 bool create_random_nets( int num_nets, int max_num_receivers, double max_len, int max_layer_index,
-			 RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr )
+			 RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr, bool pimodels )
 {
     int max_len_int = int( ceil(max_len) );
 	   
@@ -595,6 +632,10 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 	//
 
         int num_receivers = rand() % max_num_receivers + 1;
+	if (pimodels) {
+	    num_receivers = 1;
+	}
+	
 	std::vector<std::string> receivers;
 	std::vector<std::string> receivers_celltypes;
 	std::string receiver_input_output_str;
@@ -632,11 +673,11 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 
 	cout << "Creating random net with " << num_receivers << " rcvrs " << net_len << " length " 
 		<< net_max_lyr << " max layer" << std::endl;
+
 	all_nets.create_random_net( net_name, driver_node, driver_celltype, receivers,
-				    receivers_celltypes, net_len, net_max_lyr );
+				    receivers_celltypes, net_len, net_max_lyr, pimodels );
 
 	// add to a circuit library
-	// TBD: need to find input pin, but live with input pin named "a"
 	dctk::Circuit* c = new dctk::Circuit(net_name);
 
 	c->set_input_waveform("ramp 50");
@@ -646,14 +687,14 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 	c->set_driver_celltype(driver_celltype);
 
 	// This is were we need the PI Model reduction code!
-	c->set_driver_interconnect("1.1 100 1.1");
+	c->set_driver_interconnect("0 0 0");
 
 	// load (first receiver)
 	c->set_load(receiver_input_output_str);
 	c->set_load_celltype(receivers_celltypes[0]);
 
 	// Start with a fixed load
-	c->set_load_interconnect("100 0 0");
+	c->set_load_interconnect("0 0 0");
 	
 	// add to library
 	cktmgr.push_back(c);
@@ -714,6 +755,9 @@ int main( int argc, char * const argv[] )
     std::string dataset_name;
     int n = 0;
 
+    // pi models
+    bool pimodels = false;
+
     // get options
     int c;
     int option_index = 0;
@@ -721,10 +765,11 @@ int main( int argc, char * const argv[] )
 					   {"liberty", required_argument, 0, 'l'},
 					   {"dataset", required_argument, 0, 'd'},
 					   {"number", required_argument, 0, 'n'},
+					   {"pimodels", optional_argument, 0, 'p'},
 					   {0,         0,                 0,  0 }
     };
 
-    while  ((c = getopt_long(argc, argv, "l:d:n:", long_options, &option_index))) {
+    while  ((c = getopt_long(argc, argv, "l:d:n:p", long_options, &option_index))) {
 
         if (c == -1)
             break;
@@ -744,6 +789,11 @@ int main( int argc, char * const argv[] )
         case 'n':
 	    // number of circuits
 	    n = atoi(optarg);
+            break;
+
+        case 'p':
+	    // pi models only
+	    pimodels = true;
             break;
 
         case '?':
@@ -774,7 +824,7 @@ int main( int argc, char * const argv[] )
     //
     // Create the set of nets
     // 
-    create_random_nets( n, 4, 2000.0, 14, all_nets, cell_lib, circuitMgr );
+    create_random_nets( n, 4, 2000.0, 14, all_nets, cell_lib, circuitMgr, pimodels );
 
     //
     // write out SPEF file

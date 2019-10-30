@@ -6,13 +6,17 @@
 # dataset name
 set dataset = tau2020v1
 
+# enable pi models?
+set pimodels = ""
+set pimodels = "--pimodels"
 
 # File containing Liberty models in CCS form
 set library = "NangateOpenCellLibrary_typical_ccs.adjusted.lib"
 
 # Generate random dataset
 # output will be $dataset.circuits.yaml and $dataset.spef
-../build/gen_random_nets --liberty $library --dataset $dataset -n 100
+../build/gen_random_nets --liberty $library --dataset $dataset -n 100 $pimodels
 
 # Read results into delay calculation tool
 ../build/delay_calc_tool --circuits $dataset.circuits.yaml --liberty $library --spef $dataset.spef
+

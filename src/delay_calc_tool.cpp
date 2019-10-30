@@ -185,9 +185,9 @@ main(int argc, char **argv)
     emitter << YAML::EndMap;
 
     // dump to debug file
-    std::ofstream yaml_fout("debug.circuits.yaml");
-    yaml_fout << emitter.c_str() << std::endl;
-    yaml_fout.close();
+    //std::ofstream yaml_fout("debug.circuits.yaml");
+    //yaml_fout << emitter.c_str() << std::endl;
+    //yaml_fout.close();
 
 
     // clean up

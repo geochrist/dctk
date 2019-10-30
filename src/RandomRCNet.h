@@ -182,27 +182,34 @@ public:
 class RandomRCNet
 {
 public:
-	RandomRCNet() : net_index_(), all_rc_devices_() {}
-	RandomRCNet( const std::string & net_name, const std::string & drv_node, 
-			const std::vector<std::string > & receivers, 
-			double total_length, int max_layer_num, 
-			const LayerRCData & layer_data ) 
+    RandomRCNet() : net_index_(), all_rc_devices_(), pi_model_(true) {}
+    RandomRCNet( const std::string & net_name, const std::string & drv_node, 
+		 const std::vector<std::string > & receivers, 
+		 double total_length, int max_layer_num, 
+		 const LayerRCData & layer_data, bool pimodel_net = true ) 
 	{
 		net_index_ = net_name;
 		drv_node_ = drv_node;
+		pi_model_ = pimodel_net;
 		for( std::vector< std::string >::const_iterator rcv_it = receivers.begin();
 				rcv_it != receivers.end(); ++rcv_it){
 			std::string new_rcv = *rcv_it;
 			rcv_nodes_.push_back( new_rcv );
 		}
-		populate_net_data( net_name, drv_node, receivers, total_length, 
-				max_layer_num, layer_data );
+		if( pimodel_net == true && receivers.size() == 1 ){
+			populate_pimodel_data( net_name, drv_node, receivers[0], total_length, 
+					       max_layer_num, layer_data );
+		} else {
+		    populate_net_data( net_name, drv_node, receivers, total_length, 
+				       max_layer_num, layer_data );
+		}
 	}
 
 	RandomRCNet( const RandomRCNet & other )
 	{
 		net_index_ = other.net_index_;
 		drv_node_ = other.drv_node_;
+		pi_model_ = other.pi_model_;
 		for( std::vector<std::string>::const_iterator rcv_it = other.rcv_nodes_.begin();
 				rcv_it != other.rcv_nodes_.end(); ++rcv_it){
 			std::string rcv_node = *rcv_it;
@@ -222,6 +229,8 @@ public:
         {
 		net_index_ = other.net_index_;
                 drv_node_ = other.drv_node_;
+		pi_model_ = other.pi_model_;
+
                 for( std::vector<std::string>::const_iterator rcv_it = other.rcv_nodes_.begin();
                                 rcv_it != other.rcv_nodes_.end(); ++rcv_it){
                         std::string rcv_node = *rcv_it;
@@ -246,6 +255,12 @@ public:
 		all_node_types_.clear();
 	}
 
+
+	// method to create a pimodel net
+	bool populate_pimodel_data( const std::string & net_name, 
+			const std::string & drv_node, const std::string & rcvr_node,
+		       	double total_length, int max_layer_num, const LayerRCData & layer_data );
+
 	// method that creates the actual RC devices for this net
 	bool populate_net_data( const std::string & net_name, 
 			const std::string & drv_node, const std::vector<std::string > & receivers,
@@ -263,6 +278,7 @@ public:
 	std::map< std::string, int > all_node_types_;	// map node number to node type
 			// node 0 is always ground. The types can be 0 = ground
 			// 1 = driver, 2 = receiver, 3 = internal node
+        bool pi_model_;			// produce a pi model for the net (2 nodes: drv&rcvr, 1 R between them, 2 C's)
 };
 
 
@@ -293,11 +309,13 @@ public:
 				const std::string& driver_celltype,
 				const std::vector<std::string >& receivers,
 				const std::vector<std::string >& receivers_celltypes,
-				double total_length, int max_layer_num );
+				double total_length, int max_layer_num, bool pimodel_net );
 
 	bool add_new_port( const std::string & port_name, const char port_type );
 
 	bool have_net( const std::string & net_name) const;
+
+	RandomRCNet* get_net( const std::string & net_name) const;
 
 	// return a non-const reference to the data. The user must check if net exists first!
 	bool get_net_ref ( const std::string & net_name, RandomRCNet & net_data );
