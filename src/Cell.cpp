@@ -69,9 +69,9 @@ CellPin* Cell::get_output_pin() {
     std::map<std::string, dctk::CellPin*>::iterator pin_iter = _pinMap.begin();
 
     for ( ; pin_iter != _pinMap.end(); pin_iter++) {
-	if (pin_iter->second->get_direction() == "output") {
-	    return pin_iter->second;
-	}
+        if (pin_iter->second->get_direction() == "output") {
+            return pin_iter->second;
+        }
     }
 
     return NULL;
@@ -86,14 +86,14 @@ CellPin* Cell::get_random_input_pin() {
     std::vector<dctk::CellPin*> input_pins;
 
     for ( ; pin_iter != _pinMap.end(); pin_iter++) {
-	if (pin_iter->second->get_direction() == "input") {
-	    input_pins.push_back(pin_iter->second);
-	}
+        if (pin_iter->second->get_direction() == "input") {
+            input_pins.push_back(pin_iter->second);
+        }
     }
 
     int num_input_pins = input_pins.size();
     if (input_pins.size() == 0) {
-	return NULL;
+        return NULL;
     }
 
     int random_input_pin = rand() % num_input_pins;

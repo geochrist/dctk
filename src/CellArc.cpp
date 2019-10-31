@@ -43,7 +43,7 @@ CellArc::~CellArc() {
     liberty_destroy_value_data(_receiver_capacitance1_rise_table);
     liberty_destroy_value_data(_receiver_capacitance2_fall_table);
     liberty_destroy_value_data(_receiver_capacitance2_rise_table);
-    
+
     // destruct each of the CCS tables
     int len = _output_current_rise_tables.size();
     for(int i = 0; i < len; i++) {

@@ -19,9 +19,9 @@ public:
     void dump();
 
     Cell* get_random_cell() {
-	std::map<std::string, Cell*>::iterator item = _cellMap.begin();
-	std::advance( item, rand() % _cellMap.size() );
-	return item->second;
+        std::map<std::string, Cell*>::iterator item = _cellMap.begin();
+        std::advance( item, rand() % _cellMap.size() );
+        return item->second;
     }
 
 private:

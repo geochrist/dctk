@@ -20,11 +20,11 @@ public:
     }
 
     void set_direction(std::string d) {
-	_direction = d;
+        _direction = d;
     }
 
     const std::string& get_direction() {
-	return _direction;
+        return _direction;
     }
 
     void add_arc(CellArc* arc);

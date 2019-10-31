@@ -39,7 +39,6 @@
 //     name: circuitname1
 //     voltage_source:
 //     driver: <celltype/input/output>
-//     driver_interconnect: <c1> <r> <c2>
 //     load:  <celltype/input>
 //     load_interconnect: <c1> <r> <c2>
 //   -
@@ -75,32 +74,32 @@ main(int argc, char **argv)
     // get options
     int option_index = 0;
     static struct option long_options[] = {
-					   {"liberty", required_argument, 0, 'l'},
-					   {"spef", required_argument, 0, 's'},
-					   {"circuits", required_argument, 0, 'c'},
-					   {0,         0,                 0,  0 }
+        {"liberty", required_argument, 0, 'l'},
+        {"spef", required_argument, 0, 's'},
+        {"circuits", required_argument, 0, 'c'},
+        {0,         0,                 0,  0 }
     };
 
     while  ((c = getopt_long(argc, argv, "l:s:c:", long_options, &option_index))) {
 
         if (c == -1)
             break;
-	
+
         switch (c) {
         case 'l':
-	    read_liberty_file = true;
-	    liberty_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
-	    strcpy(liberty_file, optarg);
+            read_liberty_file = true;
+            liberty_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(liberty_file, optarg);
             break;
         case 'c':
-	    read_test_circuits_file = true;
-	    test_circuits_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
-	    strcpy(test_circuits_file, optarg);
+            read_test_circuits_file = true;
+            test_circuits_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(test_circuits_file, optarg);
             break;
         case 's':
-	    read_spef_file = true;
-	    spef_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
-	    strcpy(spef_file, optarg);
+            read_spef_file = true;
+            spef_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(spef_file, optarg);
             break;
         case '?':
             break;
@@ -119,52 +118,52 @@ main(int argc, char **argv)
 
     // Read Liberty
     if (read_liberty_file) {
-	
-	printf("Reading Liberty file %s\n", liberty_file);
-	read_lib_retval = read_liberty(liberty_file, cell_lib);
+
+        printf("Reading Liberty file %s\n", liberty_file);
+        read_lib_retval = read_liberty(liberty_file, cell_lib);
     } else {
-	printf("Error:  Liberty option required!");
-	exit(1);
+        printf("Error:  Liberty option required!");
+        exit(1);
     }
     if (read_lib_retval != 0) {
-	printf("Error %d during Liberty processing.  Exiting.", read_lib_retval);
-	exit(1);
+        printf("Error %d during Liberty processing.  Exiting.", read_lib_retval);
+        exit(1);
     }
 
     // Read Spef
     if (read_spef_file) {
-	
-    	printf("Reading SPEF file %s\n", spef_file);
-	spef = new spef::Spef();
-	if (not spef->read(spef_file)) {
-	    std::cerr << "Error during SPEF processing" << *spef->error << std::endl;
-	    exit(1);
-   	}
+
+        printf("Reading SPEF file %s\n", spef_file);
+        spef = new spef::Spef();
+        if (not spef->read(spef_file)) {
+            std::cerr << "Error during SPEF processing" << *spef->error << std::endl;
+            exit(1);
+        }
     } else {
-    	printf("Error:  SPEF option required!");
-	exit(1);
+        printf("Error:  SPEF option required!");
+        exit(1);
     }
 
     // Read Test Circuits
     if (read_test_circuits_file) {
-	
-	printf("Reading Test Circuits file %s\n", test_circuits_file);
-	read_circuit_retval = read_circuits(test_circuits_file, &circuitMgr);
+
+        printf("Reading Test Circuits file %s\n", test_circuits_file);
+        read_circuit_retval = read_circuits(test_circuits_file, &circuitMgr);
     } else {
-	printf("Error:  Test circuits file required!");
-	exit(1);
+        printf("Error:  Test circuits file required!");
+        exit(1);
     }
     if (read_circuit_retval != 0) {
-	printf("Error %d during Test Circuit processing.  Exiting.", read_circuit_retval);
-	exit(1);
+        printf("Error %d during Test Circuit processing.  Exiting.", read_circuit_retval);
+        exit(1);
     }
 
 
     // Compute delays
     compute_delay_retval = compute_delays(cell_lib, &circuitMgr, spef);
     if (compute_delay_retval != 0) {
-	printf("Error %d during delay calculation.  Exiting.", compute_delay_retval);
-	exit(1);
+        printf("Error %d during delay calculation.  Exiting.", compute_delay_retval);
+        exit(1);
     }
 
     // test code to see if values got captured
@@ -192,16 +191,16 @@ main(int argc, char **argv)
 
     // clean up
     if (liberty_file) {
-	free(liberty_file);
+        free(liberty_file);
     }
 
     if (spef_file) {
-	free(spef_file);
+        free(spef_file);
     }
 
     if (cell_lib) {
-	delete cell_lib;
+        delete cell_lib;
     }
-    
+
     exit(EXIT_SUCCESS);
 }

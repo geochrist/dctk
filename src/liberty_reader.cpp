@@ -57,8 +57,8 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
             printf("Passed\n\n");
         else {
             printf("Errors detected during Liberty sanity check\n\n");
-	    return(501);
-	}
+            return(501);
+        }
 
         printf("... Done. \nElapsed time= %ld seconds\n", endt-startt);
 
@@ -99,10 +99,10 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
             si2drIterQuit(cell_group_names, &err);
             //printf(" confirm: cell name = %s\n", cell_group_name);
 
-	    // if we are not looking at a "cell" group, skip
-	    if (strcmp(cell_group_type,"cell")) {
-		continue;
-	    }
+            // if we are not looking at a "cell" group, skip
+            if (strcmp(cell_group_type,"cell")) {
+                continue;
+            }
 
 
             // insert cell into library
@@ -133,19 +133,19 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                 dctk::CellPin* pin = new dctk::CellPin(pin_group_name);
                 cell->add_pin(pin_group_name, pin);
 
-		// look for direction attribute
-		si2drAttrsIdT pin_attrs = si2drGroupGetAttrs(pin_group, &err);
-		si2drAttrIdT pin_attr;
-		while( !si2drObjectIsNull((pin_attr=si2drIterNextAttr(pin_attrs, &err)), &err)) {
-		    std::string pin_attr_name = si2drAttrGetName(pin_attr, &err);
+                // look for direction attribute
+                si2drAttrsIdT pin_attrs = si2drGroupGetAttrs(pin_group, &err);
+                si2drAttrIdT pin_attr;
+                while( !si2drObjectIsNull((pin_attr=si2drIterNextAttr(pin_attrs, &err)), &err)) {
+                    std::string pin_attr_name = si2drAttrGetName(pin_attr, &err);
 
-		    // look for direction
-		    if (pin_attr_name == "direction") {
-			std::string direction_str = si2drSimpleAttrGetStringValue(pin_attr, &err);
-			pin->set_direction(direction_str);
-		    }
-		}			
-		si2drIterQuit(pin_attrs, &err);
+                    // look for direction
+                    if (pin_attr_name == "direction") {
+                        std::string direction_str = si2drSimpleAttrGetStringValue(pin_attr, &err);
+                        pin->set_direction(direction_str);
+                    }
+                }
+                si2drIterQuit(pin_attrs, &err);
 
                 // get the arcs attached to the pin
                 si2drGroupsIdT arc_groups = si2drGroupGetGroups(pin_group, &err);
@@ -246,20 +246,20 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                             arc->set_fall_transition_table(liberty_get_values_data(table_group));
                         }
 
-			// store Receiver Capacitance tables
-			if (!strcmp(table_group_type,"receiver_capacitance1_fall")) {
+                        // store Receiver Capacitance tables
+                        if (!strcmp(table_group_type,"receiver_capacitance1_fall")) {
                             //printf("storing receiver_capacitance1_fall\n");
                             arc->set_receiver_capacitance1_fall_table(liberty_get_values_data(table_group));
                         }
-			if (!strcmp(table_group_type,"receiver_capacitance1_rise")) {
+                        if (!strcmp(table_group_type,"receiver_capacitance1_rise")) {
                             //printf("storing receiver_capacitance1_rise\n");
                             arc->set_receiver_capacitance1_rise_table(liberty_get_values_data(table_group));
                         }
-			if (!strcmp(table_group_type,"receiver_capacitance2_fall")) {
+                        if (!strcmp(table_group_type,"receiver_capacitance2_fall")) {
                             //printf("storing receiver_capacitance2_fall\n");
                             arc->set_receiver_capacitance2_fall_table(liberty_get_values_data(table_group));
                         }
-			if (!strcmp(table_group_type,"receiver_capacitance2_rise")) {
+                        if (!strcmp(table_group_type,"receiver_capacitance2_rise")) {
                             //printf("storing receiver_capacitance2_rise\n");
                             arc->set_receiver_capacitance2_rise_table(liberty_get_values_data(table_group));
                         }
@@ -276,7 +276,7 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                                 si2drStringT vector_group_type = si2drGroupGetGroupType(vector_group, &err);
                                 //printf("     confirm: vector type = %s\n", vector_group_type);
 
-				
+
                                 // get template used for vector
                                 //si2drNamesIdT vector_group_names = si2drGroupGetNames(vector_group, &err);
                                 //si2drStringT vector_group_name = si2drIterNextName(vector_group_names, &err);
@@ -284,9 +284,9 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                                 //printf("     cnfirm: vector name = %s\n", vector_group_name);
 
                                 // store CCS table
-				if (!strcmp(vector_group_type,"vector")) {
-				    arc->add_current_rise_table(liberty_get_values_data(vector_group));
-				}
+                                if (!strcmp(vector_group_type,"vector")) {
+                                    arc->add_current_rise_table(liberty_get_values_data(vector_group));
+                                }
 
                             }
                             si2drIterQuit(vector_groups, &err);
@@ -306,14 +306,14 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
 
                                 // get template used for vector
                                 //si2drNamesIdT vector_group_names = si2drGroupGetNames(vector_group, &err);
-				// si2drStringT vector_group_name = si2drIterNextName(vector_group_names, &err);
+                                // si2drStringT vector_group_name = si2drIterNextName(vector_group_names, &err);
                                 //si2drIterQuit(vector_group_names, &err);
                                 //printf("     cnfirm: vector name = %s\n", vector_group_name);
 
                                 // store CCS table
-				if (!strcmp(vector_group_type,"vector")) {
-				    arc->add_current_fall_table(liberty_get_values_data(vector_group));
-				}
+                                if (!strcmp(vector_group_type,"vector")) {
+                                    arc->add_current_fall_table(liberty_get_values_data(vector_group));
+                                }
                             }
                             si2drIterQuit(vector_groups, &err);
                         }

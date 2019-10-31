@@ -3,10 +3,9 @@ Circuits:
     driver: I1/A/Z
     driver_celltype: CLKBUF_X3
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I2/SN/Q
     load_celltype: DFFS_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -15,10 +14,9 @@ Circuits:
     driver: I3/CK/Q
     driver_celltype: SDFFS_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I4/A2/ZN
     load_celltype: NAND2_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -27,10 +25,9 @@ Circuits:
     driver: I5/B1/ZN
     driver_celltype: AOI21_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I6/C2/ZN
     load_celltype: AOI221_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -39,10 +36,9 @@ Circuits:
     driver: I7/D/Q
     driver_celltype: DFF_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I8/A3/ZN
     load_celltype: NAND3_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -51,10 +47,9 @@ Circuits:
     driver: I9/A1/ZN
     driver_celltype: OAI22_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I10/CK/Q
     load_celltype: DFFS_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -63,10 +58,9 @@ Circuits:
     driver: I11/A/Z
     driver_celltype: MUX2_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I12/E/GCK
     load_celltype: CLKGATE_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -75,10 +69,9 @@ Circuits:
     driver: I13/A1/ZN
     driver_celltype: OAI22_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I14/A/Z
     load_celltype: BUF_X32
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -87,10 +80,9 @@ Circuits:
     driver: I15/CK/GCK
     driver_celltype: CLKGATE_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I16/CK/GCK
     load_celltype: CLKGATE_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -99,10 +91,9 @@ Circuits:
     driver: I17/C1/ZN
     driver_celltype: AOI211_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I18/B/ZN
     load_celltype: AOI211_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -111,10 +102,9 @@ Circuits:
     driver: I19/C1/ZN
     driver_celltype: AOI221_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I20/A2/ZN
     load_celltype: NAND4_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -123,10 +113,9 @@ Circuits:
     driver: I21/D/Q
     driver_celltype: DFFR_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I22/A2/ZN
     load_celltype: OR2_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -135,10 +124,9 @@ Circuits:
     driver: I23/A2/ZN
     driver_celltype: AOI22_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I24/A/Z
     load_celltype: CLKBUF_X3
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -147,10 +135,9 @@ Circuits:
     driver: I25/CK/Q
     driver_celltype: DFFR_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I26/SN/Q
     load_celltype: SDFFRS_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -159,10 +146,9 @@ Circuits:
     driver: I27/E/GCK
     driver_celltype: CLKGATETST_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I28/SN/Q
     load_celltype: SDFFS_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -171,10 +157,9 @@ Circuits:
     driver: I29/B2/ZN
     driver_celltype: OAI21_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I30/A/ZN
     load_celltype: INV_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -183,10 +168,9 @@ Circuits:
     driver: I31/B/ZN
     driver_celltype: AOI211_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I32/E/GCK
     load_celltype: CLKGATE_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -195,10 +179,9 @@ Circuits:
     driver: I33/SN/Q
     driver_celltype: SDFFS_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I34/EN/ZN
     load_celltype: TINV_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -207,10 +190,9 @@ Circuits:
     driver: I35/A2/ZN
     driver_celltype: OAI222_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I36/A3/ZN
     load_celltype: NOR4_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -219,10 +201,9 @@ Circuits:
     driver: I37/A2/ZN
     driver_celltype: AND2_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I38/A2/ZN
     load_celltype: NOR3_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -231,10 +212,9 @@ Circuits:
     driver: I39/A/Z
     driver_celltype: MUX2_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I40/A1/ZN
     load_celltype: AND3_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -243,10 +223,9 @@ Circuits:
     driver: I41/CK/Q
     driver_celltype: SDFFS_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I42/B2/ZN
     load_celltype: OAI22_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -255,10 +234,9 @@ Circuits:
     driver: I43/A/Z
     driver_celltype: BUF_X16
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I44/A2/ZN
     load_celltype: OR4_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -267,10 +245,9 @@ Circuits:
     driver: I45/C1/ZN
     driver_celltype: OAI221_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I46/RN/Q
     load_celltype: SDFFRS_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -279,10 +256,9 @@ Circuits:
     driver: I47/C1/ZN
     driver_celltype: OAI211_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I48/A3/ZN
     load_celltype: AND4_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -291,10 +267,9 @@ Circuits:
     driver: I49/RN/Q
     driver_celltype: DFFRS_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I50/A2/ZN
     load_celltype: NOR2_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -303,10 +278,9 @@ Circuits:
     driver: I51/A1/ZN
     driver_celltype: OR3_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I52/A2/ZN
     load_celltype: AND3_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -315,10 +289,9 @@ Circuits:
     driver: I53/A/ZN
     driver_celltype: INV_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I54/A/ZN
     load_celltype: INV_X16
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -327,10 +300,9 @@ Circuits:
     driver: I55/SE/GCK
     driver_celltype: CLKGATETST_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I56/A1/ZN
     load_celltype: AOI222_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -339,10 +311,9 @@ Circuits:
     driver: I57/B2/ZN
     driver_celltype: OAI221_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I58/A2/ZN
     load_celltype: NOR2_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -351,10 +322,9 @@ Circuits:
     driver: I59/D/Q
     driver_celltype: SDFF_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I60/G/Q
     load_celltype: DLH_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -363,10 +333,9 @@ Circuits:
     driver: I61/A1/ZN
     driver_celltype: AND3_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I62/B2/ZN
     load_celltype: OAI22_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -375,10 +344,9 @@ Circuits:
     driver: I63/B2/ZN
     driver_celltype: OAI33_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I64/A2/ZN
     load_celltype: OR4_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -387,10 +355,9 @@ Circuits:
     driver: I65/C2/ZN
     driver_celltype: AOI221_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I66/A2/ZN
     load_celltype: OR3_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -399,10 +366,9 @@ Circuits:
     driver: I67/B2/ZN
     driver_celltype: AOI21_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I68/A/ZN
     load_celltype: AOI21_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -411,10 +377,9 @@ Circuits:
     driver: I69/SI/Q
     driver_celltype: SDFFRS_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I70/CK/Q
     load_celltype: DFFR_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -423,10 +388,9 @@ Circuits:
     driver: I71/A1/ZN
     driver_celltype: NOR3_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I72/B2/ZN
     load_celltype: OAI22_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -435,10 +399,9 @@ Circuits:
     driver: I73/A4/ZN
     driver_celltype: OR4_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I74/C2/ZN
     load_celltype: OAI221_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -447,10 +410,9 @@ Circuits:
     driver: I75/A/ZN
     driver_celltype: AOI221_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I76/A1/ZN
     load_celltype: NOR4_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -459,10 +421,9 @@ Circuits:
     driver: I77/A1/ZN
     driver_celltype: OAI222_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I78/A/Z
     load_celltype: TBUF_X16
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -471,10 +432,9 @@ Circuits:
     driver: I79/D/Q
     driver_celltype: DFFRS_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I80/A/Z
     load_celltype: BUF_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -483,10 +443,9 @@ Circuits:
     driver: I81/D/Q
     driver_celltype: DFFRS_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I82/B2/ZN
     load_celltype: OAI22_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -495,10 +454,9 @@ Circuits:
     driver: I83/A2/ZN
     driver_celltype: AND2_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I84/A/ZN
     load_celltype: INV_X16
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -507,10 +465,9 @@ Circuits:
     driver: I85/CK/Q
     driver_celltype: SDFF_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I86/A/ZN
     load_celltype: INV_X16
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -519,10 +476,9 @@ Circuits:
     driver: I87/A/Z
     driver_celltype: CLKBUF_X3
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I88/C1/ZN
     load_celltype: OAI211_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -531,10 +487,9 @@ Circuits:
     driver: I89/A/Z
     driver_celltype: XOR2_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I90/B3/ZN
     load_celltype: OAI33_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -543,10 +498,9 @@ Circuits:
     driver: I91/A2/ZN
     driver_celltype: AOI222_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I92/A/Z
     load_celltype: BUF_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -555,10 +509,9 @@ Circuits:
     driver: I93/A/ZN
     driver_celltype: AOI211_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I94/C1/ZN
     load_celltype: AOI211_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -567,10 +520,9 @@ Circuits:
     driver: I95/A3/ZN
     driver_celltype: OR3_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I96/A/Z
     load_celltype: TBUF_X8
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -579,10 +531,9 @@ Circuits:
     driver: I97/D/Q
     driver_celltype: DFFR_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I98/A2/ZN
     load_celltype: OR4_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -591,10 +542,9 @@ Circuits:
     driver: I99/CK/GCK
     driver_celltype: CLKGATE_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I100/A/Z
     load_celltype: BUF_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -603,10 +553,9 @@ Circuits:
     driver: I101/CK/Q
     driver_celltype: DFFR_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I102/EN/Z
     load_celltype: TBUF_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -615,10 +564,9 @@ Circuits:
     driver: I103/A/ZN
     driver_celltype: INV_X32
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I104/CK/Q
     load_celltype: SDFF_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -627,10 +575,9 @@ Circuits:
     driver: I105/A3/ZN
     driver_celltype: AND4_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I106/CK/GCK
     load_celltype: CLKGATE_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -639,10 +586,9 @@ Circuits:
     driver: I107/A/CO
     driver_celltype: HA_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I108/CK/Q
     load_celltype: DFF_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -651,10 +597,9 @@ Circuits:
     driver: I109/GN/Q
     driver_celltype: DLL_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I110/B1/ZN
     load_celltype: OAI222_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -663,10 +608,9 @@ Circuits:
     driver: I111/B2/ZN
     driver_celltype: AOI22_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I112/A2/ZN
     load_celltype: AOI22_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -675,10 +619,9 @@ Circuits:
     driver: I113/A/Z
     driver_celltype: XOR2_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I114/C1/ZN
     load_celltype: OAI222_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -687,10 +630,9 @@ Circuits:
     driver: I115/D/Q
     driver_celltype: DFF_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I116/A/ZN
     load_celltype: AOI21_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -699,10 +641,9 @@ Circuits:
     driver: I117/A1/ZN
     driver_celltype: NOR3_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I118/B1/ZN
     load_celltype: OAI221_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -711,10 +652,9 @@ Circuits:
     driver: I119/A/Z
     driver_celltype: CLKBUF_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I120/C1/ZN
     load_celltype: AOI221_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -723,10 +663,9 @@ Circuits:
     driver: I121/A1/ZN
     driver_celltype: NAND2_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I122/C2/ZN
     load_celltype: OAI222_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -735,10 +674,9 @@ Circuits:
     driver: I123/CK/Q
     driver_celltype: SDFF_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I124/A3/ZN
     load_celltype: AND3_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -747,10 +685,9 @@ Circuits:
     driver: I125/I/ZN
     driver_celltype: TINV_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I126/D/Q
     load_celltype: TLAT_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -759,10 +696,9 @@ Circuits:
     driver: I127/B2/ZN
     driver_celltype: AOI222_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I128/D/Q
     load_celltype: DLH_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -771,10 +707,9 @@ Circuits:
     driver: I129/CK/GCK
     driver_celltype: CLKGATETST_X8
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I130/C2/ZN
     load_celltype: OAI222_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -783,10 +718,9 @@ Circuits:
     driver: I131/A1/ZN
     driver_celltype: NOR2_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I132/B/ZN
     load_celltype: XNOR2_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -795,10 +729,9 @@ Circuits:
     driver: I133/B1/ZN
     driver_celltype: OAI21_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I134/A3/ZN
     load_celltype: OAI33_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -807,10 +740,9 @@ Circuits:
     driver: I135/B/ZN
     driver_celltype: OAI211_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I136/B/ZN
     load_celltype: AOI211_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -819,10 +751,9 @@ Circuits:
     driver: I137/CI/CO
     driver_celltype: FA_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I138/CK/GCK
     load_celltype: CLKGATE_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -831,10 +762,9 @@ Circuits:
     driver: I139/A3/ZN
     driver_celltype: OR4_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I140/B2/ZN
     load_celltype: AOI21_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -843,10 +773,9 @@ Circuits:
     driver: I141/B2/ZN
     driver_celltype: AOI222_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I142/A/CO
     load_celltype: HA_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -855,10 +784,9 @@ Circuits:
     driver: I143/EN/Z
     driver_celltype: TBUF_X8
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I144/A3/ZN
     load_celltype: AND3_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -867,10 +795,9 @@ Circuits:
     driver: I145/A4/ZN
     driver_celltype: OR4_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I146/A1/ZN
     load_celltype: AND2_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -879,10 +806,9 @@ Circuits:
     driver: I147/A3/ZN
     driver_celltype: OR3_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I148/CK/GCK
     load_celltype: CLKGATETST_X8
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -891,10 +817,9 @@ Circuits:
     driver: I149/A4/ZN
     driver_celltype: NAND4_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I150/A/ZN
     load_celltype: AOI221_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -903,10 +828,9 @@ Circuits:
     driver: I151/EN/Z
     driver_celltype: TBUF_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I152/A4/ZN
     load_celltype: NOR4_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -915,10 +839,9 @@ Circuits:
     driver: I153/CK/Q
     driver_celltype: DFF_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I154/CK/Q
     load_celltype: DFF_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -927,10 +850,9 @@ Circuits:
     driver: I155/A/Z
     driver_celltype: CLKBUF_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I156/A2/ZN
     load_celltype: OR2_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -939,10 +861,9 @@ Circuits:
     driver: I157/A3/ZN
     driver_celltype: OAI33_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I158/SI/Q
     load_celltype: SDFFRS_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -951,10 +872,9 @@ Circuits:
     driver: I159/A/ZN
     driver_celltype: INV_X32
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I160/D/Q
     load_celltype: DLH_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -963,10 +883,9 @@ Circuits:
     driver: I161/A3/ZN
     driver_celltype: NOR3_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I162/A/Z
     load_celltype: TBUF_X16
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -975,10 +894,9 @@ Circuits:
     driver: I163/B/ZN
     driver_celltype: AOI211_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I164/A1/ZN
     load_celltype: OR4_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -987,10 +905,9 @@ Circuits:
     driver: I165/A2/ZN
     driver_celltype: NAND3_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I166/A1/ZN
     load_celltype: OR4_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -999,10 +916,9 @@ Circuits:
     driver: I167/B2/ZN
     driver_celltype: OAI22_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I168/A2/ZN
     load_celltype: OR4_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1011,10 +927,9 @@ Circuits:
     driver: I169/B/ZN
     driver_celltype: XNOR2_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I170/A3/ZN
     load_celltype: OR3_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1023,10 +938,9 @@ Circuits:
     driver: I171/C2/ZN
     driver_celltype: OAI221_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I172/A3/ZN
     load_celltype: NOR4_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1035,10 +949,9 @@ Circuits:
     driver: I173/A3/ZN
     driver_celltype: NOR3_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I174/A2/ZN
     load_celltype: NAND3_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1047,10 +960,9 @@ Circuits:
     driver: I175/SE/Q
     driver_celltype: SDFFS_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I176/B2/ZN
     load_celltype: AOI21_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1059,10 +971,9 @@ Circuits:
     driver: I177/C2/ZN
     driver_celltype: OAI211_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I178/B2/ZN
     load_celltype: OAI21_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1071,10 +982,9 @@ Circuits:
     driver: I179/B2/ZN
     driver_celltype: OAI21_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I180/B1/ZN
     load_celltype: AOI22_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1083,10 +993,9 @@ Circuits:
     driver: I181/A4/ZN
     driver_celltype: AND4_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I182/B2/ZN
     load_celltype: AOI21_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1095,10 +1004,9 @@ Circuits:
     driver: I183/B1/ZN
     driver_celltype: AOI21_X4
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I184/B/CO
     load_celltype: FA_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1107,10 +1015,9 @@ Circuits:
     driver: I185/A/ZN
     driver_celltype: INV_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I186/A2/ZN
     load_celltype: NAND2_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1119,10 +1026,9 @@ Circuits:
     driver: I187/A4/ZN
     driver_celltype: OR4_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I188/A1/ZN
     load_celltype: NAND4_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1131,10 +1037,9 @@ Circuits:
     driver: I189/D/Q
     driver_celltype: DLL_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I190/G/Q
     load_celltype: DLH_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1143,10 +1048,9 @@ Circuits:
     driver: I191/B2/ZN
     driver_celltype: AOI221_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I192/C1/ZN
     load_celltype: AOI222_X4
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1155,10 +1059,9 @@ Circuits:
     driver: I193/A/Z
     driver_celltype: MUX2_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I194/CK/GCK
     load_celltype: CLKGATE_X1
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1167,10 +1070,9 @@ Circuits:
     driver: I195/A/Z
     driver_celltype: CLKBUF_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I196/D/Q
     load_celltype: DFF_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1179,10 +1081,9 @@ Circuits:
     driver: I197/A/ZN
     driver_celltype: INV_X2
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I198/CK/GCK
     load_celltype: CLKGATETST_X8
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
@@ -1191,10 +1092,9 @@ Circuits:
     driver: I199/D/Q
     driver_celltype: DLH_X1
     input_waveform: ramp 50
-    driver_interconnect: 0 0 0
     load: I200/EN/Z
     load_celltype: TBUF_X2
-    load_interconnect: 0 0 0
+    load_interconnect: 100 0 0
     spice_delay: 0
     spice_slew: 0
     ccs_delay: 0
