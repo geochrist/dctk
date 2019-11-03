@@ -76,6 +76,7 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
         //si2drStringT library_group_type = si2drGroupGetGroupType(library_group, &err);
         //printf(" confirm: library type = %s\n", library_group_type);
 
+
         // get the name of the library
         si2drNamesIdT library_group_names = si2drGroupGetNames(library_group, &err);
         si2drStringT library_group_name = si2drIterNextName(library_group_names, &err);
@@ -85,6 +86,74 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
         // create cell library
         cell_lib = new dctk::CellLib(library_group_name);
 
+        // process library level attributes
+        si2drAttrsIdT library_attrs = si2drGroupGetAttrs(library_group, &err);
+        si2drAttrIdT library_attr;
+        while( !si2drObjectIsNull((library_attr=si2drIterNextAttr(library_attrs, &err)), &err)) {
+            std::string library_attr_name = si2drAttrGetName(library_attr, &err);
+
+            if (library_attr_name == "time_unit") {
+                cell_lib->set_time_unit(si2drSimpleAttrGetStringValue(library_attr, &err));
+            }
+            if (library_attr_name == "leakage_power_unit") {
+                cell_lib->set_leakage_power_unit(si2drSimpleAttrGetStringValue(library_attr, &err));
+            }
+            if (library_attr_name == "voltage_unit") {
+                cell_lib->set_voltage_unit(si2drSimpleAttrGetStringValue(library_attr, &err));
+            }
+            if (library_attr_name == "current_unit") {
+                cell_lib->set_current_unit(si2drSimpleAttrGetStringValue(library_attr, &err));
+            }
+            if (library_attr_name == "pulling_resistance_unit") {
+                cell_lib->set_pulling_resistance_unit(si2drSimpleAttrGetStringValue(library_attr, &err));
+            }
+            if (library_attr_name == "capacitive_load_unit") {
+                // we punt on this for simplicity
+                // It turns out capacitive_load_unit is a complex Attribute which would require more iteration to collect the values.
+                // Maybe I'll take care of that in the future.
+                // For Nangate library, it is "(1,ff)"
+                cell_lib->set_capacitive_load_unit("1fF");
+            }
+
+            if (library_attr_name == "nom_process") {
+                cell_lib->set_nom_process(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "nom_temperature") {
+                cell_lib->set_nom_temperature(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "nom_voltage") {
+                cell_lib->set_nom_voltage(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "slew_lower_threshold_pct_fall") {
+                cell_lib->set_slew_lower_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "slew_lower_threshold_pct_rise") {
+                cell_lib->set_slew_lower_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "slew_upper_threshold_pct_fall") {
+                cell_lib->set_slew_upper_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "slew_upper_threshold_pct_rise") {
+                cell_lib->set_slew_upper_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "slew_derate_from_library") {
+                cell_lib->set_slew_derate_from_library(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "input_threshold_pct_fall") {
+                cell_lib->set_input_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "input_threshold_pct_rise") {
+                cell_lib->set_input_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "output_threshold_pct_fall") {
+                cell_lib->set_output_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+            if (library_attr_name == "output_threshold_pct_rise") {
+                cell_lib->set_output_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+            }
+
+        }
+        si2drIterQuit(library_attrs, &err);
 
         // get the cells in the library
         si2drGroupsIdT cell_groups = si2drGroupGetGroups(library_group, &err);

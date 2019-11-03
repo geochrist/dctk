@@ -130,6 +130,8 @@ main(int argc, char **argv)
         exit(1);
     }
 
+    cell_lib->dump();
+    
     // Read Spef
     if (read_spef_file) {
 
@@ -169,7 +171,7 @@ main(int argc, char **argv)
     // test code to see if values got captured
 
     for (std::size_t i = 0; i < circuitMgr.size(); i++) {
-        circuitMgr[i]->dump();
+        // circuitMgr[i]->dump();
     }
 
     // create YAML buffer
