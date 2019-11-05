@@ -1,0 +1,16 @@
+ccs_test.py is a small python program to simulate a current source 
+driving an output RC net.
+
+The RC net is given in a simplistic format:
+
+isrc 1 0 time1 value1 time2 value2 time3 value3 ...
+res node1 node2 value
+cap node1 node2 value
+
+where isrc, res and cap are keywords, node1, node2, etc are all contiguous 
+integer numbers, 0 is ground, 1 is the driver output node
+The waveform at node 1 is returned and printed
+
+to invoke the program do:
+python ccs_test.py  <ckt_file> <integration_time_step>
+python ccs_test.py test_ckt1.ckt 0.1e-9
