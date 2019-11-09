@@ -1,7 +1,4 @@
 // Liberty reader routines
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -112,7 +109,32 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                 // It turns out capacitive_load_unit is a complex Attribute which would require more iteration to collect the values.
                 // Maybe I'll take care of that in the future.
                 // For Nangate library, it is "(1,ff)"
-                cell_lib->set_capacitive_load_unit("1fF");
+
+                si2drValuesIdT cap_values = si2drComplexAttrGetValues(library_attr, &err);
+                
+                // storage location for result
+                si2drValueTypeT type;
+                si2drInt32T int_val;
+                si2drFloat64T double_val;
+                si2drStringT string_val;
+                si2drBooleanT bool_val;
+                si2drExprT *expr;
+
+                si2drIterNextComplexValue(cap_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err); 
+                int unit_value = int_val;
+                // convert to string
+                char buf[50];
+                sprintf(buf, "%d", unit_value);
+                const std::string unit_value_string(buf);
+
+                si2drIterNextComplexValue(cap_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err);
+                std::string unit_name = string_val;
+                si2drIterQuit(cap_values, &err);
+
+                // build final string
+                std::string cap_load_unit = unit_value_string + unit_name;
+                cell_lib->set_capacitive_load_unit(cap_load_unit);
+
             }
 
             if (library_attr_name == "nom_process") {
