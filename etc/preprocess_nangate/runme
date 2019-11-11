@@ -1,0 +1,17 @@
+#!/bin/csh -f
+#
+# Script to modify Nangate Liberty models to work with
+# open-source Liberty Parser
+#
+set input = "NangateOpenCellLibrary_typical_ccs.lib"
+set output = "NangateOpenCellLibrary_typical_ccs.adjusted.lib"
+
+# fix Nangate Liberty to work with parser
+echo "Running:   ./preprocess_liberty.py --input $input --output $output"
+./preprocess_liberty.py --input $input --output $output
+
+# test parser
+echo " Running:  ./liberty_parse $output"
+liberty_parse $output
+
+
