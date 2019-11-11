@@ -23,37 +23,42 @@ public:
     Circuit& set_load_celltype(const std::string&);
     Circuit& set_load_interconnect(const std::string&);
 
+    // output methods
     void dump();
 
-    // return values
+    void write_spice_driver(std::fstream& fs);
+    void write_spice_deck(const std::string&);
+    
+    void gen_yaml(YAML::Emitter& e);
+
+    // SPICE delay and slews
     void set_spice_slew(float f) {
         _spice_slew = f;
     }
     void set_spice_delay(float f) {
         _spice_delay = f;
     }
-    float get_spice_slew(float f) {
+
+    float get_spice_slew() {
         return _spice_slew;
     }
-    float get_spice_delay(float f) {
+    float get_spice_delay() {
         return _spice_delay;
     }
 
+    // CCS delay and slews
     void set_ccs_slew(float f) {
         _ccs_slew = f;
     }
     void set_ccs_delay(float f) {
         _ccs_delay = f;
     }
-    float get_ccs_slew(float f) {
+    float get_ccs_slew() {
         return _ccs_slew;
     }
-    float get_ccs_delay(float f) {
+    float get_ccs_delay() {
         return _ccs_delay;
     }
-
-    void gen_yaml(YAML::Emitter& e);
-
 
 private:
 
@@ -65,7 +70,7 @@ private:
     std::string _load_celltype;
     PiModel _load_interconnect;
 
-    // return values
+    // spice/ccs delay and slew values
     float _spice_delay;
     float _spice_slew;
     float _ccs_delay;
