@@ -67,6 +67,34 @@ src-liberty_parse-2.6:
   The result should be a file named liblibparse.a in the src-liberty_parse-2.6
   directory.
 
+Nangate FreePDK45 Library:
+
+  cd $DIR/..
+
+  Download the NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz from
+  https://projects.si2.org/openeda.si2.org/project/showfiles.php?group_id=63#p78
+  (You will need to register with the organization.)
+
+  Extract in this directory.  You'll then get a subdirectory named:
+
+    NangateOpenCellLibrary_PDKv1_3_v2010_12/
+
+  The CCS Liberty models are in the Front_End/Liberty/CCS directory.
+  They will need to be pre-processed to work with the liberty_parser
+  installed earlier.  Please see dctk/etc/preprocess_nangate/ for
+  scripts.
+
+  The HSPICE models corresponding to the Library are available from the OpenROAD-Utilities repo.
+
+OpenROAD-Utilities repo
+
+  cd $DIR/..
+
+  git clone https://github.com/The-OpenROAD-Project/OpenROAD-Utilities.git
+
+  The HSPICE models that (I believe) correlate to the Nangate Free PDK45 Library are in
+  OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m
+
 dctk:
 
   Go through the standard process for cmake:
