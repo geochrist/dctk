@@ -22,6 +22,8 @@
 // Delay calculator
 #include "delay_calculator.hpp"
 
+// SPICE lib reader
+#include "spice_lib_reader.hpp"
 
 //
 // Usage:
@@ -52,18 +54,15 @@ main(int argc, char **argv)
     int c;
 
     // Liberty
-    bool read_liberty_file = false;
     char* liberty_file = NULL;
     dctk::CellLib* cell_lib = NULL;
     int read_lib_retval = 0;
 
     // SPEF
-    bool read_spef_file = false;
     char* spef_file = NULL;
     spef::Spef* spef = NULL;
 
     // Test Circuits
-    bool read_test_circuits_file = false;
     char* test_circuits_file = NULL;
     dctk::CircuitPtrVec circuitMgr;
     int read_circuit_retval = 0;
@@ -71,35 +70,56 @@ main(int argc, char **argv)
     // Compute Delays
     int compute_delay_retval = 0;
 
+    // spice decks
+    char* spice_dir_name = NULL;
+
+    // spice library
+    char* spice_lib_name = NULL;
+
+    // spice models
+    char* spice_models = NULL;
+    
     // get options
     int option_index = 0;
     static struct option long_options[] = {
         {"liberty", required_argument, 0, 'l'},
         {"spef", required_argument, 0, 's'},
         {"circuits", required_argument, 0, 'c'},
+        {"spice_dir", required_argument, 0, 'd'},
+        {"spice_lib", required_argument, 0, 'x'},
+        {"spice_models", required_argument, 0, 'm'},
         {0,         0,                 0,  0 }
     };
 
-    while  ((c = getopt_long(argc, argv, "l:s:c:", long_options, &option_index))) {
+    while  ((c = getopt_long(argc, argv, "l:s:c:x:", long_options, &option_index))) {
 
         if (c == -1)
             break;
 
         switch (c) {
         case 'l':
-            read_liberty_file = true;
             liberty_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(liberty_file, optarg);
             break;
         case 'c':
-            read_test_circuits_file = true;
             test_circuits_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(test_circuits_file, optarg);
             break;
         case 's':
-            read_spef_file = true;
             spef_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(spef_file, optarg);
+            break;
+        case 'd':
+            spice_dir_name = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(spice_dir_name, optarg);
+            break;
+        case 'x':
+            spice_lib_name = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(spice_lib_name, optarg);
+            break;
+        case 'm':
+            spice_models = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(spice_models, optarg);
             break;
         case '?':
             break;
@@ -117,7 +137,7 @@ main(int argc, char **argv)
     }
 
     // Read Liberty
-    if (read_liberty_file) {
+    if (liberty_file) {
 
         printf("Reading Liberty file %s\n", liberty_file);
         read_lib_retval = read_liberty(liberty_file, cell_lib);
@@ -133,7 +153,7 @@ main(int argc, char **argv)
     cell_lib->dump();
     
     // Read Spef
-    if (read_spef_file) {
+    if (spef_file) {
 
         printf("Reading SPEF file %s\n", spef_file);
         spef = new spef::Spef();
@@ -147,7 +167,7 @@ main(int argc, char **argv)
     }
 
     // Read Test Circuits
-    if (read_test_circuits_file) {
+    if (test_circuits_file) {
 
         printf("Reading Test Circuits file %s\n", test_circuits_file);
         read_circuit_retval = read_circuits(test_circuits_file, &circuitMgr);
@@ -169,7 +189,6 @@ main(int argc, char **argv)
     }
 
     // test code to see if values got captured
-
     for (std::size_t i = 0; i < circuitMgr.size(); i++) {
         // circuitMgr[i]->dump();
     }
@@ -190,6 +209,20 @@ main(int argc, char **argv)
     //yaml_fout << emitter.c_str() << std::endl;
     //yaml_fout.close();
 
+    if (spice_lib_name) {
+        printf("Reading spice library %s\n", spice_lib_name);
+        read_spice_lib(spice_lib_name, cell_lib);
+    }
+
+    // write spice decks to directory
+    if (spice_dir_name) {
+        printf("Writing spice decks into %s\n", spice_dir_name);
+        for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+            //            circuitMgr[i]->dump();
+            circuitMgr[i]->write_spice_deck(std::string(spice_dir_name),
+                                            cell_lib, spef, spice_lib_name, spice_models);
+        }
+    }
 
     // clean up
     if (liberty_file) {

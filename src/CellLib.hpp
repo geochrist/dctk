@@ -12,11 +12,21 @@ class CellLib {
 
 public:
 
+
     CellLib(const std::string&);
 
     void insert(const std::string&, dctk::Cell*);
 
     void dump();
+
+    Cell* get_cell(const std::string& s) {
+        std::map<std::string, Cell*>::iterator item = _cellMap.find(s);
+        if (item != _cellMap.end()) {
+            return item->second;
+        } else {
+            return NULL;
+        }
+    }
 
     Cell* get_random_cell() {
         std::map<std::string, Cell*>::iterator item = _cellMap.begin();
@@ -83,8 +93,6 @@ public:
     }
 
     // getters
-
-
     const std::string& get_time_unit() {
         return _time_unit ;
     }
@@ -142,6 +150,11 @@ public:
         return _output_threshold_pct_rise;
     }
 
+    // provide access to voltage map, for faster access
+    // TODO: isolate interface from caller
+    std::map<std::string, float>& get_voltage_map() {
+        return _voltage_map;
+    }
 
 private:
 
@@ -156,6 +169,7 @@ private:
     std::string _capacitive_load_unit;
 
     std::map<std::string, Cell*> _cellMap;
+    std::map<std::string,float> _voltage_map;
 
     float _nom_process;
     float _nom_temperature;

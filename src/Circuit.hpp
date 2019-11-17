@@ -4,6 +4,8 @@
 #include <string>
 #include <yaml-cpp/yaml.h>
 #include "PiModel.hpp"
+#include "CellLib.hpp"
+#include <parser-spef.hpp>
 
 namespace dctk {
 
@@ -11,6 +13,14 @@ class Circuit {
 
 public:
 
+    // power node/net
+    static std::string power;
+    static float power_valuea;
+
+    // ground node/net
+    static std::string ground;
+
+    
     Circuit(const std::string&);
     Circuit& set_input_waveform(const std::string&);
 
@@ -26,8 +36,13 @@ public:
     // output methods
     void dump();
 
-    void write_spice_driver(std::fstream& fs);
-    void write_spice_deck(const std::string&);
+    void write_spice_voltages(std::fstream& fs, CellLib& cl);
+    void write_spice_driver(std::fstream& fs, CellLib& cl);
+    void write_spice_net(std::fstream& fs, spef::Spef& s);
+    void write_spice_load(std::fstream& fs, CellLib& cl);
+    void write_spice_load_parasitics(std::fstream& fs, CellLib& cl);
+    void write_spice_deck(const std::string&, CellLib* cl, spef::Spef* s,
+                          const char* spice_lib_name, const char* spice_models);
     
     void gen_yaml(YAML::Emitter& e);
 

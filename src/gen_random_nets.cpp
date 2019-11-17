@@ -679,8 +679,8 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         double net_len =  double(rand() % max_len_int + 1);
         int net_max_lyr = rand() % max_layer_index + 1;
 
-        cout << "Creating random net with " << num_receivers << " rcvrs " << net_len << " length "
-             << net_max_lyr << " max layer" << std::endl;
+        //cout << "Creating random net with " << num_receivers << " rcvrs " << net_len << " length "
+        //             << net_max_lyr << " max layer" << std::endl;
 
         all_nets.create_random_net( net_name, driver_node, driver_celltype, receivers,
                                     receivers_celltypes, net_len, net_max_lyr, pimodels );
@@ -828,6 +828,9 @@ int main( int argc, char * const argv[] )
     //
     // Create the set of nets
     //
+
+    // seed random generator
+    std::srand(std::time(nullptr));
     create_random_nets( n, 4, 2000.0, 14, all_nets, cell_lib, circuitMgr, pimodels );
 
     //

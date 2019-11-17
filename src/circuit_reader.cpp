@@ -53,8 +53,14 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
         const std::string& str_driver=circuit["driver"].as<std::string>();
         cir->set_driver(str_driver);
 
+        const std::string& str_driver_celltype=circuit["driver_celltype"].as<std::string>();
+        cir->set_driver_celltype(str_driver_celltype);
+
         const std::string& str_load=circuit["load"].as<std::string>();
         cir->set_load(str_load);
+
+        const std::string& str_load_celltype=circuit["load_celltype"].as<std::string>();
+        cir->set_load_celltype(str_load_celltype);
 
         const std::string& str_load_interconnect=circuit["load_interconnect"].as<std::string>();
         cir->set_load_interconnect(str_load_interconnect);

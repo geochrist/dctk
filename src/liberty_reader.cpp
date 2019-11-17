@@ -137,6 +137,37 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
 
             }
 
+                        // check for voltage_map group
+            if (library_attr_name == "voltage_map") {
+                // get voltage rail name and value
+                // Example text:  voltage_map (VDD,1.10);
+                si2drValuesIdT voltage_values = si2drComplexAttrGetValues(library_attr, &err);
+                
+                // storage location for result
+                si2drValueTypeT type;
+                si2drInt32T int_val;
+                si2drFloat64T double_val;
+                si2drStringT string_val;
+                si2drBooleanT bool_val;
+                si2drExprT *expr;
+
+                // get rail name
+                si2drIterNextComplexValue(voltage_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err); 
+                std::string voltage_rail = string_val;
+
+                // get voltage value
+                si2drIterNextComplexValue(voltage_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err);
+                float voltage_value = double_val;
+                si2drIterQuit(voltage_values, &err);
+
+                // store into library
+                // printf(" found voltage rail %s with voltage %f", voltage_rail.c_str(), voltage_value);
+                // add entry into library
+                cell_lib->get_voltage_map()[voltage_rail] = voltage_value;
+                continue;
+            }
+
+
             if (library_attr_name == "nom_process") {
                 cell_lib->set_nom_process(si2drSimpleAttrGetFloat64Value(library_attr, &err));
             }
@@ -184,16 +215,16 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
             si2drStringT cell_group_type =  si2drGroupGetGroupType(cell_group, &err);
             //printf(" confirm: cell type = %s\n", cell_group_type);
 
+            // if we are not looking at a "cell" group, skip
+            if (strcmp(cell_group_type,"cell")) {
+                continue;
+            }
+
             // get name of cell
             si2drNamesIdT cell_group_names = si2drGroupGetNames(cell_group, &err);
             si2drStringT cell_group_name = si2drIterNextName(cell_group_names, &err);
             si2drIterQuit(cell_group_names, &err);
             //printf(" confirm: cell name = %s\n", cell_group_name);
-
-            // if we are not looking at a "cell" group, skip
-            if (strcmp(cell_group_type,"cell")) {
-                continue;
-            }
 
 
             // insert cell into library

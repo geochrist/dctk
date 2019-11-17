@@ -92,7 +92,7 @@ OpenROAD-Utilities repo
 
   git clone https://github.com/The-OpenROAD-Project/OpenROAD-Utilities.git
 
-  The HSPICE models that (I believe) correlate to the Nangate Free PDK45 Library are in
+  The HSPICE models that (I believe) correlate to the Nangate FreePDK45 Library are in
   OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m
 
 dctk:
