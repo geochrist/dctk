@@ -8,3 +8,4 @@ src-liberty_parse-2.6/libsi2dr_liberty.la
 src-liberty_parse-2.6/liberty_parse
 src-liberty_parse-2.6/syntax_parse
 build/*
+test/spice_decks/*

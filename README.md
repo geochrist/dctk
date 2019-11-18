@@ -26,6 +26,7 @@ SPICE Deck Writer
 
 The spice deck writer is almost functional:
 - Connectivity is correct for single input/output cells.
+- It does not yet generate voltage waveform for input pin.
 - It does not (yet) sensitize the unused inputs.
 - It will include pointer to spice library, assuming it is given as an option.
 - It will include pointer to spice models, assuming it is given as an optin.
@@ -33,7 +34,7 @@ The spice deck writer is almost functional:
 
 TODO
 
-* improve SPICE writer to generate ramp stimulus
+* update SPICE writer to generate ramp stimulus
 * add call to spice simulator into delay_calc_tool.
 * add sensitizer to SPICE writer, for side input pins.
 * add comparator to delay_calc_tool.
