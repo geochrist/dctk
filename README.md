@@ -23,18 +23,10 @@ can use this code to generate their own testcases.
    but it shouldn't be too significant at this point. **
 
 SPICE Deck Writer
-
-The spice deck writer is almost functional:
-- Connectivity is correct for single input/output cells.
-- It does not yet generate voltage waveform for input pin.
-- It does not (yet) sensitize the unused inputs.
-- It will include pointer to spice library, assuming it is given as an option.
-- It will include pointer to spice models, assuming it is given as an optin.
-- It does not (yet) generate a ramp stimulus, per circuits.yaml file.
+The spice deck writer is functional for single input/output cells.
+It needs updates to handle multi input/output cells.
 
 TODO
-
-* update SPICE writer to generate ramp stimulus
 * add call to spice simulator into delay_calc_tool.
-* add sensitizer to SPICE writer, for side input pins.
+* add support for multi-input cells (sensitization of for side input pins).
 * add comparator to delay_calc_tool.
