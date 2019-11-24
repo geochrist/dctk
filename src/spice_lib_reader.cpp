@@ -38,7 +38,7 @@ int read_spice_lib(char *spice_lib_file_name, dctk::CellLib* cell_lib) {
             // find cell in library
             dctk::Cell* cell = cell_lib->get_cell(cell_name);
             if (cell == NULL) {
-                std::cout << "no cell named " << cell_name << std::endl;
+                //std::cout << "no cell named " << cell_name << std::endl;
                 continue;
             }
 

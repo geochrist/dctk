@@ -16,10 +16,14 @@ namespace dctk {
 
 Circuit::Circuit(const std::string& s) {
     _name = s;
-    _spice_delay = 0.0;
-    _spice_slew = 0.0;
-    _ccs_delay = 0.0;
-    _ccs_slew = 0.0;
+    _spice_rise_delay = 0.0;
+    _spice_fall_delay = 0.0;
+    _spice_rise_slew = 0.0;
+    _spice_fall_slew = 0.0;
+    _ccs_rise_delay = 0.0;
+    _ccs_fall_delay = 0.0;
+    _ccs_rise_slew = 0.0;
+    _ccs_fall_slew = 0.0;
 }
 
 Circuit& Circuit::set_input_waveform(const std::string& s) {
@@ -71,10 +75,14 @@ void Circuit::dump() {
               << " " << this->_load_interconnect.get_res()
               << " " << this->_load_interconnect.get_cfar()
               << std::endl;
-    std::cout << "spice delay = " << this->_spice_delay << std::endl;
-    std::cout << "spice slew = " << this->_spice_slew << std::endl;
-    std::cout << "ccs delay = " << this->_ccs_delay << std::endl;
-    std::cout << "ccs slew = " << this->_ccs_slew << std::endl;
+    std::cout << "spice rise delay = " << this->_spice_rise_delay << std::endl;
+    std::cout << "spice fall delay = " << this->_spice_fall_delay << std::endl;
+    std::cout << "spice rise slew = " << this->_spice_rise_slew << std::endl;
+    std::cout << "spice fall slew = " << this->_spice_fall_slew << std::endl;
+    std::cout << "ccs rise delay = " << this->_ccs_rise_delay << std::endl;
+    std::cout << "ccs fall delay = " << this->_ccs_fall_delay << std::endl;
+    std::cout << "ccs rise slew = " << this->_ccs_rise_slew << std::endl;
+    std::cout << "ccs fall slew = " << this->_ccs_fall_slew << std::endl;
     std::cout << "----------" << std::endl;
 }
 
@@ -101,10 +109,14 @@ void Circuit::gen_yaml(YAML::Emitter& emitter) {
 
     emitter << YAML::Key << "load_interconnect" << YAML::Value << ss2.str();
 
-    emitter << YAML::Key << "spice_delay" << YAML::Value << this->_spice_delay;
-    emitter << YAML::Key << "spice_slew" << YAML::Value << this->_spice_slew;
-    emitter << YAML::Key << "ccs_delay" << YAML::Value << this->_ccs_delay;
-    emitter << YAML::Key << "ccs_slew" << YAML::Value << this->_ccs_slew;
+    emitter << YAML::Key << "spice_rise_delay" << YAML::Value << this->_spice_rise_delay;
+    emitter << YAML::Key << "spice_fall_delay" << YAML::Value << this->_spice_fall_delay;
+    emitter << YAML::Key << "spice_rise_slew" << YAML::Value << this->_spice_rise_slew;
+    emitter << YAML::Key << "spice_fall_slew" << YAML::Value << this->_spice_fall_slew;
+    emitter << YAML::Key << "ccs_rise_delay" << YAML::Value << this->_ccs_rise_delay;
+    emitter << YAML::Key << "ccs_fall_delay" << YAML::Value << this->_ccs_fall_delay;
+    emitter << YAML::Key << "ccs_rise_slew" << YAML::Value << this->_ccs_rise_slew;
+    emitter << YAML::Key << "ccs_fall_slew" << YAML::Value << this->_ccs_fall_slew;
 
     emitter << YAML::EndMap;
 
@@ -133,9 +145,54 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
         const std::string& rail = iter->first;
         float voltage = iter->second;
         fs << "V" << rail << " " << rail << " 0 " << voltage << std::endl;
+        // identify voltage rail by the one that is not at 0.0V
+        if (voltage != 0.0) {
+            set_power_rail_voltage(voltage);
+        }
     }
 
-}    
+    // set power_rail
+    const float power_rail_voltage = get_power_rail_voltage();
+
+    fs << "* stimulus" << std::endl;
+
+    // we use a pulse
+    std::vector<std::string> driver_info = split(_driver, '/');
+
+    // stimulus
+    std::string vstim_str = "Vinput";
+
+    // build up PWL; times in ps
+    const float tstart = 100.0;
+    // TODO: pull from Circuit.yaml
+    const float tramp = 50.0;
+    const float tpulse = 400.0;
+
+    // voltage source
+    fs << "Vinput";
+
+    // nodes
+    fs << " " + driver_info[0] + ':' + driver_info[1] << " 0";
+    // TODO:  pull ramp time from circuits.yaml
+    fs << " pwl(0p 0v" ;
+    // beginning of rise
+    fs << " " << tstart << "p 0.0v";
+    // end of rise
+    fs << " " << tstart+tramp << "p " << power_rail_voltage << "v" ;
+    // beginning of fall
+    fs << " " << tstart+tramp+tpulse << "p " << power_rail_voltage << "v" ;
+    // end of fall
+    fs << " " << tstart+tramp+tpulse+tramp << "p 0.0v";
+    // end of simulation
+    fs << " " << tstart+tramp+tpulse+tramp+tpulse << "p 0.0v";
+
+    fs << ")" << std::endl;
+
+    // store the total simulation time for the .tran statement
+    set_sim_time(tstart+tramp+tpulse+tramp+tpulse);
+
+
+}
 
 void Circuit::write_spice_driver(std::fstream& fs, CellLib& cellLib) {
 
@@ -200,10 +257,12 @@ void Circuit::write_spice_net(std::fstream& fs, spef::Spef& spef) {
         for(const auto& c : n.caps){
             auto& [node1, node2, value] = c;
             if (node2 == ""){
+                // TODO -- figure out units from SPEF.  Support only FF right now.
+
                 // ground coupling caps
-                fs << "C" << index << ' ' << node1 << " VSS " << value << '\n';
+                fs << "C" << index << ' ' << node1 << " VSS " << value << "FF \n";
             } else {
-                fs << "C" << index << ' ' << node1 << ' ' << node2 << ' ' << value << '\n';
+                fs << "C" << index << ' ' << node1 << ' ' << node2 << ' ' << value << "FF \n";
             }
             index++;
         }
@@ -212,6 +271,8 @@ void Circuit::write_spice_net(std::fstream& fs, spef::Spef& spef) {
         index = 0;
         for(const auto& r : n.ress){
             auto& [node1, node2, value] = r;
+            // TODO -- figure out units from SPEF.  Support only ohms right now.
+
             fs << "R" << index << ' ' << node1 << ' ' << node2 << ' ' << value << '\n';
             index++;
         }
@@ -265,9 +326,7 @@ void Circuit::write_spice_load(std::fstream& fs, CellLib& cellLib) {
     // celltype
     fs << " " << _load_celltype << std::endl;
 
-        
 }
-
 
 void Circuit::write_spice_load_parasitics(std::fstream& fs, CellLib& cellLib) {
 
@@ -280,13 +339,82 @@ void Circuit::write_spice_load_parasitics(std::fstream& fs, CellLib& cellLib) {
     // write out load's parasitics
     //
     fs << "* Load parasitics" << std::endl;
-    fs << "Cnear " << output_pin << " 0 " << _load_interconnect.get_cnear() << std::endl;
+    fs << "Cnear " << output_pin << " 0 " << _load_interconnect.get_cnear() << "f" << std::endl;
 
     // write out res and cfar only if they are non-zero
     // (most of time, load parasitics may be pure capacitance with only cnear)
     if ((_load_interconnect.get_res() != 0.0) || (_load_interconnect.get_cfar() != 0.0)) {
         fs << "Rres " << output_pin << " far_node " << _load_interconnect.get_res() << std::endl;
-        fs << "Cfar far_node 0 " << _load_interconnect.get_cfar() << std::endl;
+        fs << "Cfar far_node 0 " << _load_interconnect.get_cfar() << "f" << std::endl;
+    }
+
+}
+
+bool Circuit::is_positive_unate(CellLib& cellLib) {
+
+    // find arc with corresponding pin/related pin
+    std::vector<std::string> driver_tokens = split(_driver, '/');
+    const std::string& input_pin = driver_tokens[1];
+    const std::string& output_pin = driver_tokens[2];
+
+    // find cell
+    Cell* cell = cellLib.get_cell(_driver_celltype);
+
+    // by this time, we should always be able to find the cell
+    assert(cell != NULL);
+
+    // find output pin (returns first output pin found)
+    // TODO add support for multiple output pins
+    CellPin* output_cellpin = cell->get_output_pin();
+    assert(output_cellpin->get_name() == output_pin);
+
+    // find arc
+    CellArc* arc = output_cellpin->find_arc(input_pin);
+
+
+    assert(arc);
+
+    // check for unateness
+    const std::string& timing_sense = arc->get_timing_sense();
+
+    if (timing_sense == "positive_unate") {
+        return true;
+    }
+    if (timing_sense == "negative_unate") {
+        return false;
+    }
+    // we should never reach here
+    // TODO need to add support for non-unate or empty strings
+    assert(0);
+
+}
+
+void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
+
+
+    fs << ".tran 1p " << get_sim_time() << "p" << std::endl;
+
+    std::vector<std::string> driver_tokens = split(_driver, '/');
+    const std::string& inst = driver_tokens[0];
+    const std::string& input_pin = inst + ':' + driver_tokens[1];
+    const std::string& output_pin = inst + ':' + driver_tokens[2];
+
+    const float delay_threshold = get_power_rail_voltage()/2.0;
+
+    if (is_positive_unate(cellLib)) {
+        fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
+           << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
+           << delay_threshold << " rise=1" << std::endl;
+        fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
+           << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
+           << delay_threshold << "v fall=1" << std::endl;
+    } else {
+        fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
+           << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
+           << delay_threshold << "v fall=1" << std::endl;
+        fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
+           << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
+           << delay_threshold << "v rise=1" << std::endl;
     }
 
 }
@@ -321,6 +449,9 @@ void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spe
 
     // write out load's parasitics
     this->write_spice_load_parasitics(fs, *cellLib);
+
+    // write out simulation commands
+    this->write_spice_commands(fs, *cellLib);
 
     // end statement
     fs << ".end" << std::endl;

@@ -15,11 +15,11 @@ public:
 
     CellPin(const std::string&);
 
-    std::string get_name() {
+    const std::string& get_name() {
         return _name;
     }
 
-    void set_direction(std::string d) {
+    void set_direction(const std::string& d) {
         _direction = d;
     }
 
@@ -31,6 +31,7 @@ public:
 
     void dump();
 
+    CellArc* find_arc(const std::string& input_pin);
 
 private:
 

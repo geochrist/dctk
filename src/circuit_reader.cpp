@@ -65,17 +65,29 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
         const std::string& str_load_interconnect=circuit["load_interconnect"].as<std::string>();
         cir->set_load_interconnect(str_load_interconnect);
 
-        const std::string& str_spice_delay=circuit["spice_delay"].as<std::string>();
-        cir->set_spice_delay(atof(str_spice_delay.c_str()));
+        const std::string& str_spice_rise_delay=circuit["spice_rise_delay"].as<std::string>();
+        cir->set_spice_rise_delay(atof(str_spice_rise_delay.c_str()));
 
-        const std::string& str_spice_slew=circuit["spice_slew"].as<std::string>();
-        cir->set_spice_slew(atof(str_spice_slew.c_str()));
+        const std::string& str_spice_fall_delay=circuit["spice_fall_delay"].as<std::string>();
+        cir->set_spice_fall_delay(atof(str_spice_fall_delay.c_str()));
 
-        const std::string& str_ccs_delay=circuit["ccs_delay"].as<std::string>();
-        cir->set_ccs_delay(atof(str_ccs_delay.c_str()));
+        const std::string& str_spice_rise_slew=circuit["spice_rise_slew"].as<std::string>();
+        cir->set_spice_rise_slew(atof(str_spice_rise_slew.c_str()));
 
-        const std::string& str_ccs_slew=circuit["ccs_slew"].as<std::string>();
-        cir->set_ccs_slew(atof(str_ccs_slew.c_str()));
+        const std::string& str_spice_fall_slew=circuit["spice_fall_slew"].as<std::string>();
+        cir->set_spice_fall_slew(atof(str_spice_fall_slew.c_str()));
+
+        const std::string& str_ccs_rise_delay=circuit["ccs_rise_delay"].as<std::string>();
+        cir->set_ccs_rise_delay(atof(str_ccs_rise_delay.c_str()));
+
+        const std::string& str_ccs_fall_delay=circuit["ccs_fall_delay"].as<std::string>();
+        cir->set_ccs_fall_delay(atof(str_ccs_fall_delay.c_str()));
+
+        const std::string& str_ccs_rise_slew=circuit["ccs_rise_slew"].as<std::string>();
+        cir->set_ccs_rise_slew(atof(str_ccs_rise_slew.c_str()));
+
+        const std::string& str_ccs_fall_slew=circuit["ccs_fall_slew"].as<std::string>();
+        cir->set_ccs_fall_slew(atof(str_ccs_fall_slew.c_str()));
 
         circuitMgr->push_back(cir);
     }

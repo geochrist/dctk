@@ -11,7 +11,8 @@ set pimodels = ""
 set pimodels = "--pimodels"
 
 # File containing Liberty models in CCS form
-set library = "NangateOpenCellLibrary_typical_ccs.adjusted.lib"
+#set library = "NangateOpenCellLibrary_typical_ccs.adjusted.lib"
+set library = "buf_inv.lib"
 
 # Generate random dataset
 # output will be $dataset.circuits.yaml and $dataset.spef
@@ -19,8 +20,10 @@ set library = "NangateOpenCellLibrary_typical_ccs.adjusted.lib"
 
 # Read results into delay calculation tool
 set spice_decks = "spice_decks"
+#set spice_lib = "../../NangateOpenCellLibrary_PDKv1_3_v2010_12/Back_End/lpe_spice/NangateOpenCellLibrary_lpe.spi"
+#set spice_models = "../../OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m"
 set spice_lib = "../../NangateOpenCellLibrary_PDKv1_3_v2010_12/Back_End/lpe_spice/NangateOpenCellLibrary_lpe.spi"
-set spice_models = "../../OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m"
+set spice_models = "../../OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.modified"
 rm -rf $spice_decks
 mkdir $spice_decks
 ../build/delay_calc_tool \

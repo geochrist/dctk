@@ -20,6 +20,23 @@ void CellPin::add_arc(CellArc* a) {
     _arcs.push_back(a);
 }
 
+CellArc* CellPin::find_arc(const std::string& input_pin) {
+
+    std::vector<CellArc*>::iterator iter = _arcs.begin();
+    std::vector<CellArc*>::iterator iterEnd = _arcs.end();
+
+    // return first arc for which related_pin == input_pin
+    for ( ; iter != iterEnd; iter++) {
+        CellArc* arc = *iter;
+        if (arc->get_related_pin()->get_name() == input_pin) {
+            return arc;
+        }
+    }
+
+    // arc doesn't exist
+    return NULL;
+}
+
 void CellPin::dump() {
     std::cout << "    Pin Name = " << this->_name << std::endl;
 

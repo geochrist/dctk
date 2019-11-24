@@ -20,13 +20,22 @@ public:
     void update_related_pin(CellPin* pin) {
         _related_pin = pin;
     }
+    CellPin* get_related_pin() {
+        return _related_pin;
+    }
 
     // TODO:  change to enum
     void set_timing_type(std::string& s) {
         _timing_type_str = s;
     }
+    const std::string& get_timing_type() {
+        return _timing_type_str;
+    }
     void set_timing_sense(std::string& s) {
         _timing_sense_str = s;
+    }
+    const std::string& get_timing_sense() {
+        return _timing_sense_str;
     }
 
     // NLDM tables

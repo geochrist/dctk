@@ -15,8 +15,10 @@ int compute_delays(dctk::CellLib* cell_lib, dctk::CircuitPtrVec* circuitMgr, spe
     int numCircuits = circuitMgr->size();
     for (int i=0; i < numCircuits; i++) {
 	
-	(*circuitMgr)[i]->set_ccs_delay(i);
-	(*circuitMgr)[i]->set_ccs_slew(i*0.2);
+	(*circuitMgr)[i]->set_ccs_rise_delay(i);
+	(*circuitMgr)[i]->set_ccs_fall_delay(i);
+	(*circuitMgr)[i]->set_ccs_rise_slew(i*0.2);
+	(*circuitMgr)[i]->set_ccs_fall_slew(i*0.2);
 
     }
 	

@@ -33,6 +33,9 @@ public:
     Circuit& set_load_celltype(const std::string&);
     Circuit& set_load_interconnect(const std::string&);
 
+    // misc routines
+    bool is_positive_unate(CellLib& cl);
+
     // output methods
     void dump();
 
@@ -41,38 +44,81 @@ public:
     void write_spice_net(std::fstream& fs, spef::Spef& s);
     void write_spice_load(std::fstream& fs, CellLib& cl);
     void write_spice_load_parasitics(std::fstream& fs, CellLib& cl);
+    void write_spice_commands(std::fstream& fs, CellLib& cl);
     void write_spice_deck(const std::string&, CellLib* cl, spef::Spef* s,
                           const char* spice_lib_name, const char* spice_models);
     
     void gen_yaml(YAML::Emitter& e);
 
-    // SPICE delay and slews
-    void set_spice_slew(float f) {
-        _spice_slew = f;
+
+    // misc values
+    void set_power_rail_voltage(float f) {
+        _power_rail_voltage = f;
     }
-    void set_spice_delay(float f) {
-        _spice_delay = f;
+    const float get_power_rail_voltage() {
+        return _power_rail_voltage;
     }
 
-    float get_spice_slew() {
-        return _spice_slew;
+    // SPICE delay and slews
+    void set_spice_rise_slew(float f) {
+        _spice_rise_slew = f;
     }
-    float get_spice_delay() {
-        return _spice_delay;
+    void set_spice_fall_slew(float f) {
+        _spice_fall_slew = f;
+    }
+    void set_spice_rise_delay(float f) {
+        _spice_rise_delay = f;
+    }
+    void set_spice_fall_delay(float f) {
+        _spice_fall_delay = f;
+    }
+
+    float get_spice_rise_slew() {
+        return _spice_rise_slew;
+    }
+    float get_spice_fall_slew() {
+        return _spice_fall_slew;
+    }
+    float get_spice_rise_delay() {
+        return _spice_rise_delay;
+    }
+   float get_spice_fall_delay() {
+        return _spice_fall_delay;
     }
 
     // CCS delay and slews
-    void set_ccs_slew(float f) {
-        _ccs_slew = f;
+    void set_ccs_rise_slew(float f) {
+        _ccs_rise_slew = f;
     }
-    void set_ccs_delay(float f) {
-        _ccs_delay = f;
+    void set_ccs_fall_slew(float f) {
+        _ccs_fall_slew = f;
     }
-    float get_ccs_slew() {
-        return _ccs_slew;
+    void set_ccs_rise_delay(float f) {
+        _ccs_rise_delay = f;
     }
-    float get_ccs_delay() {
-        return _ccs_delay;
+    void set_ccs_fall_delay(float f) {
+        _ccs_fall_delay = f;
+    }
+    float get_ccs_rise_slew() {
+        return _ccs_rise_slew;
+    }
+    float get_ccs_fall_slew() {
+        return _ccs_fall_slew;
+    }
+    float get_ccs_rise_delay() {
+        return _ccs_rise_delay;
+    }
+    float get_ccs_fall_delay() {
+        return _ccs_fall_delay;
+    }
+
+    // simulation time
+    void set_sim_time(float f) {
+        _sim_time = f;
+    }
+    
+    float get_sim_time() {
+        return _sim_time;
     }
 
 private:
@@ -85,13 +131,19 @@ private:
     std::string _load_celltype;
     PiModel _load_interconnect;
 
+    float _power_rail_voltage;
+
     // spice/ccs delay and slew values
-    float _spice_delay;
-    float _spice_slew;
-    float _ccs_delay;
-    float _ccs_slew;
+    float _spice_rise_delay;
+    float _spice_fall_delay;
+    float _spice_rise_slew;
+    float _spice_fall_slew;
+    float _ccs_rise_delay;
+    float _ccs_fall_delay;
+    float _ccs_rise_slew;
+    float _ccs_fall_slew;
 
-
+    float _sim_time;
 };
 
 }
