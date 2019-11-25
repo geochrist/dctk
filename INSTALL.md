@@ -15,9 +15,11 @@ Overview
 Details
 -------
 
-$DIR = the directory of dctk download.
+Assume:
 
-Parser-SPEF:
+  $DIR = the directory of dctk download.
+
+**Parser-SPEF**
 
   Download Parser-SPEF in a directory parallel this one:
 
@@ -30,7 +32,7 @@ Parser-SPEF:
   No compilation is necessary -- all files are header files to be
   included by the calling code.
 
-yaml-cpp:
+**yaml-cpp**
 
   Download yaml-cpp in a directory parallel this one:
 
@@ -46,7 +48,7 @@ yaml-cpp:
     cmake ..
     make
 
-src-liberty_parse-2.6:
+**src-liberty_parse-2.6**
 
   First set the CFLAGS to skip no-return-type errors.  It is
   needed for most modern versions of compilers:
@@ -67,7 +69,7 @@ src-liberty_parse-2.6:
   The result should be a file named liblibparse.a in the src-liberty_parse-2.6
   directory.
 
-Nangate FreePDK45 Library (no spice models)
+**Nangate FreePDK45 Library (no spice models)**
 
   cd $DIR/..
 
@@ -86,7 +88,7 @@ Nangate FreePDK45 Library (no spice models)
 
   The HSPICE models corresponding to the Library are available from the OpenROAD-Utilities repo.
 
-OpenROAD-Utilities repo
+**OpenROAD-Utilities**
 
   cd $DIR/..
 
@@ -97,26 +99,26 @@ OpenROAD-Utilities repo
 
   The transistor names don't quite match ... they need to be edited.  Change the model names from
 
-      nmos to nmos_vtl
-      pmos to pmos_vtl
+      nmos ==> nmos_vtl
+      pmos ==> pmos_vtl
 
   in a new file named OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.modified
 
   Note that we are not 100% sure that these models match and should be used temporarily until correlated Liberty
   with SPICE models are generated.  In addition, it seems that only models for the nominal corner is available.
 
-NCSU FreePDK45
+**NCSU FreePDK45**
 
   The Nangate library is based on the NCSU FreePDK45 models.  This seems to no longer be
   available at NCSU, but an archived version (1.4) seems to be available at:
-  https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz
-  http://en.pudn.com/Download/item/id/3250627.html
 
-  cd $DIR/..
+    https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz
+
+    cd $DIR/..
 
   Download the file to this location and extract using:
 
-  gzcap ncsa-FreePDK45-1.4.tar.gz | tar xvf -
+    gzcap ncsa-FreePDK45-1.4.tar.gz | tar xvf -
   
   The models will be at FreePDK45/ncsu_basekit/models/hspice/*.inc.
 
@@ -126,7 +128,7 @@ NCSU FreePDK45
   are not certain that the Nangate library would correspond well with
   these spice models.  These have not been tested.
 
-dctk:
+**dctk**
 
   Go through the standard process for cmake:
 
