@@ -67,7 +67,7 @@ src-liberty_parse-2.6:
   The result should be a file named liblibparse.a in the src-liberty_parse-2.6
   directory.
 
-Nangate FreePDK45 Library:
+Nangate FreePDK45 Library (no spice models)
 
   cd $DIR/..
 
@@ -92,8 +92,39 @@ OpenROAD-Utilities repo
 
   git clone https://github.com/The-OpenROAD-Project/OpenROAD-Utilities.git
 
-  The HSPICE models that (I believe) correlate to the Nangate FreePDK45 Library are in
-  OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m
+  The HSPICE models that somewhat correlate to the Nangate FreePDK45 Library are in
+  OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.
+
+  The transistor names don't quite match ... they need to be edited.  Change the model names from
+
+      nmos to nmos_vtl
+      pmos to pmos_vtl
+
+  in a new file named OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.modified
+
+  Note that we are not 100% sure that these models match and should be used temporarily until correlated Liberty
+  with SPICE models are generated.  In addition, it seems that only models for the nominal corner is available.
+
+NCSU FreePDK45
+
+  The Nangate library is based on the NCSU FreePDK45 models.  This seems to no longer be
+  available at NCSU, but an archived version (1.4) seems to be available at:
+  https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz
+  http://en.pudn.com/Download/item/id/3250627.html
+
+  cd $DIR/..
+
+  Download the file to this location and extract using:
+
+  gzcap ncsa-FreePDK45-1.4.tar.gz | tar xvf -
+  
+  The models will be at FreePDK45/ncsu_basekit/models/hspice/*.inc.
+
+  But the Nangate library indicated that it was characterized using
+  version 1.3, and the release notes for FreePDK45 version 1.4
+  indicated that changes were made in the HSPICE models.  Hence, we
+  are not certain that the Nangate library would correspond well with
+  these spice models.  These have not been tested.
 
 dctk:
 
@@ -111,28 +142,9 @@ dctk:
     cd $DIR/test
     ./runme
 
-  The results should be a list of all the cells in the library, followed by
-  something that looks like:
-
-Reading Test Circuits file test.circuits.yaml
-Generating spice netlists for test.circuits.yaml
-Processing 2 circuits.
-Name = first
-Voltage Source = vs1
-Driver = and/a/y
-Driver Interconnect = 1.1 100 1.1
-Load = or/a/y
-load_interconnect = 2.2 200 2.2
-----------
-Name = second
-Voltage Source = vs2
-Driver = nand/a/y
-Driver Interconnect = 3.1 300 3.1
-Load = nor/a/y
-load_interconnect = 4.2 400 5.2
-----------
-Computing Delays for 2 circuits.
-
+  The result should be a
+  * random circuits based on inverters/buffers only (tau2020v1.circuits.yaml)
+  * corresponding spice decks (spice_decks/)
 
 
 
