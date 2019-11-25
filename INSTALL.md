@@ -19,7 +19,7 @@ Assume:
 
   $DIR = the directory of dctk download.
 
-**Parser-SPEF**
+### Parser-SPEF
 
   Download Parser-SPEF in a directory parallel this one:
 
@@ -32,7 +32,7 @@ Assume:
   No compilation is necessary -- all files are header files to be
   included by the calling code.
 
-**yaml-cpp**
+### yaml-cpp
 
   Download yaml-cpp in a directory parallel this one:
 
@@ -48,7 +48,7 @@ Assume:
     cmake ..
     make
 
-**src-liberty_parse-2.6**
+### src-liberty_parse-2.6
 
   First set the CFLAGS to skip no-return-type errors.  It is
   needed for most modern versions of compilers:
@@ -69,7 +69,7 @@ Assume:
   The result should be a file named liblibparse.a in the src-liberty_parse-2.6
   directory.
 
-**Nangate FreePDK45 Library (no spice models)**
+### Nangate FreePDK45 Library (no spice models)
 
   cd $DIR/..
 
@@ -88,7 +88,7 @@ Assume:
 
   The HSPICE models corresponding to the Library are available from the OpenROAD-Utilities repo.
 
-**OpenROAD-Utilities**
+### OpenROAD-Utilities
 
   cd $DIR/..
 
@@ -107,7 +107,7 @@ Assume:
   Note that we are not 100% sure that these models match and should be used temporarily until correlated Liberty
   with SPICE models are generated.  In addition, it seems that only models for the nominal corner is available.
 
-**NCSU FreePDK45**
+### NCSU FreePDK45
 
   The Nangate library is based on the NCSU FreePDK45 models.  This seems to no longer be
   available at NCSU, but an archived version (1.4) seems to be available at:
@@ -128,7 +128,7 @@ Assume:
   are not certain that the Nangate library would correspond well with
   these spice models.  These have not been tested.
 
-**dctk**
+### dctk
 
   Go through the standard process for cmake:
 
