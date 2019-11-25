@@ -15,9 +15,9 @@ Overview
 Details
 -------
 
-Assume:
+For the text below, assume:
 
-  $DIR = the directory of dctk download.
+    $DIR = the directory of dctk download.
 
 ### Parser-SPEF
 
@@ -27,17 +27,15 @@ Assume:
 
     git clone https://github.com/OpenTimer/Parser-SPEF.git
 
-  The sub-directory Parser-SPEF will appear.
-
-  No compilation is necessary -- all files are header files to be
-  included by the calling code.
+  The sub-directory Parser-SPEF will appear.  No compilation is
+  necessary -- all files are header files to be included by the
+  calling code.
 
 ### yaml-cpp
 
   Download yaml-cpp in a directory parallel this one:
 
     cd $DIR/..
-
     git clone https://github.com/jbeder/yaml-cpp.git
 
   To build it using standard cmake build process:
@@ -71,28 +69,31 @@ Assume:
 
 ### Nangate FreePDK45 Library (no spice models)
 
-  cd $DIR/..
 
   Download the NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz from
   https://projects.si2.org/openeda.si2.org/project/showfiles.php?group_id=63#p78
   (You will need to register with the organization.)
 
-  Extract in this directory.  You'll then get a subdirectory named:
+  Extract in this directory:  
 
-    NangateOpenCellLibrary_PDKv1_3_v2010_12/
+    cd $DIR/..
+    tar xvf NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz
 
-  The CCS Liberty models are in the Front_End/Liberty/CCS directory.
-  They will need to be pre-processed to work with the liberty_parser
-  installed earlier.  Please see dctk/etc/preprocess_nangate/ for
-  scripts.
+  You'll then get a subdirectory named
+  NangateOpenCellLibrary_PDKv1_3_v2010_12/.  The CCS Liberty models
+  are in the Front_End/Liberty/CCS directory.  They will need to be
+  pre-processed to work with the liberty_parser installed earlier.
+  Please see dctk/etc/preprocess_nangate/ for scripts.
 
-  The HSPICE models corresponding to the Library are available from the OpenROAD-Utilities repo.
+  The HSPICE models possibly corresponding to the Library are
+  available from the OpenROAD-Utilities repository.
 
 ### OpenROAD-Utilities
 
-  cd $DIR/..
+  To download the OpenRoad Utilities:
 
-  git clone https://github.com/The-OpenROAD-Project/OpenROAD-Utilities.git
+    cd $DIR/..
+    git clone https://github.com/The-OpenROAD-Project/OpenROAD-Utilities.git
 
   The HSPICE models that somewhat correlate to the Nangate FreePDK45 Library are in
   OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.
@@ -110,15 +111,12 @@ Assume:
 ### NCSU FreePDK45
 
   The Nangate library is based on the NCSU FreePDK45 models.  This seems to no longer be
-  available at NCSU, but an archived version (1.4) seems to be available at:
-
-    https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz
-
-    cd $DIR/..
+  available at NCSU, but an archived version (1.4) seems to be available at https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz
 
   Download the file to this location and extract using:
 
-    gzcap ncsa-FreePDK45-1.4.tar.gz | tar xvf -
+    cd $DIR/..
+    gzcat ncsa-FreePDK45-1.4.tar.gz | tar xvf -
   
   The models will be at FreePDK45/ncsu_basekit/models/hspice/*.inc.
 
