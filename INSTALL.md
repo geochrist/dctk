@@ -5,12 +5,12 @@ Overview
 --------
 
 1.  Install Parser-SPEF in a directory parallel to this one.
-
 2.  Install yaml-cpp in a directory parallel to this one.
-
 3.  Build src-liberty_parse-2.6.
-
-4.  Compile dctk.
+4.  Download Nangate library.
+5.  Download OpenRoad Utilities.
+6.  Download NCSU FreePDK45 version 1.4 (optional)
+7.  Compile and test dctk.
 
 Details
 -------

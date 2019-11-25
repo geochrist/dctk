@@ -1,10 +1,11 @@
-# dctk
-Delay Calculation ToolKit
+# Delay Calculation ToolKit (dctk)
+
+## Introduction
 
 This toolkit is currently used to house the files for the TAU 2020 contest.
+Please look in INSTALL.md for installation and testing directions.
 
-Please look in INSTALL.txt for installation and testing directions.
-
+## Inventory
 src/ contains the source files for the infrastructure. The contestants
 should not touch these files (but report any bugs found).
 
@@ -22,11 +23,14 @@ can use this code to generate their own testcases.
 ** Note that this code is still under development and APIs may change,
    but it shouldn't be too significant at this point. **
 
-SPICE Deck Writer
+## SPICE Deck Writer
+
 The spice deck writer is functional for single input/output cells.
 It needs updates to handle multi input/output cells.
 
-TODO
+## Todo
+
+* install ASU library
 * add call to spice simulator into delay_calc_tool.
 * add support for multi-input cells (sensitization of for side input pins).
 * add comparator to delay_calc_tool.
