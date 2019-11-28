@@ -12,7 +12,6 @@ set pimodels = "--pimodels"
 
 # File containing Liberty models in CCS form
 set library = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.postprocessed.lib"
-#set library = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.lib"
 
 # Generate random dataset
 # output will be $dataset.circuits.yaml and $dataset.spef

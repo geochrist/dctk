@@ -7,10 +7,11 @@ Overview
 1.  Install Parser-SPEF in a directory parallel to this one.
 2.  Install yaml-cpp in a directory parallel to this one.
 3.  Build src-liberty_parse-2.6.
-4.  Download Nangate library.
-5.  Download OpenRoad Utilities.
-6.  Download NCSU FreePDK45 version 1.4 (optional)
-7.  Compile and test dctk.
+6.  Download ASU 7nm Predictive Libraries. (optional)
+4.  Download Nangate FreePDK45 Library (for cells)
+5.  Download OpenRoad Utilities (for SPICE models)
+7.  Download NCSU FreePDK45 version 1.4 (optional)
+8.  Compile and test dctk.
 
 Details
 -------
@@ -67,7 +68,7 @@ For the text below, assume:
   The result should be a file named liblibparse.a in the src-liberty_parse-2.6
   directory.
 
-### ASU Libraries
+### ASU 7nm Predictive Libraries
 
   ***The current plan of record is use these libraries for the competition.***
 
@@ -86,6 +87,11 @@ For the text below, assume:
     cd ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/LIB/CCS
     sed '/waveform_time_template/,/\}/d ; /^[[:space:]]*driver_waveform/d' asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.lib > asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.postprocessed.lib
 
+  You'll need to make a final manual edit to add the following information into the library scope:
+
+    voltage_map(VDD, 0.7);
+    voltage_map(VSS, 0.0);
+  
   Note that we are postprocessing only the inverter and buffer library since we are limiting the TAU 2020 Contest to inverters and buffers.
 
   Other information
@@ -93,12 +99,16 @@ For the text below, assume:
   * spice netlists are available at `ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp`
   * spice models are available at `ASAP7_PDKandLIB_v1p6/asap7PDK_r1p6/models/hspice/7nm_TT.pm`
 
-  Note that the spice models are level 72 (finfets) and need HSPICE for simulation.  We are looking into an experimental version of ngspice for simulation purposes.
-  (The released version does not yet support level 72.)
+  Note that the spice models are level 72 (bsimcmg/finfets) and need HSPICE for simulation.  Please let us know if you don't have access to HSPICE
+  at your university.
+  
+  We are looking into an experimental version of ngspice for simulation purposes, but have not yet been able to get it working.
+  (The released version of ngspice does not yet support level 72.)
 
-### Nangate FreePDK45 Library (no spice models)
+### Nangate FreePDK45 Library (does not include spice models)
 
-  (Note that we are ***not*** planning to use these libraries for the competition.  This information is only for reference.)
+  While we currently are not ***not*** planning to use these libraries for the competition, these can be useful for development because they are
+  built on spice models supported by ngspice.
   
   Download the NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz from
   https://projects.si2.org/openeda.si2.org/project/showfiles.php?group_id=63#p78
@@ -115,8 +125,12 @@ For the text below, assume:
   pre-processed to work with the liberty_parser installed earlier.
   Please see dctk/etc/preprocess_nangate/ for scripts.
 
-  The HSPICE models possibly corresponding to the Library are
-  available from the OpenROAD-Utilities repository.
+  Since the contest will be focusing on only inverters and buffers,
+  remove all cells except inverters and buffers.  (A copy of a
+  resulting file is in $DIR/test/buf_inv.lib and used by $DIR/etc/runme.nangate.)
+
+  The SPICE models possibly corresponding to the Library are
+  available from the OpenROAD-Utilities repository (see below).
 
 ### OpenROAD-Utilities
 
@@ -128,17 +142,21 @@ For the text below, assume:
   The HSPICE models that somewhat correlate to the Nangate FreePDK45 Library are in
   OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.
 
-  The transistor names don't quite match ... they need to be edited.  Change the model names from
+  The model names don't quite match -- they need to be edited.  Change the model names from
 
       nmos ==> nmos_vtl
       pmos ==> pmos_vtl
 
   in a new file named OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.modified
+  These models will work with ngspice.
 
-  Note that we are not 100% sure that these models match and should be used temporarily until correlated Liberty
-  with SPICE models are generated.  In addition, it seems that only models for the nominal corner is available.
+  Note that we are not sure that these models match the ones used to
+  generate the Nangate Open Cell Library and should be used
+  temporarily until Liberty models with corresponding SPICE models are
+  available.  In addition, it seems that only models for the nominal
+  corner is available.
 
-### NCSU FreePDK45
+### NCSU FreePDK45 version 1.4 (optional)
 
   The Nangate library is based on the NCSU FreePDK45 models.  This seems to no longer be
   available at NCSU, but an archived version (1.4) seems to be available at https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz
@@ -156,7 +174,7 @@ For the text below, assume:
   are not certain that the Nangate library would correspond well with
   these spice models.  These have not been tested.
 
-### dctk
+### Compile and test dctk
 
   Go through the standard process for cmake:
 
@@ -170,12 +188,16 @@ For the text below, assume:
   Test this executable:
 
     cd $DIR/test
-    ./runme
+    ./runme.nangate # for Nangate Library -- works with ngspice
+    ./runme         # for ASU -- requires HSPICE
+ 
 
-  The result should be a
+  The result should be:
+  
   * random circuits based on inverters/buffers only (tau2020v1.circuits.yaml)
   * corresponding spice decks (spice_decks/)
 
+  
 
 
 
