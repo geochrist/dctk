@@ -67,9 +67,39 @@ For the text below, assume:
   The result should be a file named liblibparse.a in the src-liberty_parse-2.6
   directory.
 
+### ASU Libraries
+
+  ***The current plan of record is use these libraries for the competition.***
+
+  Request access to the ASU predictive 7nm libraries through the form at
+  http://asap.asu.edu/asap. (Scroll to the bottom to the Donwload button and click
+  through the agreement pages. Then fill in your details to get a download link.)
+
+  Once you get the download, unzip/untar it at the following directory:
+
+    cd $DIR/..
+
+  You should have a subdirectory directory named ASAP7_PDKandLIB_v1p6.
+
+  You'll need to postprocess the library for it to work with the parsers.  Do the following
+
+    cd ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/LIB/CCS
+    sed '/waveform_time_template/,/\}/d ; /^[[:space:]]*driver_waveform/d' asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.lib > asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.postprocessed.lib
+
+  Note that we are postprocessing only the inverter and buffer library since we are limiting the TAU 2020 Contest to inverters and buffers.
+
+  Other information
+
+  * spice netlists are available at `ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp`
+  * spice models are available at `ASAP7_PDKandLIB_v1p6/asap7PDK_r1p6/models/hspice/7nm_TT.pm`
+
+  Note that the spice models are level 72 (finfets) and need HSPICE for simulation.  We are looking into an experimental version of ngspice for simulation purposes.
+  (The released version does not yet support level 72.)
+
 ### Nangate FreePDK45 Library (no spice models)
 
-
+  (Note that we are ***not*** planning to use these libraries for the competition.  This information is only for reference.)
+  
   Download the NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz from
   https://projects.si2.org/openeda.si2.org/project/showfiles.php?group_id=63#p78
   (You will need to register with the organization.)
