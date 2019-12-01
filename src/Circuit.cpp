@@ -151,6 +151,29 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
         }
     }
 
+    // figure out waveform
+    
+    std::istringstream iss(_input_waveform);
+    std::vector<std::string> results((std::istream_iterator<std::string>(iss)),
+                                     std::istream_iterator<std::string>());
+
+    // there should be exactly 2 tokens
+    const std::string& type = results[0];
+    if (type != "ramp") {
+        std::cout << "Warning:  Found " << type << " waveform, but only ramp supported.  Assuming is ramp." << std::endl;
+    }
+
+    float tramp = atof(results[1].c_str());
+    
+    // TODO: scale according to library thresholds
+    float scale = 100.0 / (cellLib.get_slew_upper_threshold_pct_rise() -
+                           cellLib.get_slew_lower_threshold_pct_rise());
+    float tramp_rise = tramp * scale;
+
+    scale = 100.0 / (cellLib.get_slew_upper_threshold_pct_fall() -
+                     cellLib.get_slew_lower_threshold_pct_fall());
+    float tramp_fall = tramp * scale;
+        
     // set power_rail
     const float power_rail_voltage = get_power_rail_voltage();
 
@@ -164,8 +187,6 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
 
     // build up PWL; times in ps
     const float tstart = 100.0;
-    // TODO: pull from Circuit.yaml
-    const float tramp = 50.0;
     const float tpulse = 400.0;
 
     // voltage source
@@ -178,19 +199,17 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
     // beginning of rise
     fs << " " << tstart << "p 0.0v";
     // end of rise
-    fs << " " << tstart+tramp << "p " << power_rail_voltage << "v" ;
+    fs << " " << tstart + tramp_rise << "p " << power_rail_voltage << "v" ;
     // beginning of fall
-    fs << " " << tstart+tramp+tpulse << "p " << power_rail_voltage << "v" ;
+    fs << " " << tstart + tramp_rise + tpulse << "p " << power_rail_voltage << "v" ;
     // end of fall
-    fs << " " << tstart+tramp+tpulse+tramp << "p 0.0v";
+    fs << " " << tstart + tramp_rise + tpulse + tramp_fall << "p 0.0v";
     // end of simulation
-    fs << " " << tstart+tramp+tpulse+tramp+tpulse << "p 0.0v";
-
+    fs << " " << tstart + tramp_rise + tpulse + tramp_fall + tpulse << "p 0.0v";
     fs << ")" << std::endl;
 
     // store the total simulation time for the .tran statement
-    set_sim_time(tstart+tramp+tpulse+tramp+tpulse);
-
+    set_sim_time(tstart + tramp_rise + tpulse + tramp_fall + tpulse);
 
 }
 
