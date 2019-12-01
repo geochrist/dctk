@@ -24,7 +24,7 @@ public:
         if (item != _cellMap.end()) {
             return item->second;
         } else {
-            return NULL;
+            return nullptr;
         }
     }
 

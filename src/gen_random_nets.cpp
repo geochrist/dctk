@@ -612,18 +612,24 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         //
         // Driver
         //
-        dctk::Cell* driver = NULL;
+        dctk::Cell* driver = nullptr;
 
         // find a cell with an output pin
-        dctk::CellPin* driver_output_pin = NULL;
-        dctk::CellPin* driver_input_pin = NULL;
-        while (driver_output_pin == NULL or driver_input_pin == NULL) {
+        dctk::CellPin* driver_output_pin = nullptr;
+        dctk::CellPin* driver_input_pin = nullptr;
+        while (driver_output_pin == nullptr or driver_input_pin == nullptr) {
             driver = cell_lib->get_random_cell();
             // cout << "Trying cell " << driver->get_name() << endl;
             driver_output_pin = driver->get_output_pin();
+
             // need to find an input pin that drives output pin
-            // Potential bug: is it possible that the random input pin does not drive output pin?
-            driver_input_pin = driver->get_random_input_pin();
+
+            dctk::CellArc* random_arc = driver_output_pin->get_random_arc();
+            if (random_arc == nullptr) {
+                driver_input_pin = nullptr;
+            } else {
+                driver_input_pin = random_arc->get_related_pin();
+            }
         }
 
 
@@ -651,11 +657,11 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         for( int j=0; j<num_receivers; j++ ) {
 
             // find a random cell that has an input pin
-            dctk::CellPin* receiver_input_pin = NULL;
-            dctk::CellPin* receiver_output_pin = NULL;
-            dctk::Cell* receiver = NULL;
+            dctk::CellPin* receiver_input_pin = nullptr;
+            dctk::CellPin* receiver_output_pin = nullptr;
+            dctk::Cell* receiver = nullptr;
 
-            while (receiver_input_pin == NULL or receiver_output_pin==NULL) {
+            while (receiver_input_pin == nullptr or receiver_output_pin==nullptr) {
                 receiver = cell_lib->get_random_cell();
                 // cout << "Trying cell " << receiver->get_name() << endl;
                 receiver_input_pin = receiver->get_random_input_pin();
@@ -748,8 +754,8 @@ int main( int argc, char * const argv[] )
 
     // Liberty
     bool read_liberty_file = false;
-    char* liberty_file = NULL;
-    dctk::CellLib* cell_lib = NULL;
+    char* liberty_file = nullptr;
+    dctk::CellLib* cell_lib = nullptr;
     int read_lib_retval = 0;
 
     // Test Circuits

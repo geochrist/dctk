@@ -17,16 +17,16 @@ CellArc::CellArc(CellPin* pin, std::string& related_pin_str) {
     _related_pin_str = related_pin_str;
 
     // NLDM tables
-    _cell_rise_table = NULL;
-    _cell_fall_table = NULL;
-    _rise_transition_table = NULL;
-    _fall_transition_table = NULL;
+    _cell_rise_table = nullptr;
+    _cell_fall_table = nullptr;
+    _rise_transition_table = nullptr;
+    _fall_transition_table = nullptr;
 
     // Receiver Capacitance tables
-    _receiver_capacitance1_fall_table = NULL;
-    _receiver_capacitance1_rise_table = NULL;
-    _receiver_capacitance2_fall_table = NULL;
-    _receiver_capacitance2_rise_table = NULL;
+    _receiver_capacitance1_fall_table = nullptr;
+    _receiver_capacitance1_rise_table = nullptr;
+    _receiver_capacitance2_fall_table = nullptr;
+    _receiver_capacitance2_rise_table = nullptr;
 
 }
 
@@ -68,8 +68,8 @@ void CellArc::add_current_fall_table(liberty_value_data* d) {
 
 void dump_table(const liberty_value_data* table, const std::string& table_name) {
 
-    // don't dump anything if we got a NULL pointer.
-    if (table == NULL) {
+    // don't dump anything if we got a nullptr.
+    if (table == nullptr) {
         return;
     }
 

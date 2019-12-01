@@ -380,7 +380,7 @@ bool Circuit::is_positive_unate(CellLib& cellLib) {
     Cell* cell = cellLib.get_cell(_driver_celltype);
 
     // by this time, we should always be able to find the cell
-    assert(cell != NULL);
+    assert(cell != nullptr);
 
     // find output pin (returns first output pin found)
     // TODO add support for multiple output pins

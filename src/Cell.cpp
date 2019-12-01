@@ -74,7 +74,7 @@ CellPin* Cell::get_output_pin() {
         }
     }
 
-    return NULL;
+    return nullptr;
 
 }
 
@@ -93,7 +93,7 @@ CellPin* Cell::get_random_input_pin() {
 
     int num_input_pins = input_pins.size();
     if (input_pins.size() == 0) {
-        return NULL;
+        return nullptr;
     }
 
     int random_input_pin = rand() % num_input_pins;

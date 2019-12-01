@@ -34,7 +34,7 @@ CellArc* CellPin::find_arc(const std::string& input_pin) {
     }
 
     // arc doesn't exist
-    return NULL;
+    return nullptr;
 }
 
 void CellPin::dump() {
@@ -50,6 +50,15 @@ void CellPin::dump() {
 
 }
 
-}
+CellArc* CellPin::get_random_arc() {
+    // find a random arc attached to that output pin
 
+    if (_arcs.size() == 0) {
+        return (nullptr);
+    }
+    size_t index = rand() % _arcs.size();
+    return _arcs[index];
+
+}
+}
 

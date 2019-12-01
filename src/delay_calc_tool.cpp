@@ -54,16 +54,16 @@ main(int argc, char **argv)
     int c;
 
     // Liberty
-    char* liberty_file = NULL;
-    dctk::CellLib* cell_lib = NULL;
+    char* liberty_file = nullptr;
+    dctk::CellLib* cell_lib = nullptr;
     int read_lib_retval = 0;
 
     // SPEF
-    char* spef_file = NULL;
-    spef::Spef* spef = NULL;
+    char* spef_file = nullptr;
+    spef::Spef* spef = nullptr;
 
     // Test Circuits
-    char* test_circuits_file = NULL;
+    char* test_circuits_file = nullptr;
     dctk::CircuitPtrVec circuitMgr;
     int read_circuit_retval = 0;
 
@@ -71,13 +71,13 @@ main(int argc, char **argv)
     int compute_delay_retval = 0;
 
     // spice decks
-    char* spice_dir_name = NULL;
+    char* spice_dir_name = nullptr;
 
     // spice library
-    char* spice_lib_name = NULL;
+    char* spice_lib_name = nullptr;
 
     // spice models
-    char* spice_models = NULL;
+    char* spice_models = nullptr;
     
     // get options
     int option_index = 0;

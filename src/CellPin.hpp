@@ -33,6 +33,9 @@ public:
 
     CellArc* find_arc(const std::string& input_pin);
 
+    CellArc* get_random_arc();
+
+
 private:
 
     friend class Cell;
