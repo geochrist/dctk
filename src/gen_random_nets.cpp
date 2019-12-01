@@ -1,4 +1,4 @@
-#include "RandomRCNet.h"
+#include "RandomRCNet.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
