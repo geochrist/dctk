@@ -136,4 +136,48 @@ void CellArc::dump() {
 
 }
 
+void get_min_max_slew(liberty_value_data *table, float& min_slew, float& max_slew) {
+
+    int num_slews = table->dim_sizes[0];
+    min_slew = table->index_info[0][0];
+    max_slew = table->index_info[0][num_slews-1];
+
+}
+
+float rand_FloatRange(float a, float b)
+{
+    return ((b - a) * ((float)rand() / RAND_MAX)) + a;
+}
+
+float CellArc::get_random_slew() {
+    // return slew rate that is with range of all the nldm tables
+
+    // TODO:  This routine assumes the first index is slew and
+    // second index is load cap
+
+    
+    float cell_rise_min_slew = 0.0;
+    float cell_rise_max_slew = 0.0;
+    float cell_fall_min_slew = 0.0;
+    float cell_fall_max_slew = 0.0;
+    float rise_transition_min_slew = 0.0;
+    float rise_transition_max_slew = 0.0;
+    float fall_transition_min_slew = 0.0;
+    float fall_transition_max_slew = 0.0;
+    
+    get_min_max_slew(_cell_rise_table, cell_rise_min_slew, cell_rise_max_slew);
+    get_min_max_slew(_cell_fall_table, cell_fall_min_slew, cell_fall_max_slew);
+    get_min_max_slew(_rise_transition_table, rise_transition_min_slew, rise_transition_max_slew);
+    get_min_max_slew(_fall_transition_table, fall_transition_min_slew, fall_transition_max_slew);
+
+    float min_slew_limit = std::max( std::max( cell_rise_min_slew, cell_fall_min_slew ),
+                                     std::max( rise_transition_min_slew, fall_transition_min_slew ) );
+    float max_slew_limit = std::min( std::min( cell_rise_max_slew, cell_fall_max_slew ),
+                                     std::min( rise_transition_max_slew, fall_transition_max_slew ) );
+
+    std::cout << "min slew = " << min_slew_limit << "; max slew = " << max_slew_limit << std::endl;
+
+    return rand_FloatRange( min_slew_limit, max_slew_limit);
+        
+}
 }

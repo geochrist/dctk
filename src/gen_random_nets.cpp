@@ -623,7 +623,6 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
             driver_output_pin = driver->get_output_pin();
 
             // need to find an input pin that drives output pin
-
             dctk::CellArc* random_arc = driver_output_pin->get_random_arc();
             if (random_arc == nullptr) {
                 driver_input_pin = nullptr;
@@ -645,6 +644,8 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         // Receivers
         //
 
+        float ramp_time = 51.0;
+        
         int num_receivers = rand() % max_num_receivers + 1;
         if (pimodels) {
             num_receivers = 1;
@@ -653,7 +654,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         std::vector<std::string> receivers;
         std::vector<std::string> receivers_celltypes;
         std::string receiver_input_output_str;
-
+        
         for( int j=0; j<num_receivers; j++ ) {
 
             // find a random cell that has an input pin
@@ -663,9 +664,19 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 
             while (receiver_input_pin == nullptr or receiver_output_pin==nullptr) {
                 receiver = cell_lib->get_random_cell();
-                // cout << "Trying cell " << receiver->get_name() << endl;
-                receiver_input_pin = receiver->get_random_input_pin();
+                
                 receiver_output_pin = receiver->get_output_pin();
+
+                // need to find an input pin that drives output pin
+                dctk::CellArc* random_arc = receiver_output_pin->get_random_arc();
+                if (random_arc == nullptr) {
+                    receiver_input_pin = nullptr;
+                } else {
+                    receiver_input_pin = random_arc->get_related_pin();
+                }
+
+                // scale to ps (assumes input lib is in ns)
+                ramp_time = random_arc->get_random_slew() * 1000.00 ;
             }
 
             // build receiver node
@@ -681,7 +692,6 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
             }
         }
 
-
         double net_len =  double(rand() % max_len_int + 1);
         int net_max_lyr = rand() % max_layer_index + 1;
 
@@ -694,7 +704,8 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         // add to a circuit library
         dctk::Circuit* c = new dctk::Circuit(net_name);
 
-        c->set_input_waveform("ramp 50");
+        std::string input_waveform = "ramp " + to_string(ramp_time) ;
+        c->set_input_waveform(input_waveform);
 
         // driver
         c->set_driver(driver_input_output_str);

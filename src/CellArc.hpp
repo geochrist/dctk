@@ -70,6 +70,9 @@ public:
     void add_current_rise_table(liberty_value_data* d);
     void add_current_fall_table(liberty_value_data* d);
 
+    // Utility routines
+    float get_random_slew();
+
     // debug
     void dump();
 
