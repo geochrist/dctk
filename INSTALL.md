@@ -80,7 +80,7 @@ For the text below, assume:
 
     cd $DIR/..
 
-  You should have a subdirectory directory named ASAP7_PDKandLIB_v1p6.
+  You should have a subdirectory directory named `ASAP7_PDKandLIB_v1p6`.
 
   You'll need to postprocess the library for it to work with the parsers.  Do the following
 
@@ -110,8 +110,8 @@ For the text below, assume:
   While we currently are not ***not*** planning to use these libraries for the competition, these can be useful for development because they are
   built on spice models supported by ngspice.
   
-  Download the NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz from
-  https://projects.si2.org/openeda.si2.org/project/showfiles.php?group_id=63#p78
+  Download the `NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz` from
+  `https://projects.si2.org/openeda.si2.org/project/showfiles.php?group_id=63#p78`
   (You will need to register with the organization.)
 
   Extract in this directory:  
@@ -120,14 +120,14 @@ For the text below, assume:
     tar xvf NangateOpenCellLibrary_PDKv1_3_v2010_12.tgz
 
   You'll then get a subdirectory named
-  NangateOpenCellLibrary_PDKv1_3_v2010_12/.  The CCS Liberty models
+  `NangateOpenCellLibrary_PDKv1_3_v2010_12/`.  The CCS Liberty models
   are in the Front_End/Liberty/CCS directory.  They will need to be
   pre-processed to work with the liberty_parser installed earlier.
   Please see dctk/etc/preprocess_nangate/ for scripts.
 
   Since the contest will be focusing on only inverters and buffers,
   remove all cells except inverters and buffers.  (A copy of a
-  resulting file is in $DIR/test/buf_inv.lib and used by $DIR/etc/runme.nangate.)
+  resulting file is in `$DIR/test/buf_inv.lib `and used by `$DIR/etc/runme.nangate`.)
 
   The SPICE models possibly corresponding to the Library are
   available from the OpenROAD-Utilities repository (see below).
@@ -140,14 +140,14 @@ For the text below, assume:
     git clone https://github.com/The-OpenROAD-Project/OpenROAD-Utilities.git
 
   The HSPICE models that somewhat correlate to the Nangate FreePDK45 Library are in
-  OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.
+ ` OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m`.
 
   The model names don't quite match -- they need to be edited.  Change the model names from
 
       nmos ==> nmos_vtl
       pmos ==> pmos_vtl
 
-  in a new file named OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.modified
+  in a new file named `OpenROAD-Utilities/TimerCalibration/Free45PDK/gpdk45nm.m.modified`
   These models will work with ngspice.
 
   Note that we are not sure that these models match the ones used to
@@ -159,14 +159,14 @@ For the text below, assume:
 ### NCSU FreePDK45 version 1.4 (optional)
 
   The Nangate library is based on the NCSU FreePDK45 models.  This seems to no longer be
-  available at NCSU, but an archived version (1.4) seems to be available at https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz
+  available at NCSU, but an archived version (1.4) seems to be available at `https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz`
 
   Download the file to this location and extract using:
 
     cd $DIR/..
     gzcat ncsa-FreePDK45-1.4.tar.gz | tar xvf -
   
-  The models will be at FreePDK45/ncsu_basekit/models/hspice/*.inc.
+  The models will be at `FreePDK45/ncsu_basekit/models/hspice/*.inc`.
 
   But the Nangate library indicated that it was characterized using
   version 1.3, and the release notes for FreePDK45 version 1.4
@@ -196,6 +196,8 @@ For the text below, assume:
   
   * random circuits based on inverters/buffers only (tau2020v1.circuits.yaml)
   * corresponding spice decks (spice_decks/)
+
+  The SPICE decks for the Nangate test circuits should work with ngspice -- this has been tested.  The SPICE decks for the ASU-based test circuits should work for HSPICE, but this has not been tested.
 
   
 
