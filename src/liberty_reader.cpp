@@ -178,31 +178,139 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                 cell_lib->set_nom_voltage(si2drSimpleAttrGetFloat64Value(library_attr, &err));
             }
             if (library_attr_name == "slew_lower_threshold_pct_fall") {
-                cell_lib->set_slew_lower_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_slew_lower_threshold_pct_fall(fvalue);
             }
             if (library_attr_name == "slew_lower_threshold_pct_rise") {
-                cell_lib->set_slew_lower_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_slew_lower_threshold_pct_rise(fvalue);
             }
             if (library_attr_name == "slew_upper_threshold_pct_fall") {
-                cell_lib->set_slew_upper_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_slew_upper_threshold_pct_fall(fvalue);
             }
             if (library_attr_name == "slew_upper_threshold_pct_rise") {
-                cell_lib->set_slew_upper_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_slew_upper_threshold_pct_rise(fvalue);
             }
             if (library_attr_name == "slew_derate_from_library") {
-                cell_lib->set_slew_derate_from_library(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_slew_derate_from_library(fvalue);
             }
             if (library_attr_name == "input_threshold_pct_fall") {
-                cell_lib->set_input_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_input_threshold_pct_fall(fvalue);
             }
             if (library_attr_name == "input_threshold_pct_rise") {
-                cell_lib->set_input_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_input_threshold_pct_rise(fvalue);
             }
             if (library_attr_name == "output_threshold_pct_fall") {
-                cell_lib->set_output_threshold_pct_fall(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_output_threshold_pct_fall(fvalue);
             }
             if (library_attr_name == "output_threshold_pct_rise") {
-                cell_lib->set_output_threshold_pct_rise(si2drSimpleAttrGetFloat64Value(library_attr, &err));
+                si2drValueTypeT type = si2drSimpleAttrGetValueType(library_attr, &err);
+                float fvalue = 0.0;
+                switch (type) {
+                case SI2DR_FLOAT64:
+                    fvalue = si2drSimpleAttrGetFloat64Value(library_attr, &err);
+                    break;
+                case SI2DR_INT32:
+                    fvalue = (float)si2drSimpleAttrGetInt32Value(library_attr, &err);
+                    break;
+                default:
+                    break;
+                }
+                cell_lib->set_output_threshold_pct_rise(fvalue);
             }
 
         }
