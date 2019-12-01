@@ -175,7 +175,7 @@ float CellArc::get_random_slew() {
     float max_slew_limit = std::min( std::min( cell_rise_max_slew, cell_fall_max_slew ),
                                      std::min( rise_transition_max_slew, fall_transition_max_slew ) );
 
-    std::cout << "min slew = " << min_slew_limit << "; max slew = " << max_slew_limit << std::endl;
+    // std::cout << "min slew = " << min_slew_limit << "; max slew = " << max_slew_limit << std::endl;
 
     return rand_FloatRange( min_slew_limit, max_slew_limit);
         
