@@ -70,6 +70,38 @@ public:
     void add_current_rise_table(liberty_value_data* d);
     void add_current_fall_table(liberty_value_data* d);
 
+    const liberty_value_data* get_cell_rise_table() {
+        return _cell_rise_table;
+    }
+    const liberty_value_data* get_cell_fall_table() {
+        return _cell_fall_table;
+    }
+    const liberty_value_data* get_rise_transition_table() {
+        return _rise_transition_table;
+    }
+    const liberty_value_data* get_fall_transition_table() {
+        return _fall_transition_table;
+    }
+    const liberty_value_data* get_receiver_capacitance1_fall_table() {
+        return _receiver_capacitance1_fall_table;
+    }
+    const liberty_value_data* get_receiver_capacitance1_rise_table() {
+        return _receiver_capacitance1_rise_table;
+    }
+    const liberty_value_data* get_receiver_capacitance2_fall_table() {
+        return _receiver_capacitance2_fall_table;
+    }
+    const liberty_value_data* get_receiver_capacitance2_rise_table() {
+        return _receiver_capacitance2_rise_table;
+    }
+
+    const std::vector<liberty_value_data*>& get_output_current_rise_tables() {
+        return _output_current_rise_tables;
+    }
+    const std::vector<liberty_value_data*>& get_output_current_fall_tables() {
+        return _output_current_fall_tables;
+    }
+    
     // Utility routines
     float get_random_slew();
 
