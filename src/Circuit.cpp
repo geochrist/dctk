@@ -24,6 +24,8 @@ Circuit::Circuit(const std::string& s) {
     _ccs_fall_delay = 0.0;
     _ccs_rise_slew = 0.0;
     _ccs_fall_slew = 0.0;
+    _spice_measure = SpiceMeasure::ngspice;
+    
 }
 
 Circuit& Circuit::set_input_waveform(const std::string& s) {
@@ -420,26 +422,60 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
 
     const float delay_threshold = get_power_rail_voltage()/2.0;
 
-    if (is_positive_unate(cellLib)) {
-        fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
-           << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
-           << delay_threshold << " rise=1" << std::endl;
-        fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
-           << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
-           << delay_threshold << "v fall=1" << std::endl;
-    } else {
-        fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
-           << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
-           << delay_threshold << "v fall=1" << std::endl;
-        fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
-           << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
-           << delay_threshold << "v rise=1" << std::endl;
+    // spice measure format
+    if (_spice_measure == SpiceMeasure::ngspice ) {
+
+        if (is_positive_unate(cellLib)) {
+            fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
+               << delay_threshold << " rise=1" << std::endl;
+            fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
+               << delay_threshold << "v fall=1" << std::endl;
+        } else {
+            fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
+               << delay_threshold << "v fall=1" << std::endl;
+            fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
+               << delay_threshold << "v rise=1" << std::endl;
+        }
+
+        return;
     }
+    
+    if (_spice_measure == SpiceMeasure::xyce ) {
+
+        if (is_positive_unate(cellLib)) {
+            fs << ".measure tran rise_delay trig v(" << input_pin << ")="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << ")="
+               << delay_threshold << " rise=1" << std::endl;
+            fs << ".measure tran fall_delay trig v(" << input_pin << ")="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << ")="
+               << delay_threshold << "v fall=1" << std::endl;
+        } else {
+            fs << ".measure tran fall_delay trig v(" << input_pin << ")="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << ")="
+               << delay_threshold << "v fall=1" << std::endl;
+            fs << ".measure tran rise_delay trig v(" << input_pin << ")="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << ")="
+               << delay_threshold << "v rise=1" << std::endl;
+        }
+
+        return;
+    }
+
 
 }
 
 void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spef::Spef* spef,
-                               const char* spice_lib_name, const char* spice_models) {
+                               const char* spice_lib_name, const char* spice_models,
+                               const char* simulator) {
+
+
+    if (simulator && !strcmp(simulator, "xyce")) {
+        set_xyce_measure();
+    }
 
     std::fstream fs;
     std::string filename = dirname + "/" + _name + ".sp";

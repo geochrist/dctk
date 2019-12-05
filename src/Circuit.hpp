@@ -46,7 +46,8 @@ public:
     void write_spice_load_parasitics(std::fstream& fs, CellLib& cl);
     void write_spice_commands(std::fstream& fs, CellLib& cl);
     void write_spice_deck(const std::string&, CellLib* cl, spef::Spef* s,
-                          const char* spice_lib_name, const char* spice_models);
+                          const char* spice_lib_name, const char* spice_models,
+                          const char* simulator);
     
     void gen_yaml(YAML::Emitter& e);
 
@@ -121,6 +122,14 @@ public:
         return _sim_time;
     }
 
+    void set_ngspice_measure () {
+        _spice_measure = SpiceMeasure::ngspice;
+    }
+
+    void set_xyce_measure () {
+        _spice_measure = SpiceMeasure::xyce;
+    }
+
 private:
 
     std::string _name;
@@ -144,6 +153,10 @@ private:
     float _ccs_fall_slew;
 
     float _sim_time;
+
+    // spice measurement styles
+    enum class SpiceMeasure { ngspice, xyce} _spice_measure;
+
 };
 
 }

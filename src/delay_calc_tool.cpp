@@ -79,6 +79,9 @@ main(int argc, char **argv)
     // spice models
     char* spice_models = nullptr;
     
+    // simulator
+    char* simulator = nullptr;
+    
     // get options
     int option_index = 0;
     static struct option long_options[] = {
@@ -88,6 +91,7 @@ main(int argc, char **argv)
         {"spice_dir", required_argument, 0, 'd'},
         {"spice_lib", required_argument, 0, 'x'},
         {"spice_models", required_argument, 0, 'm'},
+        {"simulator", required_argument, 0, 'z'},
         {0,         0,                 0,  0 }
     };
 
@@ -120,6 +124,10 @@ main(int argc, char **argv)
         case 'm':
             spice_models = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(spice_models, optarg);
+            break;
+        case 'z':
+            simulator = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(simulator, optarg);
             break;
         case '?':
             break;
@@ -216,11 +224,13 @@ main(int argc, char **argv)
 
     // write spice decks to directory
     if (spice_dir_name) {
+
         printf("Writing spice decks into %s\n", spice_dir_name);
         for (std::size_t i = 0; i < circuitMgr.size(); i++) {
-            //            circuitMgr[i]->dump();
+
             circuitMgr[i]->write_spice_deck(std::string(spice_dir_name),
-                                            cell_lib, spef, spice_lib_name, spice_models);
+                                            cell_lib, spef, spice_lib_name, spice_models,
+                                            simulator);
         }
     }
 

@@ -99,11 +99,15 @@ For the text below, assume:
   * spice netlists are available at `ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp`
   * spice models are available at `ASAP7_PDKandLIB_v1p6/asap7PDK_r1p6/models/hspice/7nm_TT.pm`
 
-  Note that the spice models are level 72 (bsimcmg/finfets) and need HSPICE for simulation.  Please let us know if you don't have access to HSPICE
-  at your university.
+The spice netlists are not quite in the right format.  The "W=<width>" parameter needs to be removed as well as all parameters prefixed with \$.  Use the following commands in the directory:
   
-  We are looking into an experimental version of ngspice for simulation purposes, but have not yet been able to get it working.
-  (The released version of ngspice does not yet support level 72.)
+    sed 's/ W=[a-zA-Z0-9\.\+-]*//g; s/\$.*//g' asap7sc7p5t_INVBUF_RVT.sp > asap7sc7p5t_INVBUF_RVT.sp.modified
+
+hereafter, use the *.modifed version of the files for SPICE simulations (below).
+
+In addtion, note that the spice models are level 72 (bsimcmg/finfets) and need Spectre for simulation, as-is, but to get these models to work with Xyce, please change the level value to 107.
+(Name the modified model files with a .modified suffix.)
+
 
 ### Nangate FreePDK45 Library (does not include spice models)
 
@@ -189,7 +193,7 @@ For the text below, assume:
 
     cd $DIR/test
     ./runme.nangate # for Nangate Library -- works with ngspice
-    ./runme         # for ASU -- requires HSPICE
+    ./runme.asu     # for ASU -- requires Xyce
  
 
   The result should be:
@@ -197,7 +201,9 @@ For the text below, assume:
   * random circuits based on inverters/buffers only (tau2020v1.circuits.yaml)
   * corresponding spice decks (spice_decks/)
 
-  The SPICE decks for the Nangate test circuits should work with ngspice -- this has been tested.  The SPICE decks for the ASU-based test circuits should work for HSPICE, but this has not been tested.
+  The SPICE decks for the Nangate test circuits should work with ngspice -- this has been tested.  
+  The SPICE decks for the ASU-based test circuits should work for Xyce -- this has been tested.
+ 
 
   
 

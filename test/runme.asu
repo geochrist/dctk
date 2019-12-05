@@ -19,8 +19,8 @@ set library = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/
 
 # Read results into delay calculation tool
 set spice_decks = "spice_decks"
-set spice_lib = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp"
-set spice_models = "../../ASAP7_PDKandLIB_v1p6/asap7PDK_r1p6/models/hspice/7nm_TT.pm"
+set spice_lib = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp.modified"
+set spice_models = "../../ASAP7_PDKandLIB_v1p6/asap7PDK_r1p6/models/hspice/7nm_TT.pm.modified"
 rm -rf $spice_decks
 mkdir $spice_decks
 ../build/delay_calc_tool \
@@ -29,7 +29,8 @@ mkdir $spice_decks
   --spef $dataset.spef \
   --spice_lib $spice_lib \
   --spice_models $spice_models \
-  --spice_dir $spice_decks
+  --spice_dir $spice_decks \
+  --simulator xyce
 
 
 
