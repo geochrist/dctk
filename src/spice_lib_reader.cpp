@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iterator>
 #include "spice_lib_reader.hpp"
 #include "CellLib.hpp"
 
