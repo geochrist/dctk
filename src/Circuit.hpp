@@ -24,15 +24,26 @@ public:
     Circuit(const std::string&);
     Circuit& set_input_waveform(const std::string&);
 
+    const std::string& get_name();
+    const std::string& get_input_waveform();
+
     // driver info
     Circuit& set_driver(const std::string&); // instance name
     Circuit& set_driver_celltype(const std::string&);
+
+    const std::string& get_driver();
+    const std::string& get_driver_celltype();
+
 
     // receiver info
     Circuit& set_load(const std::string&); // instance name
     Circuit& set_load_celltype(const std::string&);
     Circuit& set_load_interconnect(const std::string&);
 
+    const std::string& get_load();
+    const std::string& get_load_celltype();
+    const PiModel& get_load_interconnect();
+    
     // misc routines
     bool is_positive_unate(CellLib& cl);
 
@@ -137,7 +148,7 @@ private:
     std::string _driver;
     std::string _driver_celltype;
     std::string _load;
-    std::string _load_celltype;
+    std::string _load_celltype; 
     PiModel _load_interconnect;
 
     float _power_rail_voltage;

@@ -33,15 +33,36 @@ Circuit& Circuit::set_input_waveform(const std::string& s) {
     return *this;
 }
 
+const std::string& Circuit::get_name() {
+        return _name;
+    }
+
+const std::string& Circuit::get_input_waveform() {
+    return _input_waveform;
+}
+
+// driver
 Circuit& Circuit::set_driver(const std::string& s) {
+
     this->_driver = s;
     return *this;
 }
 Circuit& Circuit::set_driver_celltype(const std::string& s) {
+
     this->_driver_celltype = s;
     return *this;
 }
 
+const std::string& Circuit::get_driver() {
+
+    return _driver;
+}
+const std::string& Circuit::get_driver_celltype() {
+
+    return _driver_celltype;
+}
+
+// receiver
 Circuit& Circuit::set_load(const std::string& s) {
 
     this->_load = s;
@@ -65,6 +86,21 @@ Circuit& Circuit::set_load_interconnect(const std::string& s) {
     this->_load_interconnect.set_res(stof(results[1]));
     this->_load_interconnect.set_cfar(stof(results[2]));
     return *this;
+}
+
+const std::string& Circuit::get_load() {
+
+    return _load;
+}
+
+const std::string& Circuit::get_load_celltype() {
+
+    return _load_celltype;
+}
+
+const PiModel& Circuit::get_load_interconnect() {
+
+    return _load_interconnect;
 }
 
 void Circuit::dump() {
