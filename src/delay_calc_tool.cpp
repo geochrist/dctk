@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <optional>
+#include <stdlib.h>
 //#include <algorithm>
 
 #include <yaml-cpp/yaml.h>
@@ -82,6 +83,9 @@ main(int argc, char **argv)
     // simulator
     char* simulator = nullptr;
     
+    // run simulation
+    bool run_sims = false;
+    
     // get options
     int option_index = 0;
     static struct option long_options[] = {
@@ -92,6 +96,7 @@ main(int argc, char **argv)
         {"spice_lib", required_argument, 0, 'x'},
         {"spice_models", required_argument, 0, 'm'},
         {"simulator", required_argument, 0, 'z'},
+        {"run_sims", no_argument, 0, 'r'},
         {0,         0,                 0,  0 }
     };
 
@@ -128,6 +133,9 @@ main(int argc, char **argv)
         case 'z':
             simulator = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(simulator, optarg);
+            break;
+        case 'r':
+            run_sims = true;
             break;
         case '?':
             break;
@@ -233,6 +241,28 @@ main(int argc, char **argv)
                                             simulator);
         }
     }
+
+    // run simulations if reqested
+    if (run_sims) {
+        printf("Running simulations\n");
+        for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+            std::string deck_name = std::string(spice_dir_name) + "/" + circuitMgr[i]->get_name() + ".sp";
+            printf("Running simulation for %s\n", deck_name.c_str() );
+
+            if (!strcmp(simulator,"xyce")) {
+                std::string cmd = "Xyce -l " + deck_name + ".log " + deck_name;
+                system(cmd.c_str());
+            }
+            
+            if (!strcmp(simulator,"ngspice")) {
+                std::string cmd = "ngspice -b -o " + deck_name + ".log " + deck_name;
+                system(cmd.c_str());
+            }
+
+        }
+
+    }
+
 
     // clean up
     if (liberty_file) {

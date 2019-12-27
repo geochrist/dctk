@@ -1,10 +1,10 @@
 Circuits:
   - name: net_0
     driver: I1/A/Y
-    driver_celltype: BUFx3_ASAP7_75t_R
-    input_waveform: ramp 104.452759
+    driver_celltype: INVx2_ASAP7_75t_R
+    input_waveform: ramp 275.565125
     load: I2/A/Y
-    load_celltype: BUFx12_ASAP7_75t_R
+    load_celltype: BUFx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -16,10 +16,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_1
     driver: I3/A/Y
-    driver_celltype: INVx5_ASAP7_75t_R
-    input_waveform: ramp 188.430344
+    driver_celltype: INVx1_ASAP7_75t_R
+    input_waveform: ramp 80.595253
     load: I4/A/Y
-    load_celltype: BUFx6f_ASAP7_75t_R
+    load_celltype: INVx1_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -31,10 +31,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_2
     driver: I5/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 51.455330
+    driver_celltype: INVx13_ASAP7_75t_R
+    input_waveform: ramp 28.107279
     load: I6/A/Y
-    load_celltype: BUFx6f_ASAP7_75t_R
+    load_celltype: INVxp33_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -46,10 +46,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_3
     driver: I7/A/Y
-    driver_celltype: INVx13_ASAP7_75t_R
-    input_waveform: ramp 152.641800
+    driver_celltype: BUFx6f_ASAP7_75t_R
+    input_waveform: ramp 264.851898
     load: I8/A/Y
-    load_celltype: INVx8_ASAP7_75t_R
+    load_celltype: BUFx24_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -61,10 +61,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_4
     driver: I9/A/Y
-    driver_celltype: BUFx4f_ASAP7_75t_R
-    input_waveform: ramp 121.205727
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 270.332672
     load: I10/A/Y
-    load_celltype: BUFx6f_ASAP7_75t_R
+    load_celltype: HB1xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -77,9 +77,9 @@ Circuits:
   - name: net_5
     driver: I11/A/Y
     driver_celltype: INVx13_ASAP7_75t_R
-    input_waveform: ramp 30.236729
+    input_waveform: ramp 158.414490
     load: I12/A/Y
-    load_celltype: INVx1_ASAP7_75t_R
+    load_celltype: BUFx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -91,10 +91,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_6
     driver: I13/A/Y
-    driver_celltype: INVx2_ASAP7_75t_R
-    input_waveform: ramp 22.275564
+    driver_celltype: INVx4_ASAP7_75t_R
+    input_waveform: ramp 241.762543
     load: I14/A/Y
-    load_celltype: INVx8_ASAP7_75t_R
+    load_celltype: BUFx4f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -106,10 +106,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_7
     driver: I15/A/Y
-    driver_celltype: BUFx5_ASAP7_75t_R
-    input_waveform: ramp 41.961472
+    driver_celltype: INVx11_ASAP7_75t_R
+    input_waveform: ramp 19.510683
     load: I16/A/Y
-    load_celltype: HB2xp67_ASAP7_75t_R
+    load_celltype: INVx8_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -121,10 +121,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_8
     driver: I17/A/Y
-    driver_celltype: BUFx12_ASAP7_75t_R
-    input_waveform: ramp 162.174179
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 177.568512
     load: I18/A/Y
-    load_celltype: BUFx8_ASAP7_75t_R
+    load_celltype: INVx1_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -136,10 +136,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_9
     driver: I19/A/Y
-    driver_celltype: HB4xp67_ASAP7_75t_R
-    input_waveform: ramp 29.846106
+    driver_celltype: BUFx3_ASAP7_75t_R
+    input_waveform: ramp 58.401970
     load: I20/A/Y
-    load_celltype: BUFx8_ASAP7_75t_R
+    load_celltype: BUFx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -152,9 +152,9 @@ Circuits:
   - name: net_10
     driver: I21/A/Y
     driver_celltype: BUFx3_ASAP7_75t_R
-    input_waveform: ramp 124.321678
+    input_waveform: ramp 185.123123
     load: I22/A/Y
-    load_celltype: BUFx8_ASAP7_75t_R
+    load_celltype: INVx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -166,10 +166,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_11
     driver: I23/A/Y
-    driver_celltype: BUFx4_ASAP7_75t_R
-    input_waveform: ramp 272.460907
+    driver_celltype: INVx5_ASAP7_75t_R
+    input_waveform: ramp 217.368896
     load: I24/A/Y
-    load_celltype: HB2xp67_ASAP7_75t_R
+    load_celltype: HB1xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -181,10 +181,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_12
     driver: I25/A/Y
-    driver_celltype: HB1xp67_ASAP7_75t_R
-    input_waveform: ramp 207.829300
+    driver_celltype: BUFx12_ASAP7_75t_R
+    input_waveform: ramp 256.229828
     load: I26/A/Y
-    load_celltype: INVx3_ASAP7_75t_R
+    load_celltype: INVx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -196,10 +196,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_13
     driver: I27/A/Y
-    driver_celltype: INVx5_ASAP7_75t_R
-    input_waveform: ramp 298.213715
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 134.128632
     load: I28/A/Y
-    load_celltype: BUFx4f_ASAP7_75t_R
+    load_celltype: HB2xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -211,10 +211,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_14
     driver: I29/A/Y
-    driver_celltype: BUFx2_ASAP7_75t_R
-    input_waveform: ramp 150.279831
+    driver_celltype: INVxp33_ASAP7_75t_R
+    input_waveform: ramp 34.588104
     load: I30/A/Y
-    load_celltype: INVx2_ASAP7_75t_R
+    load_celltype: HB3xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -226,10 +226,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_15
     driver: I31/A/Y
-    driver_celltype: BUFx12f_ASAP7_75t_R
-    input_waveform: ramp 100.170662
+    driver_celltype: INVx5_ASAP7_75t_R
+    input_waveform: ramp 237.731857
     load: I32/A/Y
-    load_celltype: BUFx3_ASAP7_75t_R
+    load_celltype: BUFx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -241,10 +241,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_16
     driver: I33/A/Y
-    driver_celltype: HB3xp67_ASAP7_75t_R
-    input_waveform: ramp 101.401886
+    driver_celltype: INVx3_ASAP7_75t_R
+    input_waveform: ramp 183.022171
     load: I34/A/Y
-    load_celltype: BUFx12f_ASAP7_75t_R
+    load_celltype: INVx1_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -256,10 +256,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_17
     driver: I35/A/Y
-    driver_celltype: HB3xp67_ASAP7_75t_R
-    input_waveform: ramp 64.786308
+    driver_celltype: INVx4_ASAP7_75t_R
+    input_waveform: ramp 137.182922
     load: I36/A/Y
-    load_celltype: INVx11_ASAP7_75t_R
+    load_celltype: BUFx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -271,10 +271,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_18
     driver: I37/A/Y
-    driver_celltype: HB3xp67_ASAP7_75t_R
-    input_waveform: ramp 153.017502
+    driver_celltype: HB4xp67_ASAP7_75t_R
+    input_waveform: ramp 68.283791
     load: I38/A/Y
-    load_celltype: BUFx4f_ASAP7_75t_R
+    load_celltype: BUFx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -286,10 +286,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_19
     driver: I39/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 209.631012
+    driver_celltype: HB3xp67_ASAP7_75t_R
+    input_waveform: ramp 229.660675
     load: I40/A/Y
-    load_celltype: HB3xp67_ASAP7_75t_R
+    load_celltype: INVx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -301,10 +301,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_20
     driver: I41/A/Y
-    driver_celltype: BUFx4f_ASAP7_75t_R
-    input_waveform: ramp 66.460449
+    driver_celltype: HB4xp67_ASAP7_75t_R
+    input_waveform: ramp 133.098694
     load: I42/A/Y
-    load_celltype: INVx8_ASAP7_75t_R
+    load_celltype: INVx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -316,10 +316,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_21
     driver: I43/A/Y
-    driver_celltype: INVx2_ASAP7_75t_R
-    input_waveform: ramp 220.343521
+    driver_celltype: BUFx24_ASAP7_75t_R
+    input_waveform: ramp 180.652786
     load: I44/A/Y
-    load_celltype: BUFx6f_ASAP7_75t_R
+    load_celltype: BUFx4f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -331,10 +331,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_22
     driver: I45/A/Y
-    driver_celltype: BUFx5_ASAP7_75t_R
-    input_waveform: ramp 279.402069
+    driver_celltype: HB2xp67_ASAP7_75t_R
+    input_waveform: ramp 8.001844
     load: I46/A/Y
-    load_celltype: BUFx12_ASAP7_75t_R
+    load_celltype: HB2xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -346,10 +346,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_23
     driver: I47/A/Y
-    driver_celltype: INVx3_ASAP7_75t_R
-    input_waveform: ramp 275.210144
+    driver_celltype: BUFx6f_ASAP7_75t_R
+    input_waveform: ramp 99.511765
     load: I48/A/Y
-    load_celltype: HB1xp67_ASAP7_75t_R
+    load_celltype: INVx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -361,10 +361,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_24
     driver: I49/A/Y
-    driver_celltype: BUFx12_ASAP7_75t_R
-    input_waveform: ramp 171.111801
+    driver_celltype: INVx5_ASAP7_75t_R
+    input_waveform: ramp 149.006989
     load: I50/A/Y
-    load_celltype: BUFx6f_ASAP7_75t_R
+    load_celltype: INVxp33_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -376,10 +376,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_25
     driver: I51/A/Y
-    driver_celltype: HB1xp67_ASAP7_75t_R
-    input_waveform: ramp 298.727386
+    driver_celltype: HB4xp67_ASAP7_75t_R
+    input_waveform: ramp 293.676392
     load: I52/A/Y
-    load_celltype: INVx11_ASAP7_75t_R
+    load_celltype: BUFx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -391,10 +391,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_26
     driver: I53/A/Y
-    driver_celltype: BUFx6f_ASAP7_75t_R
-    input_waveform: ramp 247.046249
+    driver_celltype: BUFx24_ASAP7_75t_R
+    input_waveform: ramp 294.220093
     load: I54/A/Y
-    load_celltype: HB2xp67_ASAP7_75t_R
+    load_celltype: INVxp33_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -406,10 +406,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_27
     driver: I55/A/Y
-    driver_celltype: BUFx6f_ASAP7_75t_R
-    input_waveform: ramp 316.366028
+    driver_celltype: BUFx4_ASAP7_75t_R
+    input_waveform: ramp 35.866364
     load: I56/A/Y
-    load_celltype: BUFx2_ASAP7_75t_R
+    load_celltype: HB3xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -422,9 +422,9 @@ Circuits:
   - name: net_28
     driver: I57/A/Y
     driver_celltype: HB1xp67_ASAP7_75t_R
-    input_waveform: ramp 12.369031
+    input_waveform: ramp 217.768524
     load: I58/A/Y
-    load_celltype: BUFx12f_ASAP7_75t_R
+    load_celltype: HB3xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -436,10 +436,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_29
     driver: I59/A/Y
-    driver_celltype: INVx13_ASAP7_75t_R
-    input_waveform: ramp 281.202393
+    driver_celltype: BUFx24_ASAP7_75t_R
+    input_waveform: ramp 74.945236
     load: I60/A/Y
-    load_celltype: HB1xp67_ASAP7_75t_R
+    load_celltype: INVx8_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -451,10 +451,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_30
     driver: I61/A/Y
-    driver_celltype: HB4xp67_ASAP7_75t_R
-    input_waveform: ramp 205.154816
+    driver_celltype: INVx4_ASAP7_75t_R
+    input_waveform: ramp 224.312134
     load: I62/A/Y
-    load_celltype: INVx13_ASAP7_75t_R
+    load_celltype: INVx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -466,10 +466,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_31
     driver: I63/A/Y
-    driver_celltype: HB3xp67_ASAP7_75t_R
-    input_waveform: ramp 41.936729
+    driver_celltype: BUFx10_ASAP7_75t_R
+    input_waveform: ramp 150.703140
     load: I64/A/Y
-    load_celltype: BUFx2_ASAP7_75t_R
+    load_celltype: HB1xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -481,10 +481,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_32
     driver: I65/A/Y
-    driver_celltype: INVx2_ASAP7_75t_R
-    input_waveform: ramp 193.535141
+    driver_celltype: HB4xp67_ASAP7_75t_R
+    input_waveform: ramp 152.422897
     load: I66/A/Y
-    load_celltype: INVx8_ASAP7_75t_R
+    load_celltype: BUFx12f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -496,10 +496,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_33
     driver: I67/A/Y
-    driver_celltype: INVx6_ASAP7_75t_R
-    input_waveform: ramp 83.833405
+    driver_celltype: BUFx2_ASAP7_75t_R
+    input_waveform: ramp 9.715592
     load: I68/A/Y
-    load_celltype: BUFx4f_ASAP7_75t_R
+    load_celltype: INVx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -511,10 +511,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_34
     driver: I69/A/Y
-    driver_celltype: BUFx3_ASAP7_75t_R
-    input_waveform: ramp 115.523499
+    driver_celltype: BUFx4f_ASAP7_75t_R
+    input_waveform: ramp 237.904114
     load: I70/A/Y
-    load_celltype: BUFx3_ASAP7_75t_R
+    load_celltype: HB2xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -526,10 +526,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_35
     driver: I71/A/Y
-    driver_celltype: INVx6_ASAP7_75t_R
-    input_waveform: ramp 94.380638
+    driver_celltype: INVx2_ASAP7_75t_R
+    input_waveform: ramp 143.210144
     load: I72/A/Y
-    load_celltype: BUFx4_ASAP7_75t_R
+    load_celltype: BUFx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -541,10 +541,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_36
     driver: I73/A/Y
-    driver_celltype: BUFx10_ASAP7_75t_R
-    input_waveform: ramp 104.831238
+    driver_celltype: BUFx6f_ASAP7_75t_R
+    input_waveform: ramp 302.915161
     load: I74/A/Y
-    load_celltype: BUFx12_ASAP7_75t_R
+    load_celltype: INVxp33_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -556,10 +556,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_37
     driver: I75/A/Y
-    driver_celltype: HB2xp67_ASAP7_75t_R
-    input_waveform: ramp 172.702576
+    driver_celltype: INVx6_ASAP7_75t_R
+    input_waveform: ramp 183.910309
     load: I76/A/Y
-    load_celltype: BUFx12f_ASAP7_75t_R
+    load_celltype: BUFx10_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -572,9 +572,9 @@ Circuits:
   - name: net_38
     driver: I77/A/Y
     driver_celltype: INVx4_ASAP7_75t_R
-    input_waveform: ramp 13.391527
+    input_waveform: ramp 54.708656
     load: I78/A/Y
-    load_celltype: BUFx8_ASAP7_75t_R
+    load_celltype: BUFx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -586,10 +586,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_39
     driver: I79/A/Y
-    driver_celltype: BUFx4f_ASAP7_75t_R
-    input_waveform: ramp 265.068359
+    driver_celltype: INVx2_ASAP7_75t_R
+    input_waveform: ramp 226.669174
     load: I80/A/Y
-    load_celltype: INVx13_ASAP7_75t_R
+    load_celltype: BUFx4f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -601,10 +601,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_40
     driver: I81/A/Y
-    driver_celltype: INVxp33_ASAP7_75t_R
-    input_waveform: ramp 70.680466
+    driver_celltype: INVx8_ASAP7_75t_R
+    input_waveform: ramp 254.743134
     load: I82/A/Y
-    load_celltype: INVx1_ASAP7_75t_R
+    load_celltype: BUFx4f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -616,8 +616,8 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_41
     driver: I83/A/Y
-    driver_celltype: HB4xp67_ASAP7_75t_R
-    input_waveform: ramp 32.358147
+    driver_celltype: BUFx4_ASAP7_75t_R
+    input_waveform: ramp 293.067230
     load: I84/A/Y
     load_celltype: INVx13_ASAP7_75t_R
     load_interconnect: 100 0 0
@@ -631,10 +631,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_42
     driver: I85/A/Y
-    driver_celltype: HB2xp67_ASAP7_75t_R
-    input_waveform: ramp 311.809692
+    driver_celltype: BUFx4f_ASAP7_75t_R
+    input_waveform: ramp 206.582001
     load: I86/A/Y
-    load_celltype: BUFx6f_ASAP7_75t_R
+    load_celltype: BUFx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -646,10 +646,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_43
     driver: I87/A/Y
-    driver_celltype: INVx11_ASAP7_75t_R
-    input_waveform: ramp 156.219803
+    driver_celltype: BUFx2_ASAP7_75t_R
+    input_waveform: ramp 236.214188
     load: I88/A/Y
-    load_celltype: INVx13_ASAP7_75t_R
+    load_celltype: BUFx8_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -661,8 +661,8 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_44
     driver: I89/A/Y
-    driver_celltype: BUFx5_ASAP7_75t_R
-    input_waveform: ramp 281.574219
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 139.284561
     load: I90/A/Y
     load_celltype: BUFx2_ASAP7_75t_R
     load_interconnect: 100 0 0
@@ -676,10 +676,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_45
     driver: I91/A/Y
-    driver_celltype: BUFx5_ASAP7_75t_R
-    input_waveform: ramp 218.971542
+    driver_celltype: INVx1_ASAP7_75t_R
+    input_waveform: ramp 132.313553
     load: I92/A/Y
-    load_celltype: HB2xp67_ASAP7_75t_R
+    load_celltype: BUFx6f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -691,10 +691,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_46
     driver: I93/A/Y
-    driver_celltype: HB1xp67_ASAP7_75t_R
-    input_waveform: ramp 131.184158
+    driver_celltype: INVx2_ASAP7_75t_R
+    input_waveform: ramp 251.320694
     load: I94/A/Y
-    load_celltype: INVx4_ASAP7_75t_R
+    load_celltype: BUFx12_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -706,10 +706,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_47
     driver: I95/A/Y
-    driver_celltype: BUFx4_ASAP7_75t_R
-    input_waveform: ramp 226.526901
+    driver_celltype: BUFx3_ASAP7_75t_R
+    input_waveform: ramp 141.447128
     load: I96/A/Y
-    load_celltype: INVx6_ASAP7_75t_R
+    load_celltype: BUFx8_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -721,10 +721,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_48
     driver: I97/A/Y
-    driver_celltype: HB2xp67_ASAP7_75t_R
-    input_waveform: ramp 10.504029
+    driver_celltype: HB3xp67_ASAP7_75t_R
+    input_waveform: ramp 170.970413
     load: I98/A/Y
-    load_celltype: HB2xp67_ASAP7_75t_R
+    load_celltype: HB1xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -736,10 +736,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_49
     driver: I99/A/Y
-    driver_celltype: INVx11_ASAP7_75t_R
-    input_waveform: ramp 233.993668
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 263.656189
     load: I100/A/Y
-    load_celltype: HB1xp67_ASAP7_75t_R
+    load_celltype: INVx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -751,10 +751,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_50
     driver: I101/A/Y
-    driver_celltype: INVx11_ASAP7_75t_R
-    input_waveform: ramp 80.617920
+    driver_celltype: BUFx12_ASAP7_75t_R
+    input_waveform: ramp 143.704971
     load: I102/A/Y
-    load_celltype: INVx8_ASAP7_75t_R
+    load_celltype: INVx6_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -766,10 +766,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_51
     driver: I103/A/Y
-    driver_celltype: HB1xp67_ASAP7_75t_R
-    input_waveform: ramp 205.188309
+    driver_celltype: BUFx24_ASAP7_75t_R
+    input_waveform: ramp 160.789276
     load: I104/A/Y
-    load_celltype: INVx4_ASAP7_75t_R
+    load_celltype: BUFx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -781,10 +781,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_52
     driver: I105/A/Y
-    driver_celltype: HB4xp67_ASAP7_75t_R
-    input_waveform: ramp 293.444366
+    driver_celltype: INVx6_ASAP7_75t_R
+    input_waveform: ramp 269.241058
     load: I106/A/Y
-    load_celltype: BUFx10_ASAP7_75t_R
+    load_celltype: BUFx4f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -796,10 +796,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_53
     driver: I107/A/Y
-    driver_celltype: INVxp33_ASAP7_75t_R
-    input_waveform: ramp 159.177338
+    driver_celltype: INVx3_ASAP7_75t_R
+    input_waveform: ramp 208.635437
     load: I108/A/Y
-    load_celltype: INVx3_ASAP7_75t_R
+    load_celltype: INVx6_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -812,9 +812,9 @@ Circuits:
   - name: net_54
     driver: I109/A/Y
     driver_celltype: INVx2_ASAP7_75t_R
-    input_waveform: ramp 256.233734
+    input_waveform: ramp 152.118698
     load: I110/A/Y
-    load_celltype: INVxp33_ASAP7_75t_R
+    load_celltype: INVx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -826,10 +826,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_55
     driver: I111/A/Y
-    driver_celltype: BUFx6f_ASAP7_75t_R
-    input_waveform: ramp 156.275040
+    driver_celltype: HB4xp67_ASAP7_75t_R
+    input_waveform: ramp 215.999512
     load: I112/A/Y
-    load_celltype: INVxp33_ASAP7_75t_R
+    load_celltype: INVx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -841,10 +841,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_56
     driver: I113/A/Y
-    driver_celltype: BUFx5_ASAP7_75t_R
-    input_waveform: ramp 207.642395
+    driver_celltype: INVx11_ASAP7_75t_R
+    input_waveform: ramp 94.941544
     load: I114/A/Y
-    load_celltype: BUFx24_ASAP7_75t_R
+    load_celltype: BUFx12f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -856,10 +856,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_57
     driver: I115/A/Y
-    driver_celltype: INVx5_ASAP7_75t_R
-    input_waveform: ramp 134.395416
+    driver_celltype: INVx13_ASAP7_75t_R
+    input_waveform: ramp 68.351425
     load: I116/A/Y
-    load_celltype: BUFx12_ASAP7_75t_R
+    load_celltype: INVx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -872,9 +872,9 @@ Circuits:
   - name: net_58
     driver: I117/A/Y
     driver_celltype: BUFx10_ASAP7_75t_R
-    input_waveform: ramp 257.579834
+    input_waveform: ramp 69.818939
     load: I118/A/Y
-    load_celltype: BUFx12_ASAP7_75t_R
+    load_celltype: INVx6_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -886,10 +886,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_59
     driver: I119/A/Y
-    driver_celltype: BUFx4_ASAP7_75t_R
-    input_waveform: ramp 125.097649
+    driver_celltype: INVx11_ASAP7_75t_R
+    input_waveform: ramp 133.618988
     load: I120/A/Y
-    load_celltype: BUFx2_ASAP7_75t_R
+    load_celltype: INVx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -901,10 +901,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_60
     driver: I121/A/Y
-    driver_celltype: BUFx5_ASAP7_75t_R
-    input_waveform: ramp 309.304779
+    driver_celltype: BUFx6f_ASAP7_75t_R
+    input_waveform: ramp 32.171669
     load: I122/A/Y
-    load_celltype: INVx1_ASAP7_75t_R
+    load_celltype: INVx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -916,10 +916,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_61
     driver: I123/A/Y
-    driver_celltype: INVx1_ASAP7_75t_R
-    input_waveform: ramp 249.149826
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 187.882584
     load: I124/A/Y
-    load_celltype: INVx6_ASAP7_75t_R
+    load_celltype: INVx8_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -931,10 +931,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_62
     driver: I125/A/Y
-    driver_celltype: BUFx4_ASAP7_75t_R
-    input_waveform: ramp 12.252728
+    driver_celltype: HB2xp67_ASAP7_75t_R
+    input_waveform: ramp 34.791344
     load: I126/A/Y
-    load_celltype: HB3xp67_ASAP7_75t_R
+    load_celltype: INVx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -946,10 +946,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_63
     driver: I127/A/Y
-    driver_celltype: HB2xp67_ASAP7_75t_R
-    input_waveform: ramp 64.599518
+    driver_celltype: BUFx4f_ASAP7_75t_R
+    input_waveform: ramp 15.026255
     load: I128/A/Y
-    load_celltype: INVx4_ASAP7_75t_R
+    load_celltype: BUFx10_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -961,10 +961,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_64
     driver: I129/A/Y
-    driver_celltype: INVx6_ASAP7_75t_R
-    input_waveform: ramp 228.183487
+    driver_celltype: HB4xp67_ASAP7_75t_R
+    input_waveform: ramp 178.005722
     load: I130/A/Y
-    load_celltype: BUFx6f_ASAP7_75t_R
+    load_celltype: BUFx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -976,10 +976,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_65
     driver: I131/A/Y
-    driver_celltype: BUFx24_ASAP7_75t_R
-    input_waveform: ramp 63.535728
+    driver_celltype: BUFx3_ASAP7_75t_R
+    input_waveform: ramp 314.693024
     load: I132/A/Y
-    load_celltype: BUFx3_ASAP7_75t_R
+    load_celltype: INVx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -991,10 +991,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_66
     driver: I133/A/Y
-    driver_celltype: BUFx12f_ASAP7_75t_R
-    input_waveform: ramp 294.558777
+    driver_celltype: BUFx4_ASAP7_75t_R
+    input_waveform: ramp 208.488403
     load: I134/A/Y
-    load_celltype: INVx4_ASAP7_75t_R
+    load_celltype: HB2xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1006,8 +1006,8 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_67
     driver: I135/A/Y
-    driver_celltype: INVxp33_ASAP7_75t_R
-    input_waveform: ramp 194.727798
+    driver_celltype: INVx8_ASAP7_75t_R
+    input_waveform: ramp 82.829475
     load: I136/A/Y
     load_celltype: INVx8_ASAP7_75t_R
     load_interconnect: 100 0 0
@@ -1021,10 +1021,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_68
     driver: I137/A/Y
-    driver_celltype: BUFx4f_ASAP7_75t_R
-    input_waveform: ramp 220.808502
+    driver_celltype: BUFx2_ASAP7_75t_R
+    input_waveform: ramp 266.397003
     load: I138/A/Y
-    load_celltype: BUFx12f_ASAP7_75t_R
+    load_celltype: INVx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1036,10 +1036,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_69
     driver: I139/A/Y
-    driver_celltype: BUFx12f_ASAP7_75t_R
-    input_waveform: ramp 232.626877
+    driver_celltype: INVx13_ASAP7_75t_R
+    input_waveform: ramp 302.087463
     load: I140/A/Y
-    load_celltype: INVxp33_ASAP7_75t_R
+    load_celltype: INVx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1051,10 +1051,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_70
     driver: I141/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 296.775787
+    driver_celltype: INVx1_ASAP7_75t_R
+    input_waveform: ramp 264.882904
     load: I142/A/Y
-    load_celltype: BUFx24_ASAP7_75t_R
+    load_celltype: INVx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1066,10 +1066,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_71
     driver: I143/A/Y
-    driver_celltype: INVx1_ASAP7_75t_R
-    input_waveform: ramp 267.372498
+    driver_celltype: INVx13_ASAP7_75t_R
+    input_waveform: ramp 293.747955
     load: I144/A/Y
-    load_celltype: INVx8_ASAP7_75t_R
+    load_celltype: HB3xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1081,8 +1081,8 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_72
     driver: I145/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 31.451433
+    driver_celltype: BUFx24_ASAP7_75t_R
+    input_waveform: ramp 95.122238
     load: I146/A/Y
     load_celltype: BUFx6f_ASAP7_75t_R
     load_interconnect: 100 0 0
@@ -1096,8 +1096,8 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_73
     driver: I147/A/Y
-    driver_celltype: HB2xp67_ASAP7_75t_R
-    input_waveform: ramp 117.451897
+    driver_celltype: BUFx4_ASAP7_75t_R
+    input_waveform: ramp 196.907959
     load: I148/A/Y
     load_celltype: BUFx8_ASAP7_75t_R
     load_interconnect: 100 0 0
@@ -1111,10 +1111,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_74
     driver: I149/A/Y
-    driver_celltype: HB1xp67_ASAP7_75t_R
-    input_waveform: ramp 188.102203
+    driver_celltype: BUFx8_ASAP7_75t_R
+    input_waveform: ramp 94.725677
     load: I150/A/Y
-    load_celltype: INVx6_ASAP7_75t_R
+    load_celltype: INVx13_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1126,10 +1126,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_75
     driver: I151/A/Y
-    driver_celltype: BUFx4_ASAP7_75t_R
-    input_waveform: ramp 64.955963
+    driver_celltype: BUFx4f_ASAP7_75t_R
+    input_waveform: ramp 110.480888
     load: I152/A/Y
-    load_celltype: HB2xp67_ASAP7_75t_R
+    load_celltype: HB3xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1141,10 +1141,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_76
     driver: I153/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 228.840286
+    driver_celltype: HB3xp67_ASAP7_75t_R
+    input_waveform: ramp 182.897385
     load: I154/A/Y
-    load_celltype: INVx11_ASAP7_75t_R
+    load_celltype: BUFx12_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1156,10 +1156,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_77
     driver: I155/A/Y
-    driver_celltype: BUFx3_ASAP7_75t_R
-    input_waveform: ramp 89.813492
+    driver_celltype: HB2xp67_ASAP7_75t_R
+    input_waveform: ramp 65.804611
     load: I156/A/Y
-    load_celltype: INVx11_ASAP7_75t_R
+    load_celltype: BUFx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1171,10 +1171,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_78
     driver: I157/A/Y
-    driver_celltype: INVxp33_ASAP7_75t_R
-    input_waveform: ramp 156.147797
+    driver_celltype: HB2xp67_ASAP7_75t_R
+    input_waveform: ramp 52.926098
     load: I158/A/Y
-    load_celltype: INVx5_ASAP7_75t_R
+    load_celltype: BUFx6f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1186,10 +1186,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_79
     driver: I159/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 292.334686
+    driver_celltype: BUFx3_ASAP7_75t_R
+    input_waveform: ramp 242.037384
     load: I160/A/Y
-    load_celltype: INVx2_ASAP7_75t_R
+    load_celltype: HB4xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1201,10 +1201,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_80
     driver: I161/A/Y
-    driver_celltype: INVx13_ASAP7_75t_R
-    input_waveform: ramp 258.503387
+    driver_celltype: BUFx12f_ASAP7_75t_R
+    input_waveform: ramp 90.788155
     load: I162/A/Y
-    load_celltype: INVx5_ASAP7_75t_R
+    load_celltype: INVx1_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1216,10 +1216,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_81
     driver: I163/A/Y
-    driver_celltype: INVx4_ASAP7_75t_R
-    input_waveform: ramp 288.276520
+    driver_celltype: HB3xp67_ASAP7_75t_R
+    input_waveform: ramp 176.005280
     load: I164/A/Y
-    load_celltype: BUFx5_ASAP7_75t_R
+    load_celltype: BUFx10_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1231,10 +1231,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_82
     driver: I165/A/Y
-    driver_celltype: INVx8_ASAP7_75t_R
-    input_waveform: ramp 28.913431
+    driver_celltype: INVx5_ASAP7_75t_R
+    input_waveform: ramp 104.706314
     load: I166/A/Y
-    load_celltype: INVx13_ASAP7_75t_R
+    load_celltype: INVx8_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1246,10 +1246,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_83
     driver: I167/A/Y
-    driver_celltype: BUFx10_ASAP7_75t_R
-    input_waveform: ramp 305.778168
+    driver_celltype: BUFx3_ASAP7_75t_R
+    input_waveform: ramp 40.194042
     load: I168/A/Y
-    load_celltype: HB1xp67_ASAP7_75t_R
+    load_celltype: HB2xp67_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1261,10 +1261,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_84
     driver: I169/A/Y
-    driver_celltype: BUFx12_ASAP7_75t_R
-    input_waveform: ramp 102.074974
+    driver_celltype: BUFx4_ASAP7_75t_R
+    input_waveform: ramp 312.372772
     load: I170/A/Y
-    load_celltype: HB4xp67_ASAP7_75t_R
+    load_celltype: INVxp33_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1276,10 +1276,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_85
     driver: I171/A/Y
-    driver_celltype: BUFx4_ASAP7_75t_R
-    input_waveform: ramp 62.835052
+    driver_celltype: INVx11_ASAP7_75t_R
+    input_waveform: ramp 101.586838
     load: I172/A/Y
-    load_celltype: BUFx12f_ASAP7_75t_R
+    load_celltype: BUFx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1291,10 +1291,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_86
     driver: I173/A/Y
-    driver_celltype: INVx2_ASAP7_75t_R
-    input_waveform: ramp 185.733139
+    driver_celltype: BUFx2_ASAP7_75t_R
+    input_waveform: ramp 98.493088
     load: I174/A/Y
-    load_celltype: INVx1_ASAP7_75t_R
+    load_celltype: BUFx6f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1306,10 +1306,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_87
     driver: I175/A/Y
-    driver_celltype: BUFx12f_ASAP7_75t_R
-    input_waveform: ramp 265.751099
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 278.823975
     load: I176/A/Y
-    load_celltype: BUFx24_ASAP7_75t_R
+    load_celltype: BUFx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1321,10 +1321,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_88
     driver: I177/A/Y
-    driver_celltype: INVx5_ASAP7_75t_R
-    input_waveform: ramp 233.058624
+    driver_celltype: BUFx6f_ASAP7_75t_R
+    input_waveform: ramp 221.334518
     load: I178/A/Y
-    load_celltype: INVx13_ASAP7_75t_R
+    load_celltype: BUFx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1336,10 +1336,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_89
     driver: I179/A/Y
-    driver_celltype: BUFx2_ASAP7_75t_R
-    input_waveform: ramp 87.125008
+    driver_celltype: INVx8_ASAP7_75t_R
+    input_waveform: ramp 95.990227
     load: I180/A/Y
-    load_celltype: INVx4_ASAP7_75t_R
+    load_celltype: INVx8_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1351,10 +1351,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_90
     driver: I181/A/Y
-    driver_celltype: INVx5_ASAP7_75t_R
-    input_waveform: ramp 69.193886
+    driver_celltype: BUFx4_ASAP7_75t_R
+    input_waveform: ramp 241.188370
     load: I182/A/Y
-    load_celltype: INVx8_ASAP7_75t_R
+    load_celltype: INVx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1366,10 +1366,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_91
     driver: I183/A/Y
-    driver_celltype: INVxp33_ASAP7_75t_R
-    input_waveform: ramp 93.179756
+    driver_celltype: BUFx5_ASAP7_75t_R
+    input_waveform: ramp 179.976410
     load: I184/A/Y
-    load_celltype: INVxp33_ASAP7_75t_R
+    load_celltype: INVx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1381,10 +1381,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_92
     driver: I185/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 160.550797
+    driver_celltype: INVx6_ASAP7_75t_R
+    input_waveform: ramp 250.435226
     load: I186/A/Y
-    load_celltype: INVx11_ASAP7_75t_R
+    load_celltype: BUFx12f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1396,10 +1396,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_93
     driver: I187/A/Y
-    driver_celltype: HB3xp67_ASAP7_75t_R
-    input_waveform: ramp 78.287468
+    driver_celltype: BUFx5_ASAP7_75t_R
+    input_waveform: ramp 155.075943
     load: I188/A/Y
-    load_celltype: INVx4_ASAP7_75t_R
+    load_celltype: BUFx5_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1411,10 +1411,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_94
     driver: I189/A/Y
-    driver_celltype: INVx4_ASAP7_75t_R
-    input_waveform: ramp 270.967865
+    driver_celltype: HB4xp67_ASAP7_75t_R
+    input_waveform: ramp 69.805443
     load: I190/A/Y
-    load_celltype: INVx5_ASAP7_75t_R
+    load_celltype: BUFx4_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1426,10 +1426,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_95
     driver: I191/A/Y
-    driver_celltype: INVx1_ASAP7_75t_R
-    input_waveform: ramp 6.658113
+    driver_celltype: BUFx24_ASAP7_75t_R
+    input_waveform: ramp 210.134796
     load: I192/A/Y
-    load_celltype: BUFx24_ASAP7_75t_R
+    load_celltype: INVxp33_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1441,10 +1441,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_96
     driver: I193/A/Y
-    driver_celltype: INVx5_ASAP7_75t_R
-    input_waveform: ramp 292.931458
+    driver_celltype: BUFx24_ASAP7_75t_R
+    input_waveform: ramp 256.080109
     load: I194/A/Y
-    load_celltype: INVxp33_ASAP7_75t_R
+    load_celltype: BUFx3_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1456,10 +1456,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_97
     driver: I195/A/Y
-    driver_celltype: INVx13_ASAP7_75t_R
-    input_waveform: ramp 59.642551
+    driver_celltype: BUFx12_ASAP7_75t_R
+    input_waveform: ramp 250.590210
     load: I196/A/Y
-    load_celltype: INVx1_ASAP7_75t_R
+    load_celltype: INVxp33_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1471,10 +1471,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_98
     driver: I197/A/Y
-    driver_celltype: BUFx8_ASAP7_75t_R
-    input_waveform: ramp 116.466873
+    driver_celltype: BUFx10_ASAP7_75t_R
+    input_waveform: ramp 269.111786
     load: I198/A/Y
-    load_celltype: BUFx24_ASAP7_75t_R
+    load_celltype: BUFx12f_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0
@@ -1486,10 +1486,10 @@ Circuits:
     ccs_fall_slew: 0
   - name: net_99
     driver: I199/A/Y
-    driver_celltype: BUFx4f_ASAP7_75t_R
-    input_waveform: ramp 45.485729
+    driver_celltype: HB1xp67_ASAP7_75t_R
+    input_waveform: ramp 243.452499
     load: I200/A/Y
-    load_celltype: BUFx5_ASAP7_75t_R
+    load_celltype: BUFx2_ASAP7_75t_R
     load_interconnect: 100 0 0
     spice_rise_delay: 0
     spice_fall_delay: 0

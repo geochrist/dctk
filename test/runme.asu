@@ -30,7 +30,9 @@ mkdir $spice_decks
   --spice_lib $spice_lib \
   --spice_models $spice_models \
   --spice_dir $spice_decks \
-  --simulator xyce
+  --simulator xyce \
+  --run_sims
+  
 
 
 

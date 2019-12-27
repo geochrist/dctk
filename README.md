@@ -31,6 +31,6 @@ It needs updates to handle multi input/output cells.
 ## Todo
 
 * find open source spice simulator supporting Level 72 models
-* add call to spice simulator into delay_calc_tool.
+* add measure statements for slew rates
 * add support for multi-input cells (sensitization of for side input pins).
 * add comparator to delay_calc_tool.

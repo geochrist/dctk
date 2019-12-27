@@ -848,7 +848,7 @@ int main( int argc, char * const argv[] )
 
     // seed random generator
     std::srand(std::time(nullptr));
-    create_random_nets( n, 4, 2000.0, 14, all_nets, cell_lib, circuitMgr, pimodels );
+    create_random_nets( n, 4, 1000.0, 14, all_nets, cell_lib, circuitMgr, pimodels );
 
     //
     // write out SPEF file
