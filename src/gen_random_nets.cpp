@@ -434,6 +434,20 @@ void RandomRCNet::dump_spice_subckt_net( std::ofstream & ofs,
     return;
 }
 
+
+float RandomRCNet::get_total_cap(float cap_scale) const
+{
+    float tot_cap = 0.0;
+    for ( std::list< RCDevice >::const_iterator dev_it = all_rc_devices_.begin();
+            dev_it !=  all_rc_devices_.end(); ++dev_it ) {
+        const RCDevice & dev = *dev_it;
+        if( dev.dev_typ_ == 3 ) {
+            tot_cap += dev.dev_val_ * cap_scale;
+        }
+    }
+    return tot_cap;
+}
+
 void RandomRCNet::dump_spef_dnet( std::ofstream & ofs, double res_scale, double cap_scale ) const
 {
     double tot_cap = 0.0;
@@ -515,14 +529,29 @@ bool RCNetsData::create_random_net( const std::string& net_name,
                                     const std::vector<std::string> & receivers,
                                     const std::vector<std::string> & receivers_celltypes,
                                     double total_length, int max_layer_num,
-                                    bool pimodel_net )
+                                    bool pimodel_net, float smallest_max_load )
 {
+    RandomRCNet* new_net = nullptr;
+
     if( have_net( net_name ) ) {
         std::cout << "Error: net " << net_name << "is already present" << std::endl;
         return false;
     }
 
-    RandomRCNet *new_net = new RandomRCNet( net_name, drv_node, receivers, total_length, max_layer_num, layer_data_, pimodel_net);
+    
+    // until we have a net that has load cap within the limit, we keep trying
+    while (new_net == nullptr) {
+        new_net = new RandomRCNet( net_name, drv_node, receivers, total_length, max_layer_num, layer_data_, pimodel_net);
+
+        // if net cap is larger than the characterization limit, delete and try again (after reducing the total length
+        if (new_net->get_total_cap(1.0) > smallest_max_load) {
+            std::cout << "Net load exceeds characterized limit.  Iterating:  smallest_max_load = " << smallest_max_load << "; total cap = " << new_net->get_total_cap(1.0) << std::endl;
+            delete new_net;
+            new_net = nullptr;
+            total_length = total_length/2.0;
+        }
+    }
+                    
     all_nets_data_.insert( std::map<std::string, RandomRCNet& >::value_type( net_name, *new_net ) );
 
     return true;
@@ -614,6 +643,10 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         //
         dctk::Cell* driver = nullptr;
 
+        float ramp_time = 51.0;
+        
+        float smallest_max_load = 0.0; // smallest max load of the NLDM tables
+
         // find a cell with an output pin
         dctk::CellPin* driver_output_pin = nullptr;
         dctk::CellPin* driver_input_pin = nullptr;
@@ -628,9 +661,14 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
                 driver_input_pin = nullptr;
             } else {
                 driver_input_pin = random_arc->get_related_pin();
+
+                // scale to ps (assumes input lib is in ns)
+                ramp_time = random_arc->get_random_slew() * 1000.0 ;
+
+                // scale to ff (assumes input lib cap is in pf)
+                smallest_max_load = random_arc->get_smallest_max_load() * 1000.0 ;
             }
         }
-
 
         // Build driver node
         std::string driver_inst = "I" + std::to_string(inst_num);
@@ -644,8 +682,6 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         // Receivers
         //
 
-        float ramp_time = 51.0;
-        
         int num_receivers = rand() % max_num_receivers + 1;
         if (pimodels) {
             num_receivers = 1;
@@ -675,8 +711,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
                     receiver_input_pin = random_arc->get_related_pin();
                 }
 
-                // scale to ps (assumes input lib is in ns)
-                ramp_time = random_arc->get_random_slew() * 1000.00 ;
+                
             }
 
             // build receiver node
@@ -699,7 +734,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         //             << net_max_lyr << " max layer" << std::endl;
 
         all_nets.create_random_net( net_name, driver_node, driver_celltype, receivers,
-                                    receivers_celltypes, net_len, net_max_lyr, pimodels );
+                                    receivers_celltypes, net_len, net_max_lyr, pimodels, smallest_max_load );
 
         // add to a circuit library
         dctk::Circuit* c = new dctk::Circuit(net_name);

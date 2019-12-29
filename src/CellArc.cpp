@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <limits>
 
 #include "CellArc.hpp"
 #include "si2dr_liberty.h"
@@ -144,6 +145,14 @@ void get_min_max_slew(liberty_value_data *table, float& min_slew, float& max_sle
 
 }
 
+void get_min_max_load(liberty_value_data *table, float& min_load, float& max_load) {
+
+    int num_load = table->dim_sizes[1];
+    min_load = table->index_info[1][0];
+    max_load = table->index_info[1][num_load-1];
+
+}
+
 float rand_FloatRange(float a, float b)
 {
     return ((b - a) * ((float)rand() / RAND_MAX)) + a;
@@ -180,4 +189,38 @@ float CellArc::get_random_slew() {
     return rand_FloatRange( min_slew_limit, max_slew_limit);
         
 }
+
+
+float CellArc::get_smallest_max_load() {
+    // return the smallest max load of all the nldm tables
+
+    // TODO:  This routine assumes the first index is slew and
+    // second index is load cap
+
+    
+    float cell_rise_min_load = std::numeric_limits<float>::infinity();
+    float cell_rise_max_load = std::numeric_limits<float>::infinity();
+    float cell_fall_min_load = std::numeric_limits<float>::infinity();
+    float cell_fall_max_load = std::numeric_limits<float>::infinity();
+    float rise_transition_min_load = std::numeric_limits<float>::infinity();
+    float rise_transition_max_load = std::numeric_limits<float>::infinity();
+    float fall_transition_min_load = std::numeric_limits<float>::infinity();
+    float fall_transition_max_load = std::numeric_limits<float>::infinity();
+    
+    get_min_max_load(_cell_rise_table, cell_rise_min_load, cell_rise_max_load);
+    get_min_max_load(_cell_fall_table, cell_fall_min_load, cell_fall_max_load);
+    get_min_max_load(_rise_transition_table, rise_transition_min_load, rise_transition_max_load);
+    get_min_max_load(_fall_transition_table, fall_transition_min_load, fall_transition_max_load);
+        
+    float min_load_limit = std::max( std::max( cell_rise_min_load, cell_fall_min_load ),
+                                     std::max( rise_transition_min_load, fall_transition_min_load ) );
+    float max_load_limit = std::min( std::min( cell_rise_max_load, cell_fall_max_load ),
+                                     std::min( rise_transition_max_load, fall_transition_max_load ) );
+
+    // std::cout << "min load = " << min_load_limit << "; max load = " << max_load_limit << std::endl;
+
+    return max_load_limit;
+        
+}
+
 }

@@ -270,6 +270,8 @@ public:
 
     void dump_spef_dnet( std::ofstream & ofs, double res_scale, double cap_scale ) const;
 
+    float get_total_cap(float cap_scale) const;
+
     // Data:
     std::string net_index_;		//unique net index
     std::string drv_node_;		// driver node name
@@ -309,7 +311,7 @@ public:
                             const std::string& driver_celltype,
                             const std::vector<std::string >& receivers,
                             const std::vector<std::string >& receivers_celltypes,
-                            double total_length, int max_layer_num, bool pimodel_net );
+                            double total_length, int max_layer_num, bool pimodel_net, float smallest_max_load );
 
     bool add_new_port( const std::string & port_name, const char port_type );
 
