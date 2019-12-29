@@ -458,6 +458,16 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
 
     const float delay_threshold = get_power_rail_voltage()/2.0;
 
+
+    const float rise_slew_lower_threshold = cellLib.get_slew_lower_threshold_pct_rise() *
+        get_power_rail_voltage() / 100.0;
+    const float rise_slew_upper_threshold = cellLib.get_slew_upper_threshold_pct_rise() *
+        get_power_rail_voltage() / 100.0;
+    const float fall_slew_lower_threshold = cellLib.get_slew_lower_threshold_pct_fall() *
+        get_power_rail_voltage() / 100.0;
+    const float fall_slew_upper_threshold = cellLib.get_slew_upper_threshold_pct_fall() *
+        get_power_rail_voltage() / 100.0;
+
     // spice measure format
     if (_spice_measure == SpiceMeasure::ngspice ) {
 
@@ -477,6 +487,14 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
                << delay_threshold << "v rise=1" << std::endl;
         }
 
+        fs << ".measure tran rise_slew trig v(" << output_pin << ") val="
+           << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << ") val="
+           << rise_slew_upper_threshold << "v rise=1" << std::endl;
+        
+        fs << ".measure tran fall_slew trig v(" << output_pin << ") val="
+           << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << ") val="
+           << fall_slew_lower_threshold << "v fall=1" << std::endl;
+
         return;
     }
     
@@ -489,6 +507,7 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
             fs << ".measure tran fall_delay trig v(" << input_pin << ")="
                << delay_threshold << "v fall=1 targ v(" << output_pin << ")="
                << delay_threshold << "v fall=1" << std::endl;
+
         } else {
             fs << ".measure tran fall_delay trig v(" << input_pin << ")="
                << delay_threshold << "v rise=1 targ v(" << output_pin << ")="
@@ -498,6 +517,13 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
                << delay_threshold << "v rise=1" << std::endl;
         }
 
+        // slews
+        fs << ".measure tran rise_slew trig v(" << output_pin << ")="
+           << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << ")="
+           << rise_slew_upper_threshold << " rise=1" << std::endl;
+        fs << ".measure tran fall_slew trig v(" << output_pin << ")="
+           << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << ")="
+           << fall_slew_lower_threshold << " fall=1" << std::endl;
         return;
     }
 
