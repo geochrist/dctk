@@ -28,9 +28,7 @@ can use this code to generate their own testcases.
 The spice deck writer is functional for single input/output cells.
 It needs updates to handle multi input/output cells.
 
-## Todo
+## TODO
 
-* find open source spice simulator supporting Level 72 models
-* add measure statements for slew rates
 * add support for multi-input cells (sensitization of for side input pins).
 * add comparator to delay_calc_tool.
