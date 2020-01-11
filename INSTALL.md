@@ -7,11 +7,13 @@ Overview
 1.  Install Parser-SPEF in a directory parallel to this one.
 2.  Install yaml-cpp in a directory parallel to this one.
 3.  Build src-liberty_parse-2.6.
-6.  Download ASU 7nm Predictive Libraries. (optional)
-4.  Download Nangate FreePDK45 Library (for cells)
-5.  Download OpenRoad Utilities (for SPICE models)
-7.  Download NCSU FreePDK45 version 1.4 (optional)
-8.  Compile and test dctk.
+4.  Download ASU 7nm Predictive Libraries.
+5.  Download Nangate FreePDK45 Library (for cells) (optional -- not needed for contest)
+6.  Download OpenRoad Utilities (for SPICE models) (optional -- not needed for contest)
+7.  Download NCSU FreePDK45 version 1.4 (optional -- not needed for contest)
+8.  Download and install ngspice (optional -- not needed for contest)
+9.  Download and install Xyce.
+10. Compile and test dctk.
 
 Details
 -------
@@ -112,7 +114,7 @@ In addtion, note that the spice models are level 72 (bsimcmg/finfets) and need S
 (Name the modified model files with a .modified suffix.)
 
 
-### Nangate FreePDK45 Library (does not include spice models)
+### Nangate FreePDK45 Library (does not include spice models) (optional, not needed for contest)
 
   While we currently are not ***not*** planning to use these libraries for the competition, these can be useful for development because they are
   built on spice models supported by ngspice.
@@ -139,7 +141,7 @@ In addtion, note that the spice models are level 72 (bsimcmg/finfets) and need S
   The SPICE models possibly corresponding to the Library are
   available from the OpenROAD-Utilities repository (see below).
 
-### OpenROAD-Utilities
+### OpenROAD-Utilities (optional -- not needed for contest)
 
   To download the OpenRoad Utilities:
 
@@ -163,7 +165,7 @@ In addtion, note that the spice models are level 72 (bsimcmg/finfets) and need S
   available.  In addition, it seems that only models for the nominal
   corner is available.
 
-### NCSU FreePDK45 version 1.4 (optional)
+### NCSU FreePDK45 version 1.4 (optional -- not needed for contest)
 
   The Nangate library is based on the NCSU FreePDK45 models.  This seems to no longer be
   available at NCSU, but an archived version (1.4) seems to be available at `https://gitlab.esat.kuleuven.be/Thomas.Vandenabeele/digital-design-flow/blob/6b5823be96ec7b947dfad95c576499e830465ed8/99_SRC/technology/NCSU-FreePDK45-1.4/ncsu-FreePDK45-1.4.tar.gz`
@@ -180,6 +182,14 @@ In addtion, note that the spice models are level 72 (bsimcmg/finfets) and need S
   indicated that changes were made in the HSPICE models.  Hence, we
   are not certain that the Nangate library would correspond well with
   these spice models.  These have not been tested.
+
+### Download and install Xyce
+
+  Go to xyce.sandia.gov for more information
+
+### Download and install ngspice (optional -- not needed for contest)
+
+  Go to ngspice.sourceforge.net for more information
 
 ### Compile and test dctk
 
