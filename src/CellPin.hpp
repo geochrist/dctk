@@ -56,6 +56,8 @@ public:
 
     CellArc* get_random_arc();
 
+    float get_max_pin_cap();
+    float get_min_pin_cap();
 
 private:
 

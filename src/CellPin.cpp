@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <algorithm>
+#include <cmath>
 
 #include "CellPin.hpp"
 
@@ -65,5 +67,45 @@ CellArc* CellPin::get_random_arc() {
     return _arcs[index];
 
 }
+
+float CellPin::get_max_pin_cap() {
+    float retval = 0.0;
+
+    if (!isnan(_rise_capacitance)) {
+        retval = std::max(retval, _rise_capacitance);
+    }
+    if (!isnan(_fall_capacitance)) {
+        retval = std::max(retval, _fall_capacitance);
+    }
+    if (!isnan(_rise_capacitance_range_max)) {
+        retval = std::max(retval, _rise_capacitance_range_max);
+    }
+    if (!isnan(_fall_capacitance_range_max)) {
+        retval = std::max(retval, _fall_capacitance_range_max);
+    }
+
+    return retval;
+    
 }
 
+float CellPin::get_min_pin_cap() {
+    float retval = std::numeric_limits<double>::infinity();
+
+    if (!isnan(_rise_capacitance)) {
+        retval = std::min(retval, _rise_capacitance);
+    }
+    if (!isnan(_fall_capacitance)) {
+        retval = std::min(retval, _fall_capacitance);
+    }
+    if (!isnan(_rise_capacitance_range_min)) {
+        retval = std::min(retval, _rise_capacitance_range_min);
+    }
+    if (!isnan(_fall_capacitance_range_min)) {
+        retval = std::min(retval, _fall_capacitance_range_min);
+    }
+
+    return retval;
+    
+}
+
+}

@@ -199,8 +199,9 @@ float CellArc::get_random_slew() {
 }
 
 
-float CellArc::get_smallest_max_load() {
+float CellArc::get_load_range(float& min_load_limit, float& max_load_limit) {
     // return the smallest max load of all the nldm tables
+    // return the largest min load of all nldm tables
 
     // TODO:  This routine assumes the first index is slew and
     // second index is load cap
@@ -220,14 +221,12 @@ float CellArc::get_smallest_max_load() {
     get_min_max_load(_rise_transition_table, rise_transition_min_load, rise_transition_max_load);
     get_min_max_load(_fall_transition_table, fall_transition_min_load, fall_transition_max_load);
         
-    float min_load_limit = std::max( std::max( cell_rise_min_load, cell_fall_min_load ),
-                                     std::max( rise_transition_min_load, fall_transition_min_load ) );
-    float max_load_limit = std::min( std::min( cell_rise_max_load, cell_fall_max_load ),
-                                     std::min( rise_transition_max_load, fall_transition_max_load ) );
+    min_load_limit = std::max( std::max( cell_rise_min_load, cell_fall_min_load ),
+                               std::max( rise_transition_min_load, fall_transition_min_load ) );
+    max_load_limit = std::min( std::min( cell_rise_max_load, cell_fall_max_load ),
+                               std::min( rise_transition_max_load, fall_transition_max_load ) );
 
     // std::cout << "min load = " << min_load_limit << "; max load = " << max_load_limit << std::endl;
-
-    return max_load_limit;
         
 }
 

@@ -311,7 +311,7 @@ public:
                             const std::string& driver_celltype,
                             const std::vector<std::string >& receivers,
                             const std::vector<std::string >& receivers_celltypes,
-                            double total_length, int max_layer_num, bool pimodel_net, float smallest_max_load );
+                            double total_length, int max_layer_num, bool pimodel_net, float largest_min_load, float smallest_max_load );
 
     bool add_new_port( const std::string & port_name, const char port_type );
 

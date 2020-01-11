@@ -114,7 +114,7 @@ public:
     
     // Utility routines
     float get_random_slew();
-    float get_smallest_max_load();
+    float get_load_range(float& min_load, float& max_load);
 
     // debug
     void dump();

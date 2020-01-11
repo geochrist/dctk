@@ -529,7 +529,7 @@ bool RCNetsData::create_random_net( const std::string& net_name,
                                     const std::vector<std::string> & receivers,
                                     const std::vector<std::string> & receivers_celltypes,
                                     double total_length, int max_layer_num,
-                                    bool pimodel_net, float smallest_max_load )
+                                    bool pimodel_net, float largest_min_load, float smallest_max_load)
 {
     RandomRCNet* new_net = nullptr;
 
@@ -549,7 +549,17 @@ bool RCNetsData::create_random_net( const std::string& net_name,
             delete new_net;
             new_net = nullptr;
             total_length = total_length/2.0;
+            continue;
         }
+
+        if (new_net->get_total_cap(1.0) < largest_min_load) {
+            std::cout << "Net load below characterized limit.  Iterating:  largest_min_load = " << largest_min_load << "; total cap = " << new_net->get_total_cap(1.0) << std::endl;
+            delete new_net;
+            new_net = nullptr;
+            total_length = total_length*1.5;
+            continue;
+        }
+            
     }
                     
     all_nets_data_.insert( std::map<std::string, RandomRCNet& >::value_type( net_name, *new_net ) );
@@ -646,6 +656,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         float ramp_time = 51.0;
         
         float smallest_max_load = 0.0; // smallest max load of the NLDM tables
+        float largest_min_load = std::numeric_limits<float>::infinity(); // largest min load of the NLDM tables
 
         // find a cell with an output pin
         dctk::CellPin* driver_output_pin = nullptr;
@@ -666,7 +677,9 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
                 ramp_time = random_arc->get_random_slew() * 1000.0 ;
 
                 // scale to ff (assumes input lib cap is in pf)
-                smallest_max_load = random_arc->get_smallest_max_load() * 1000.0 ;
+                random_arc->get_load_range(largest_min_load, smallest_max_load);
+                smallest_max_load *= 1000.0;
+                largest_min_load *= 1000.0;
             }
         }
 
@@ -691,6 +704,10 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         std::vector<std::string> receivers_celltypes;
         std::string receiver_input_output_str;
         
+        // total receiver pin cap
+        float total_receiver_max_pin_cap = 0.0;
+        float total_receiver_min_pin_cap = 0.0;
+
         for( int j=0; j<num_receivers; j++ ) {
 
             // find a random cell that has an input pin
@@ -714,6 +731,9 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
                 
             }
 
+            total_receiver_max_pin_cap += receiver_input_pin->get_max_pin_cap();
+            total_receiver_min_pin_cap += receiver_input_pin->get_min_pin_cap();
+
             // build receiver node
             std::string receiver_inst = "I" + std::to_string(inst_num);
             std::string receiver_node = receiver_inst + ":" + receiver_input_pin->get_name();
@@ -727,6 +747,11 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
             }
         }
 
+        // now reduce the max load allowed by the amount of receiver pin caps
+        smallest_max_load -= total_receiver_min_pin_cap;
+        assert(smallest_max_load>0.0);
+        largest_min_load -= total_receiver_min_pin_cap;
+
         double net_len =  double(rand() % max_len_int + 1);
         int net_max_lyr = rand() % max_layer_index + 1;
 
@@ -734,7 +759,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         //             << net_max_lyr << " max layer" << std::endl;
 
         all_nets.create_random_net( net_name, driver_node, driver_celltype, receivers,
-                                    receivers_celltypes, net_len, net_max_lyr, pimodels, smallest_max_load );
+                                    receivers_celltypes, net_len, net_max_lyr, pimodels, largest_min_load, smallest_max_load );
 
         // add to a circuit library
         dctk::Circuit* c = new dctk::Circuit(net_name);
