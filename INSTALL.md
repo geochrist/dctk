@@ -60,6 +60,9 @@ For the text below, assume:
     ./configure
     make
 
+  (If the above 'make' command does not complete,
+  please try 'make clean' before running 'make')
+
   Finally, dctk requires static libraries.  Run the custom library
   archiving script in the directory:
 
