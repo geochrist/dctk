@@ -86,6 +86,9 @@ main(int argc, char **argv)
     // run simulation
     bool run_sims = false;
     
+    // golden results
+    char* golden_dir_name = nullptr;
+    
     // get options
     int option_index = 0;
     static struct option long_options[] = {
@@ -97,6 +100,7 @@ main(int argc, char **argv)
         {"spice_models", required_argument, 0, 'm'},
         {"simulator", required_argument, 0, 'z'},
         {"run_sims", no_argument, 0, 'r'},
+        {"golden_dir", required_argument, 0, 'g'},
         {0,         0,                 0,  0 }
     };
 
@@ -133,6 +137,10 @@ main(int argc, char **argv)
         case 'z':
             simulator = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(simulator, optarg);
+            break;
+        case 'g':
+            golden_dir_name = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(golden_dir_name, optarg);
             break;
         case 'r':
             run_sims = true;
@@ -262,8 +270,30 @@ main(int argc, char **argv)
         }
 
     }
+    
+    // merge simulation results into Circuits
+    if (spice_dir_name) {
+        printf("Merging golden results from %s\n", golden_dir_name);
+        for (std::size_t i = 0; i < circuitMgr.size(); i++) {
 
+            // merge results for only recognized simulators
+            if (!strcmp(simulator,"xyce")) {
+                std::string results_file_name = std::string(spice_dir_name) + "/" + circuitMgr[i]->get_name() + "sp.mt0";
+                printf("Reading simulation results %s\n", results_file_name.c_str() );
+                circuitMgr[i]->read_spice_results(simulator, results_file_name);
+            }
 
+            if (!strcmp(simulator,"ngspice")) {
+                std::string results_file_name = std::string(spice_dir_name) + "/" + circuitMgr[i]->get_name() + ".sp.log";
+                printf("Reading simulation results %s\n", results_file_name.c_str() );
+                circuitMgr[i]->read_spice_results(simulator, results_file_name);
+            }
+            
+        }
+        // write out results file
+    }
+
+    // TODO: clean up all pointers here
     // clean up
     if (liberty_file) {
         free(liberty_file);
@@ -275,6 +305,10 @@ main(int argc, char **argv)
 
     if (cell_lib) {
         delete cell_lib;
+    }
+
+    if (golden_dir_name) {
+        free(golden_dir_name);
     }
 
     exit(EXIT_SUCCESS);

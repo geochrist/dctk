@@ -516,8 +516,29 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                                 // store CCS table
                                 if (!strcmp(vector_group_type,"vector")) {
                                     arc->add_current_rise_table(liberty_get_values_data(vector_group));
-                                }
 
+                                    // look for reference_time attribute
+                                    si2drAttrsIdT vector_attrs = si2drGroupGetAttrs(vector_group, &err);
+                                    si2drAttrIdT vector_attr;
+                                    bool found_reference_time = false; // make sure we have exactly one reference_time attribute per vector group
+                                    while( !si2drObjectIsNull((vector_attr=si2drIterNextAttr(vector_attrs, &err)), &err)) {
+                                        std::string vector_attr_name = si2drAttrGetName(vector_attr, &err);
+                                        
+                                        // look for direction
+                                        if (vector_attr_name == "reference_time") {
+                                            // must not have already found reference_time
+                                            assert(!found_reference_time);
+                                            float reference_time = si2drSimpleAttrGetFloat64Value(vector_attr, &err);
+                                            arc->add_current_rise_tables_reference_times(reference_time);
+                                            //printf("reference_time = %f\n", reference_time);
+                                            found_reference_time = true;
+                                        }
+                                    }
+                                    si2drIterQuit(vector_attrs, &err);
+                                    // must have found reference_time
+                                    assert(found_reference_time);
+
+                                }
                             }
                             si2drIterQuit(vector_groups, &err);
                         }
@@ -543,6 +564,26 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                                 // store CCS table
                                 if (!strcmp(vector_group_type,"vector")) {
                                     arc->add_current_fall_table(liberty_get_values_data(vector_group));
+                                    // look for reference_time attribute
+                                    si2drAttrsIdT vector_attrs = si2drGroupGetAttrs(vector_group, &err);
+                                    si2drAttrIdT vector_attr;
+                                    bool found_reference_time = false; // make sure we have exactly one reference_time attribute per vector group
+                                    while( !si2drObjectIsNull((vector_attr=si2drIterNextAttr(vector_attrs, &err)), &err)) {
+                                        std::string vector_attr_name = si2drAttrGetName(vector_attr, &err);
+                                        
+                                        // look for direction
+                                        if (vector_attr_name == "reference_time") {
+                                            // must not have already found reference_time
+                                            assert(!found_reference_time);
+                                            float reference_time = si2drSimpleAttrGetFloat64Value(vector_attr, &err);
+                                            arc->add_current_rise_tables_reference_times(reference_time);
+                                            //printf("reference_time = %f\n", reference_time);
+                                            found_reference_time = true;
+                                        }
+                                    }
+                                    si2drIterQuit(vector_attrs, &err);
+                                    // must have found reference_time
+                                    assert(found_reference_time);
                                 }
                             }
                             si2drIterQuit(vector_groups, &err);

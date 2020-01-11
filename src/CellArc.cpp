@@ -67,6 +67,14 @@ void CellArc::add_current_fall_table(liberty_value_data* d) {
     _output_current_fall_tables.push_back(d);
 }
 
+void CellArc::add_current_rise_tables_reference_times(float f) {
+    _output_current_rise_tables_reference_times.push_back(f);
+}
+
+void CellArc::add_current_fall_tables_reference_times(float f) {
+    _output_current_fall_tables_reference_times.push_back(f);
+}
+
 void dump_table(const liberty_value_data* table, const std::string& table_name) {
 
     // don't dump anything if we got a nullptr.

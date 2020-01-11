@@ -70,6 +70,9 @@ public:
     void add_current_rise_table(liberty_value_data* d);
     void add_current_fall_table(liberty_value_data* d);
 
+    void add_current_rise_tables_reference_times(float f);
+    void add_current_fall_tables_reference_times(float f);
+
     const liberty_value_data* get_cell_rise_table() {
         return _cell_rise_table;
     }
@@ -98,8 +101,15 @@ public:
     const std::vector<liberty_value_data*>& get_output_current_rise_tables() {
         return _output_current_rise_tables;
     }
+    const std::vector<float>& get_output_current_rise_tables_reference_times() {
+        return _output_current_rise_tables_reference_times;
+    }
+
     const std::vector<liberty_value_data*>& get_output_current_fall_tables() {
         return _output_current_fall_tables;
+    }
+    const std::vector<float>& get_output_current_fall_tables_reference_times() {
+        return _output_current_fall_tables_reference_times;
     }
     
     // Utility routines
@@ -138,7 +148,10 @@ private:
     // CCS tables
     // TODO:  replace vector with array of pointers.
     std::vector<liberty_value_data*> _output_current_rise_tables;
+    std::vector<float> _output_current_rise_tables_reference_times;
+    
     std::vector<liberty_value_data*> _output_current_fall_tables;
+    std::vector<float> _output_current_fall_tables_reference_times;
 
 };
 };

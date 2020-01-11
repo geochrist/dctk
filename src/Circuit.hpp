@@ -20,7 +20,6 @@ public:
     // ground node/net
     static std::string ground;
 
-    
     Circuit(const std::string&);
     Circuit& set_input_waveform(const std::string&);
 
@@ -47,6 +46,9 @@ public:
     // misc routines
     bool is_positive_unate(CellLib& cl);
 
+    // merge SPICE results in as golden
+    static void read_spice_results(const char*, const std::string&);
+    
     // output methods
     void dump();
 

@@ -576,5 +576,7 @@ void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spe
     // TODO: include models
     fs.close();
 }
+void Circuit::read_spice_results(const char* simulator, const std::string& results_filename) {
+}
 
 }
