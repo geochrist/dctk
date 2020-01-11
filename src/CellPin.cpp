@@ -13,7 +13,12 @@ namespace dctk {
 
 CellPin::CellPin(const std::string& s) {
     _name = s;
-
+    _rise_capacitance = std::numeric_limits<float>::quiet_NaN();
+    _rise_capacitance_range_min = std::numeric_limits<float>::quiet_NaN();
+    _rise_capacitance_range_max = std::numeric_limits<float>::quiet_NaN();
+    _fall_capacitance = std::numeric_limits<float>::quiet_NaN();
+    _fall_capacitance_range_min = std::numeric_limits<float>::quiet_NaN();
+    _fall_capacitance_range_max = std::numeric_limits<float>::quiet_NaN();
 }
 
 void CellPin::add_arc(CellArc* a) {

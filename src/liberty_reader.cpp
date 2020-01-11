@@ -374,6 +374,66 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                         std::string direction_str = si2drSimpleAttrGetStringValue(pin_attr, &err);
                         pin->set_direction(direction_str);
                     }
+
+                    // look for rise_capacitance
+                    if (pin_attr_name == "rise_capacitance") {
+                        float cap = si2drSimpleAttrGetFloat64Value(pin_attr, &err);
+                        pin->set_rise_capacitance(cap);
+                    }
+
+                    // look for fall_capacitance
+                    if (pin_attr_name == "fall_capacitance") {
+                        float cap = si2drSimpleAttrGetFloat64Value(pin_attr, &err);
+                        pin->set_fall_capacitance(cap);
+                    }
+
+                    // look for rise_capacitance_range
+                    if (pin_attr_name == "rise_capacitance_range") {
+                        si2drValuesIdT cap_values = si2drComplexAttrGetValues(pin_attr, &err);
+
+                        // storage location for result
+                        si2drValueTypeT type;
+                        si2drInt32T int_val;
+                        si2drFloat64T double_val;
+                        si2drStringT string_val;
+                        si2drBooleanT bool_val;
+                        si2drExprT *expr;
+
+                        // now iterate through the cap_values, grabbing first two floats
+                        si2drIterNextComplexValue(cap_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err); 
+                        float rise_capacitance_range_min = double_val;
+                        si2drIterNextComplexValue(cap_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err); 
+                        float rise_capacitance_range_max = double_val;
+                        pin->set_rise_capacitance_range_min(rise_capacitance_range_min);
+                        pin->set_rise_capacitance_range_max(rise_capacitance_range_max);
+                        //printf("min cap = %f;  max cap = %f\n", rise_capacitance_range_min, rise_capacitance_range_max);
+                        si2drIterQuit(cap_values, &err);
+                    }
+
+
+                                        // look for rise_capacitance_range
+                    if (pin_attr_name == "fall_capacitance_range") {
+                        si2drValuesIdT cap_values = si2drComplexAttrGetValues(pin_attr, &err);
+
+                        // storage location for result
+                        si2drValueTypeT type;
+                        si2drInt32T int_val;
+                        si2drFloat64T double_val;
+                        si2drStringT string_val;
+                        si2drBooleanT bool_val;
+                        si2drExprT *expr;
+
+                        // now iterate through the cap_values, grabbing first two floats
+                        si2drIterNextComplexValue(cap_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err); 
+                        float fall_capacitance_range_min = double_val;
+                        si2drIterNextComplexValue(cap_values, &type, &int_val, &double_val, &string_val, &bool_val, &expr, &err); 
+                        float fall_capacitance_range_max = double_val;
+                        pin->set_fall_capacitance_range_min(fall_capacitance_range_min);
+                        pin->set_fall_capacitance_range_max(fall_capacitance_range_max);
+                        //printf("min cap = %f;  max cap = %f\n", fall_capacitance_range_min, fall_capacitance_range_max);
+                        si2drIterQuit(cap_values, &err);
+                    }
+
                 }
                 si2drIterQuit(pin_attrs, &err);
 
