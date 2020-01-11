@@ -109,6 +109,7 @@ void Circuit::dump() {
     std::cout << "Driver = " << this->_driver << std::endl;
     std::cout << "Driver Celltype = " << this->_driver_celltype << std::endl;
     std::cout << "Load = " << this->_load << std::endl;
+    std::cout << "Load Celltype = " << this->_load_celltype << std::endl;
     std::cout << "load_interconnect = " << this->_load_interconnect.get_cnear()
               << " " << this->_load_interconnect.get_res()
               << " " << this->_load_interconnect.get_cfar()
