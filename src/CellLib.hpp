@@ -28,6 +28,10 @@ public:
         }
     }
 
+    const std::string& get_name() {
+        return _name;
+    }
+    
     Cell* get_random_cell() {
         std::map<std::string, Cell*>::iterator item = _cellMap.begin();
         std::advance( item, rand() % _cellMap.size() );
