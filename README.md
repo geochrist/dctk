@@ -29,6 +29,8 @@ The spice deck writer is functional for single input/output cells.
 It needs updates to handle multi input/output cells.
 
 ## TODO
-
-* add support for multi-input cells (sensitization of for side input pins).
 * add comparator to delay_calc_tool.
+
+## Future
+* re-work interface to be cleaner, and more consistent.
+* add support for multi-input cells (sensitization of for side input pins).

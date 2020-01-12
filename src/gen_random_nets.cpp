@@ -5,6 +5,7 @@
 #include <cmath>
 #include <getopt.h>
 #include <string.h>
+#include <limits>
 
 // dctk definitions
 #include "dctk.hpp"
@@ -707,6 +708,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         // total receiver pin cap
         float total_receiver_max_pin_cap = 0.0;
         float total_receiver_min_pin_cap = 0.0;
+        float load_cap = std::numeric_limits<float>::quiet_NaN();
 
         for( int j=0; j<num_receivers; j++ ) {
 
@@ -715,13 +717,15 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
             dctk::CellPin* receiver_output_pin = nullptr;
             dctk::Cell* receiver = nullptr;
 
+            dctk::CellArc* random_arc = nullptr;
+            
             while (receiver_input_pin == nullptr or receiver_output_pin==nullptr) {
                 receiver = cell_lib->get_random_cell();
                 
                 receiver_output_pin = receiver->get_output_pin();
 
                 // need to find an input pin that drives output pin
-                dctk::CellArc* random_arc = receiver_output_pin->get_random_arc();
+                random_arc = receiver_output_pin->get_random_arc();
                 if (random_arc == nullptr) {
                     receiver_input_pin = nullptr;
                 } else {
@@ -745,6 +749,12 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
             if (receiver_input_output_str == "") {
                 receiver_input_output_str = receiver_inst + "/" + receiver_input_pin->get_name() + "/" + receiver_output_pin->get_name();
             }
+
+            // load interconnect will also be based on the first pin processed
+            if (isnan(load_cap)) {
+                load_cap = random_arc->get_random_load() * 1000.0;
+            }
+
         }
 
         // now reduce the max load allowed by the amount of receiver pin caps
@@ -776,7 +786,8 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         c->set_load_celltype(receivers_celltypes[0]);
 
         // Start with a fixed load
-        c->set_load_interconnect("100 0 0");
+        std::string load_interconnect = to_string(load_cap) + " 0 0";
+        c->set_load_interconnect(load_interconnect.c_str());
 
         // add to library
         cktmgr.push_back(c);

@@ -1,0 +1,151 @@
+Circuits:
+  - name: net_0
+    driver: I1/A/ZN
+    driver_celltype: INV_X32
+    input_waveform: ramp 137.826752
+    load: I2/A/ZN
+    load_celltype: INV_X4
+    load_interconnect: 108849 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_1
+    driver: I3/A/ZN
+    driver_celltype: INV_X8
+    input_waveform: ramp 2.356702
+    load: I4/A/ZN
+    load_celltype: INV_X1
+    load_interconnect: 23034.4 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_2
+    driver: I5/A/Z
+    driver_celltype: CLKBUF_X3
+    input_waveform: ramp 157.733551
+    load: I6/A/ZN
+    load_celltype: INV_X2
+    load_interconnect: 98171.5 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_3
+    driver: I7/A/ZN
+    driver_celltype: INV_X1
+    input_waveform: ramp 10.862015
+    load: I8/A/ZN
+    load_celltype: INV_X32
+    load_interconnect: 1.83004e+06 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_4
+    driver: I9/A/ZN
+    driver_celltype: INV_X16
+    input_waveform: ramp 59.721439
+    load: I10/A/ZN
+    load_celltype: INV_X2
+    load_interconnect: 2971.94 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_5
+    driver: I11/A/ZN
+    driver_celltype: INV_X32
+    input_waveform: ramp 120.873184
+    load: I12/A/ZN
+    load_celltype: INV_X2
+    load_interconnect: 109283 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_6
+    driver: I13/A/ZN
+    driver_celltype: INV_X1
+    input_waveform: ramp 121.002457
+    load: I14/A/ZN
+    load_celltype: INV_X32
+    load_interconnect: 828821 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_7
+    driver: I15/A/Z
+    driver_celltype: CLKBUF_X1
+    input_waveform: ramp 32.542213
+    load: I16/A/ZN
+    load_celltype: INV_X4
+    load_interconnect: 59531.4 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_8
+    driver: I17/A/ZN
+    driver_celltype: INV_X16
+    input_waveform: ramp 112.925858
+    load: I18/A/ZN
+    load_celltype: INV_X8
+    load_interconnect: 50327.5 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0
+  - name: net_9
+    driver: I19/A/ZN
+    driver_celltype: INV_X4
+    input_waveform: ramp 8.464064
+    load: I20/A/Z
+    load_celltype: CLKBUF_X1
+    load_interconnect: 46784.9 0 0
+    spice_rise_delay: 0
+    spice_fall_delay: 0
+    spice_rise_slew: 0
+    spice_fall_slew: 0
+    ccs_rise_delay: 0
+    ccs_fall_delay: 0
+    ccs_rise_slew: 0
+    ccs_fall_slew: 0

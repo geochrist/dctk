@@ -4,7 +4,7 @@
 # then read it into the delay calculator
 
 # dataset name
-set dataset = tau2020v2
+set dataset = tau2020_asu
 
 # enable pi models?
 set pimodels = ""
@@ -15,7 +15,7 @@ set library = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/
 
 # Generate random dataset
 # output will be $dataset.circuits.yaml and $dataset.spef
-../build/gen_random_nets --liberty $library --dataset $dataset -n 100 $pimodels
+../build/gen_random_nets --liberty $library --dataset $dataset -n 10 $pimodels
 
 # Read results into delay calculation tool
 set spice_decks = "spice_decks"
