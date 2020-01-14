@@ -26,7 +26,11 @@ CellLib::CellLib(const std::string& s) {
     this->_output_threshold_pct_fall = 50.0 ;
     this->_output_threshold_pct_rise = 50.0 ;
 
+    // default Liberty time units are ns.
+    this->_scale_to_ps = 1000.0;
 
+    // although there is no default Liberty load cap units, we assume it is in pf.
+    this->_scale_to_ff = 1000.0;
 }
 
 void CellLib::insert(const std::string& s, dctk::Cell* cell) {
@@ -47,6 +51,9 @@ void CellLib::dump() {
     std::cout << "  current_unit = " << this->get_current_unit() << std::endl;
     std::cout << "  pulling_resistance_unit = " << this->get_pulling_resistance_unit() << std::endl;
     std::cout << "  capacitive_load_unit = " << this->get_capacitive_load_unit() << std::endl;
+
+    std::cout << "  scale_to_ps = " << this->get_scale_to_ps() << std::endl;
+    std::cout << "  scale_to_ff = " << this->get_scale_to_ff() << std::endl;
 
     std::cout << "  nom_process = " << this->get_nom_process() << std::endl;
     std::cout << "  nom_temperature = " << this->get_nom_temperature() << std::endl;

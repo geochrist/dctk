@@ -646,6 +646,9 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 
     int inst_num = 1;
 
+    float scale_to_ps = cell_lib->get_scale_to_ps();
+    float scale_to_ff = cell_lib->get_scale_to_ff();
+
     for( int i = 0; i<num_nets; i++ ) {
         std::string net_name = "net_" + std::to_string(i);
 
@@ -675,12 +678,12 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
                 driver_input_pin = random_arc->get_related_pin();
 
                 // scale to ps (assumes input lib is in ns)
-                ramp_time = random_arc->get_random_slew() * 1000.0 ;
+                ramp_time = random_arc->get_random_slew() * scale_to_ps ;
 
                 // scale to ff (assumes input lib cap is in pf)
                 random_arc->get_load_range(largest_min_load, smallest_max_load);
-                smallest_max_load *= 1000.0;
-                largest_min_load *= 1000.0;
+                smallest_max_load *= scale_to_ff;
+                largest_min_load *= scale_to_ff;
             }
         }
 
@@ -735,8 +738,8 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
                 
             }
 
-            total_receiver_max_pin_cap += receiver_input_pin->get_max_pin_cap();
-            total_receiver_min_pin_cap += receiver_input_pin->get_min_pin_cap();
+            total_receiver_max_pin_cap += receiver_input_pin->get_max_pin_cap() * scale_to_ff;
+            total_receiver_min_pin_cap += receiver_input_pin->get_min_pin_cap() * scale_to_ff;
 
             // build receiver node
             std::string receiver_inst = "I" + std::to_string(inst_num);
@@ -752,7 +755,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 
             // load interconnect will also be based on the first pin processed
             if (isnan(load_cap)) {
-                load_cap = random_arc->get_random_load() * 1000.0;
+                load_cap = random_arc->get_random_load() * scale_to_ff;
             }
 
         }

@@ -21,7 +21,7 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
         return(1);
     }
 
-    std::cout << "Generating spice netlists for " << circuit_file_name << std::endl;
+    std::cout << "Reading circuits from " << circuit_file_name << std::endl;
 
     // load the circuit list file
     const YAML::Node& config = YAML::LoadFile(circuit_file_name);

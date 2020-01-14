@@ -47,7 +47,7 @@ public:
     bool is_positive_unate(CellLib& cl);
 
     // merge SPICE results in as golden
-    static void read_spice_results(const char*, const std::string&);
+    void read_spice_results(const char*, const std::string&);
     
     // output methods
     void dump();
@@ -151,11 +151,13 @@ private:
     std::string _driver_celltype;
     std::string _load;
     std::string _load_celltype; 
+
+    // Cnear (ff), Res (ohms), Cfar (ff)
     PiModel _load_interconnect;
 
     float _power_rail_voltage;
 
-    // spice/ccs delay and slew values
+    // spice/ccs delay and slew values in ps
     float _spice_rise_delay;
     float _spice_fall_delay;
     float _spice_rise_slew;
@@ -165,6 +167,7 @@ private:
     float _ccs_rise_slew;
     float _ccs_fall_slew;
 
+    // in ps
     float _sim_time;
 
     // spice measurement styles

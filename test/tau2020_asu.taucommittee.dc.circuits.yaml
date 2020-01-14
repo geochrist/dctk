@@ -25,10 +25,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 1
+    ccs_fall_delay: 1
+    ccs_rise_slew: 0.200000003
+    ccs_fall_slew: 0.200000003
   - name: net_2
     driver: I5/A/Y
     driver_celltype: HB2xp67_ASAP7_75t_R
@@ -40,10 +40,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 2
+    ccs_fall_delay: 2
+    ccs_rise_slew: 0.400000006
+    ccs_fall_slew: 0.400000006
   - name: net_3
     driver: I7/A/Y
     driver_celltype: INVx6_ASAP7_75t_R
@@ -55,10 +55,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 3
+    ccs_fall_delay: 3
+    ccs_rise_slew: 0.600000024
+    ccs_fall_slew: 0.600000024
   - name: net_4
     driver: I9/A/Y
     driver_celltype: BUFx10_ASAP7_75t_R
@@ -70,10 +70,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 4
+    ccs_fall_delay: 4
+    ccs_rise_slew: 0.800000012
+    ccs_fall_slew: 0.800000012
   - name: net_5
     driver: I11/A/Y
     driver_celltype: HB1xp67_ASAP7_75t_R
@@ -85,10 +85,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 5
+    ccs_fall_delay: 5
+    ccs_rise_slew: 1
+    ccs_fall_slew: 1
   - name: net_6
     driver: I13/A/Y
     driver_celltype: BUFx12f_ASAP7_75t_R
@@ -100,10 +100,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 6
+    ccs_fall_delay: 6
+    ccs_rise_slew: 1.20000005
+    ccs_fall_slew: 1.20000005
   - name: net_7
     driver: I15/A/Y
     driver_celltype: BUFx2_ASAP7_75t_R
@@ -115,10 +115,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 7
+    ccs_fall_delay: 7
+    ccs_rise_slew: 1.39999998
+    ccs_fall_slew: 1.39999998
   - name: net_8
     driver: I17/A/Y
     driver_celltype: INVx8_ASAP7_75t_R
@@ -130,10 +130,10 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 8
+    ccs_fall_delay: 8
+    ccs_rise_slew: 1.60000002
+    ccs_fall_slew: 1.60000002
   - name: net_9
     driver: I19/A/Y
     driver_celltype: INVxp33_ASAP7_75t_R
@@ -145,7 +145,7 @@ Circuits:
     spice_fall_delay: 0
     spice_rise_slew: 0
     spice_fall_slew: 0
-    ccs_rise_delay: 0
-    ccs_fall_delay: 0
-    ccs_rise_slew: 0
-    ccs_fall_slew: 0
+    ccs_rise_delay: 9
+    ccs_fall_delay: 9
+    ccs_rise_slew: 1.79999995
+    ccs_fall_slew: 1.79999995

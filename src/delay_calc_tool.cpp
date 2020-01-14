@@ -86,8 +86,11 @@ main(int argc, char **argv)
     // run simulation
     bool run_sims = false;
     
-    // golden results
-    char* golden_dir_name = nullptr;
+    // merged circuit file (output)
+    char* merged_circuits = nullptr;
+
+    // run delay calculation
+    char* dc_file = nullptr;
     
     // get options
     int option_index = 0;
@@ -100,11 +103,12 @@ main(int argc, char **argv)
         {"spice_models", required_argument, 0, 'm'},
         {"simulator", required_argument, 0, 'z'},
         {"run_sims", no_argument, 0, 'r'},
-        {"golden_dir", required_argument, 0, 'g'},
+        {"dc_file", required_argument, 0, 'y'},
+        {"merged_circuits", required_argument, 0, 'e'},
         {0,         0,                 0,  0 }
     };
 
-    while  ((c = getopt_long(argc, argv, "l:s:c:x:", long_options, &option_index))) {
+    while  ((c = getopt_long(argc, argv, "l:s:c:d:x:m:z:rye:", long_options, &option_index))) {
 
         if (c == -1)
             break;
@@ -138,13 +142,16 @@ main(int argc, char **argv)
             simulator = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(simulator, optarg);
             break;
-        case 'g':
-            golden_dir_name = (char*)malloc((strlen(optarg)+1) * sizeof(char));
-            strcpy(golden_dir_name, optarg);
+        case 'e':
+            merged_circuits = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(merged_circuits, optarg);
             break;
         case 'r':
             run_sims = true;
             break;
+        case 'y':
+            dc_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(dc_file, optarg);
         case '?':
             break;
 
@@ -165,16 +172,13 @@ main(int argc, char **argv)
 
         printf("Reading Liberty file %s\n", liberty_file);
         read_lib_retval = read_liberty(liberty_file, cell_lib);
-    } else {
-        printf("Error:  Liberty option required!");
-        exit(1);
-    }
-    if (read_lib_retval != 0) {
-        printf("Error %d during Liberty processing.  Exiting.", read_lib_retval);
-        exit(1);
+        if (read_lib_retval != 0) {
+            printf("Error %d during Liberty processing.  Exiting.", read_lib_retval);
+            exit(1);
+        }
+        cell_lib->dump();
     }
 
-    cell_lib->dump();
     
     // Read Spef
     if (spef_file) {
@@ -185,9 +189,6 @@ main(int argc, char **argv)
             std::cerr << "Error during SPEF processing" << *spef->error << std::endl;
             exit(1);
         }
-    } else {
-        printf("Error:  SPEF option required!");
-        exit(1);
     }
 
     // Read Test Circuits
@@ -195,51 +196,52 @@ main(int argc, char **argv)
 
         printf("Reading Test Circuits file %s\n", test_circuits_file);
         read_circuit_retval = read_circuits(test_circuits_file, &circuitMgr);
-    } else {
-        printf("Error:  Test circuits file required!");
-        exit(1);
-    }
-    if (read_circuit_retval != 0) {
-        printf("Error %d during Test Circuit processing.  Exiting.", read_circuit_retval);
-        exit(1);
+
+        if (read_circuit_retval != 0) {
+            printf("Error %d during Test Circuit processing.  Exiting.", read_circuit_retval);
+            exit(1);
+        }
     }
 
 
     // Compute delays
-    compute_delay_retval = compute_delays(cell_lib, &circuitMgr, spef);
-    if (compute_delay_retval != 0) {
-        printf("Error %d during delay calculation.  Exiting.", compute_delay_retval);
-        exit(1);
+    if (dc_file) {
+        printf("here");
+        compute_delay_retval = compute_delays(cell_lib, &circuitMgr, spef);
+        if (compute_delay_retval != 0) {
+            printf("Error %d during delay calculation.  Exiting.", compute_delay_retval);
+            exit(1);
+        }
+        // write out results file
+
+        // format data
+        YAML::Emitter emitter;
+        emitter << YAML::BeginMap;
+        emitter << YAML::Key << "Circuits";
+        emitter << YAML::BeginSeq;
+        for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+            circuitMgr[i]->gen_yaml(emitter);
+        }
+        emitter << YAML::EndSeq;
+        emitter << YAML::EndMap;
+
+        // write to file
+
+        std::ofstream yaml_fout(dc_file);
+        yaml_fout << emitter.c_str() << std::endl;
+        yaml_fout.close();
+
+        
     }
 
-    // test code to see if values got captured
-    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
-        // circuitMgr[i]->dump();
-    }
-
-    // create YAML buffer
-    YAML::Emitter emitter;
-    emitter << YAML::BeginMap;
-    emitter << YAML::Key << "Circuits";
-    emitter << YAML::BeginSeq;
-    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
-        circuitMgr[i]->gen_yaml(emitter);
-    }
-    emitter << YAML::EndSeq;
-    emitter << YAML::EndMap;
-
-    // dump to debug file
-    //std::ofstream yaml_fout("debug.circuits.yaml");
-    //yaml_fout << emitter.c_str() << std::endl;
-    //yaml_fout.close();
-
+    // prepare for spice simulations
     if (spice_lib_name) {
         printf("Reading spice library %s\n", spice_lib_name);
         read_spice_lib(spice_lib_name, cell_lib);
     }
 
     // write spice decks to directory
-    if (spice_dir_name) {
+    if (spice_dir_name && run_sims) {
 
         printf("Writing spice decks into %s\n", spice_dir_name);
         for (std::size_t i = 0; i < circuitMgr.size(); i++) {
@@ -272,13 +274,13 @@ main(int argc, char **argv)
     }
     
     // merge simulation results into Circuits
-    if (spice_dir_name) {
-        printf("Merging golden results from %s\n", golden_dir_name);
+    if (spice_dir_name && merged_circuits) {
+        printf("Merging golden results from %s\n", spice_dir_name);
         for (std::size_t i = 0; i < circuitMgr.size(); i++) {
 
             // merge results for only recognized simulators
             if (!strcmp(simulator,"xyce")) {
-                std::string results_file_name = std::string(spice_dir_name) + "/" + circuitMgr[i]->get_name() + "sp.mt0";
+                std::string results_file_name = std::string(spice_dir_name) + "/" + circuitMgr[i]->get_name() + ".sp.mt0";
                 printf("Reading simulation results %s\n", results_file_name.c_str() );
                 circuitMgr[i]->read_spice_results(simulator, results_file_name);
             }
@@ -291,24 +293,74 @@ main(int argc, char **argv)
             
         }
         // write out results file
+
+        // format data
+        YAML::Emitter emitter;
+        emitter << YAML::BeginMap;
+        emitter << YAML::Key << "Circuits";
+        emitter << YAML::BeginSeq;
+        for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+            circuitMgr[i]->gen_yaml(emitter);
+        }
+        emitter << YAML::EndSeq;
+        emitter << YAML::EndMap;
+
+        // write to file
+
+        std::ofstream yaml_fout(merged_circuits);
+        yaml_fout << emitter.c_str() << std::endl;
+        yaml_fout.close();
+
     }
 
-    // TODO: clean up all pointers here
     // clean up
+    if (test_circuits_file) {
+        free(test_circuits_file);
+        test_circuits_file = nullptr;
+    }
+
     if (liberty_file) {
         free(liberty_file);
     }
 
     if (spef_file) {
         free(spef_file);
+        spef_file = nullptr;
     }
 
     if (cell_lib) {
         delete cell_lib;
+        cell_lib = nullptr;
     }
 
-    if (golden_dir_name) {
-        free(golden_dir_name);
+    if (spice_dir_name) {
+        free(spice_dir_name);
+        spice_dir_name = nullptr;
+    }
+
+    if (spice_lib_name) {
+        free(spice_lib_name);
+        spice_lib_name = nullptr;
+    }
+
+    if (spice_models) {
+        free(spice_models);
+        spice_models = nullptr;
+    }
+
+    if (simulator) {
+        free(simulator);
+        simulator = nullptr;
+    }
+
+    if (merged_circuits) {
+        free(merged_circuits);
+        merged_circuits = nullptr;
+    }
+
+    if (dc_file) {
+        free(dc_file);
+        dc_file = nullptr;
     }
 
     exit(EXIT_SUCCESS);

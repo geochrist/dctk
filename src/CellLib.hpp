@@ -41,6 +41,15 @@ public:
     // setters
     void set_time_unit(const std::string& s) {
         _time_unit = s ;
+
+        if (!strcmp(s.c_str(), "1ns")) {
+            _scale_to_ps = 1000.0;
+        }
+
+        if (!strcmp(s.c_str(), "1ps")) {
+            _scale_to_ps = 1.0;
+        }
+            
     }
     void set_leakage_power_unit(const std::string& s) {
         _leakage_power_unit = s ;
@@ -56,6 +65,13 @@ public:
     }
     void set_capacitive_load_unit(const std::string& s) {
         _capacitive_load_unit = s ;
+        
+        if (!strcmp(s.c_str(), "1ff")) {
+            _scale_to_ff = 1.0;
+        }
+        if (!strcmp(s.c_str(), "1pf")) {
+            _scale_to_ff = 1000.0;
+        }
     }
 
     void set_nom_process(const float& f) {
@@ -160,6 +176,15 @@ public:
         return _voltage_map;
     }
 
+    const float& get_scale_to_ps() {
+        return _scale_to_ps;
+    }
+
+    const float& get_scale_to_ff() {
+        return _scale_to_ff;
+    }
+    
+
 private:
 
 
@@ -171,6 +196,12 @@ private:
     std::string _current_unit;
     std::string _pulling_resistance_unit;
     std::string _capacitive_load_unit;
+
+    // scale values to convert Liberty time units to ps
+    float _scale_to_ps;
+
+    // scale values to convert Liberty cap units to ff
+    float _scale_to_ff;
 
     std::map<std::string, Cell*> _cellMap;
     std::map<std::string,float> _voltage_map;

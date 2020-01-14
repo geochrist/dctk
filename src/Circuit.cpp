@@ -10,6 +10,9 @@
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <regex>
+#include <stdlib.h>
+#include <cstdlib>
 #include <src/Circuit.hpp>
 
 namespace dctk {
@@ -202,6 +205,7 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
         std::cout << "Warning:  Found " << type << " waveform, but only ramp supported.  Assuming is ramp." << std::endl;
     }
 
+    // TODO: convert to strtod() for consistency
     float tramp = atof(results[1].c_str());
     
     // TODO: scale according to library thresholds
@@ -536,6 +540,8 @@ void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spe
                                const char* simulator) {
 
 
+    // Note:  Units in SPICE file will be in MKS
+
     if (simulator && !strcmp(simulator, "xyce")) {
         set_xyce_measure();
     }
@@ -577,7 +583,66 @@ void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spe
     // TODO: include models
     fs.close();
 }
+
+
+// patterns for reading simulation results
+static const std::regex XYCE_RISE_DELAY_RE("RISE_DELAY = (.*)");
+static const std::regex XYCE_FALL_DELAY_RE("FALL_DELAY = (.*)");
+static const std::regex XYCE_RISE_SLEW_RE("RISE_SLEW = (.*)");
+static const std::regex XYCE_FALL_SLEW_RE("FALL_SLEW = (.*)");
+static const std::regex NGSPICE_RISE_DELAY_RE("rise_delay\\s+=\\s+(.*)");
+static const std::regex NGSPICE_FALL_DELAY_RE("fall_delay\\s+=\\s+(.*)");
+static const std::regex NGSPICE_RISE_SLEW_RE("rise_slew\\s+=\\s+(.*)");
+static const std::regex NGSPICE_FALL_SLEW_RE("fall_slew\\s+=\\s+(.*)");
+
 void Circuit::read_spice_results(const char* simulator, const std::string& results_filename) {
+
+    std::regex rise_delay_re;
+    std::regex fall_delay_re;
+    std::regex rise_slew_re;
+    std::regex fall_slew_re;
+    
+    if (!strcmp(simulator, "xyce")) {
+        rise_delay_re = XYCE_RISE_DELAY_RE;
+        fall_delay_re = XYCE_FALL_DELAY_RE;
+        rise_slew_re = XYCE_RISE_SLEW_RE;
+        fall_slew_re = XYCE_FALL_SLEW_RE;
+    }
+
+    if (!strcmp(simulator, "ngspice")) {
+        rise_delay_re = NGSPICE_RISE_DELAY_RE;
+        fall_delay_re = NGSPICE_FALL_DELAY_RE;
+        rise_slew_re = NGSPICE_RISE_SLEW_RE;
+        fall_slew_re = NGSPICE_FALL_SLEW_RE;
+    }
+
+    // output is in a mt0 file format
+    std::ifstream infile(results_filename);
+    
+    std::string line;
+    char* end;
+    while (std::getline(infile, line)) {
+
+        std::smatch match;
+        if (std::regex_search(line, match, rise_delay_re) && match.size() > 1) {
+            _spice_rise_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+            
+        if (std::regex_search(line, match, fall_delay_re) && match.size() > 1) {
+            _spice_fall_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+            
+        if (std::regex_search(line, match, rise_slew_re) && match.size() > 1) {
+            _spice_rise_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+            
+        if (std::regex_search(line, match, fall_slew_re) && match.size() > 1) {
+            _spice_fall_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+    }
+
+    infile.close();
+
 }
 
 }
