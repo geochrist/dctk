@@ -230,7 +230,7 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
 
     // build up PWL; times in ps
     const float tstart = 100.0;
-    const float tpulse = 1400.0;
+    const float tpulse = 1900.0;
 
     // voltage source
     fs << "Vinput";
