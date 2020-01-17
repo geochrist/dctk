@@ -1,7 +1,8 @@
 #ifndef DCTK_CELLLIB_HPP_
 #define DCTK_CELLLIB_HPP_
 
-#include <string.h>
+#include <cstring>
+#include <string>
 #include <map>
 #include <iostream>
 #include "Cell.hpp"
