@@ -60,10 +60,10 @@ public:
         _receiver_capacitance1_rise_table = d;
     }
     void set_receiver_capacitance2_fall_table(liberty_value_data* d) {
-        _receiver_capacitance1_fall_table = d;
+        _receiver_capacitance2_fall_table = d;
     }
     void set_receiver_capacitance2_rise_table(liberty_value_data* d) {
-        _receiver_capacitance1_rise_table = d;
+        _receiver_capacitance2_rise_table = d;
     }
 
     // CCS tables
