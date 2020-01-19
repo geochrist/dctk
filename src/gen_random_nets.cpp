@@ -761,7 +761,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         }
 
         // now reduce the max load allowed by the amount of receiver pin caps
-        smallest_max_load -= total_receiver_min_pin_cap;
+        smallest_max_load -= total_receiver_max_pin_cap;
         assert(smallest_max_load>0.0);
         largest_min_load -= total_receiver_min_pin_cap;
 
