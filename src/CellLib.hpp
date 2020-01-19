@@ -177,6 +177,10 @@ public:
         return _voltage_map;
     }
 
+    std::map<std::string, Cell*>& get_cellMap() {
+        return _cellMap;
+    }
+    
     const float& get_scale_to_ps() {
         return _scale_to_ps;
     }
