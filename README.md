@@ -34,3 +34,8 @@ It needs updates to handle multi input/output cells.
 ## Future
 * re-work interface to be cleaner, and more consistent.
 * add support for multi-input cells (sensitization of for side input pins).
+
+## Available tags
+
+tau2020_alpha200119 -- build against this tag for alpha release
+
