@@ -276,7 +276,7 @@ void Circuit::write_spice_driver(std::fstream& fs, CellLib& cellLib) {
     // print out pins, in order
     const std::string& inst = driver_info[0];
     std::vector<std::string> cellpins = driver_cell->get_pin_order();
-    for (int i=0; i < cellpins.size(); i++) {
+    for (unsigned int i=0; i < cellpins.size(); i++) {
         // check to see if pin is a voltage rail
         if (voltage_map.find(cellpins[i]) != iterEnd) {
             pins.push_back(cellpins[i]);
@@ -294,7 +294,7 @@ void Circuit::write_spice_driver(std::fstream& fs, CellLib& cellLib) {
     fs << "X" << driver_info[0];
 
     // pins
-    for (int i=0; i< pins.size(); i++) {
+    for (unsigned int i=0; i< pins.size(); i++) {
         fs << " " << pins[i];
     }
     // celltype
@@ -364,7 +364,7 @@ void Circuit::write_spice_load(std::fstream& fs, CellLib& cellLib) {
     // print out pins, in order
     const std::string& inst = load_info[0];
     std::vector<std::string> cellpins = load_cell->get_pin_order();
-    for (int i=0; i < cellpins.size(); i++) {
+    for (unsigned int i=0; i < cellpins.size(); i++) {
         // check to see if pin is a voltage rail
         if (voltage_map.find(cellpins[i]) != iterEnd) {
             pins.push_back(cellpins[i]);
@@ -382,7 +382,7 @@ void Circuit::write_spice_load(std::fstream& fs, CellLib& cellLib) {
     fs << "X" << load_info[0];
 
     // pins
-    for (int i=0; i< pins.size(); i++) {
+    for (unsigned int i=0; i< pins.size(); i++) {
         fs << " " << pins[i];
     }
     // celltype
