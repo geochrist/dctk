@@ -116,6 +116,7 @@ public:
     float get_random_slew();
     float get_random_load();
     void get_load_range(float& min_load, float& max_load);
+    void get_min_max_pin_cap(float& min_cap, float& max_cap);
 
     // debug
     void dump();

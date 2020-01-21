@@ -734,12 +734,22 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
                 } else {
                     receiver_input_pin = random_arc->get_related_pin();
                 }
-
-                
             }
 
-            total_receiver_max_pin_cap += receiver_input_pin->get_max_pin_cap() * scale_to_ff;
-            total_receiver_min_pin_cap += receiver_input_pin->get_min_pin_cap() * scale_to_ff;
+            // get the min and max cap for the arc
+            float receiver_arc_max_pin_cap;
+            float receiver_arc_min_pin_cap;
+            random_arc->get_min_max_pin_cap(receiver_arc_min_pin_cap, receiver_arc_max_pin_cap);
+
+            // get the min and max cap for the input pin
+            float receiver_input_min_pin_cap = receiver_input_pin->get_min_pin_cap();
+            float receiver_input_max_pin_cap = receiver_input_pin->get_max_pin_cap();
+
+            float max_pin_cap = std::max(receiver_arc_max_pin_cap, receiver_input_max_pin_cap);
+            float min_pin_cap = std::min(receiver_arc_min_pin_cap, receiver_input_min_pin_cap);
+
+            total_receiver_max_pin_cap += max_pin_cap * scale_to_ff;
+            total_receiver_min_pin_cap += min_pin_cap * scale_to_ff;
 
             // build receiver node
             std::string receiver_inst = "I" + std::to_string(inst_num);

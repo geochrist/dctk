@@ -261,4 +261,67 @@ void CellArc::get_load_range(float& min_load_limit, float& max_load_limit) {
         
 }
 
+void get_min_max_values(const liberty_value_data* table, float& min, float& max) {
+
+    // initialize defaults
+
+    min = std::numeric_limits<float>::infinity();
+    max = -std::numeric_limits<float>::infinity();
+
+    // return dump anything if we got a nullptr.
+    if (table == nullptr) {
+        return;
+    }
+
+    int num_dimensions = table->dimensions;
+    int total_element_count = 1;
+
+    // figure out total number of elements by multiplying out the dimensions
+    for (int d = 0; d < num_dimensions; d++) {
+        int dim_size = table->dim_sizes[d];
+        total_element_count = total_element_count * dim_size;
+    }
+
+    //    std::cout << std::endl;
+    // iterate through all values, marking max and min values
+    for (int i = 0; i < total_element_count; i++) {
+        //        std::cout << table->values[i] << " ";
+        max = std::max((float)(table->values[i]), max);
+        min = std::min((float)(table->values[i]), min);
+    }
+    //    std::cout << std::endl;
+
+}
+
+void CellArc::get_min_max_pin_cap(float& min_cap, float& max_cap) {
+
+    min_cap = std::numeric_limits<float>::infinity();
+    max_cap = -std::numeric_limits<float>::infinity();
+
+    // iterate through each receiver capacitance table
+
+    float min_value;
+    float max_value;
+    
+    get_min_max_values(_receiver_capacitance1_fall_table, min_value, max_value);
+    min_cap = std::min(min_cap, min_value);
+    max_cap = std::max(max_cap, max_value);
+
+    get_min_max_values(_receiver_capacitance1_rise_table, min_value, max_value);
+    min_cap = std::min(min_cap, min_value);
+    max_cap = std::max(max_cap, max_value);
+
+    get_min_max_values(_receiver_capacitance2_fall_table, min_value, max_value);
+    min_cap = std::min(min_cap, min_value);
+    max_cap = std::max(max_cap, max_value);
+
+    get_min_max_values(_receiver_capacitance2_rise_table, min_value, max_value);
+    min_cap = std::min(min_cap, min_value);
+    max_cap = std::max(max_cap, max_value);
+
+
+}
+
+
+
 }
