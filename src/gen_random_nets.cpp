@@ -164,7 +164,7 @@ double LayerRCData::get_via_stack_res( int first_layer_index, int second_layer_i
 
 double LayerRCData::get_shape_layer_res( int layer_index, double layer_length ) const
 {
-    if( layer_index < 0 || layer_index >= all_layer_data_.size() ) {
+    if( layer_index < 0 || layer_index >= (int) all_layer_data_.size() ) {
         return 0.0;
     } else {
         double shape_res = all_layer_data_[layer_index].lyr_res_ * layer_length;
@@ -174,7 +174,7 @@ double LayerRCData::get_shape_layer_res( int layer_index, double layer_length ) 
 
 double LayerRCData::get_shape_layer_cap( int layer_index, double layer_length ) const
 {
-    if( layer_index < 0 || layer_index >= all_layer_data_.size() ) {
+    if( layer_index < 0 || layer_index >= (int) all_layer_data_.size() ) {
         return 0.0;
     } else {
         double shape_cap = all_layer_data_[layer_index].tot_cap_ * layer_length;

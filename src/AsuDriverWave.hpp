@@ -45,10 +45,10 @@ public:
   long double t_from_v(long double vTarget) {
    
     long double t_left = delay_ - trans_*2.0;
-    long double v_left = predriver_v_t(t_left, false);
+    //long double v_left = predriver_v_t(t_left, false);
 
     long double t_right = delay_ + trans_*2.0;
-    long double v_right = predriver_v_t(t_right, false);
+    //long double v_right = predriver_v_t(t_right, false);
 
     while (fabsl(t_right - t_left) > 1e-6) {
       long double t_mid = (t_left + t_right) * 0.5;
@@ -56,10 +56,10 @@ public:
      
       if(v_mid < vTarget) {
         t_left = t_mid; 
-        v_left = v_mid;
+        //v_left = v_mid;
       } else if(v_mid > vTarget) {
         t_right = t_mid; 
-        v_right = v_mid;
+        //v_right = v_mid;
       } else {
         return t_mid;
       }
