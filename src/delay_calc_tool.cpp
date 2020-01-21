@@ -6,6 +6,7 @@
 #include <iostream>
 #include <optional>
 #include <stdlib.h>
+#include <chrono>
 //#include <algorithm>
 
 #include <yaml-cpp/yaml.h>
@@ -206,12 +207,18 @@ main(int argc, char **argv)
 
     // Compute delays
     if (dc_file) {
-        printf("here");
+        auto elapsed_t1 = std::chrono::steady_clock::now();
+        clock_t cpu_time_start = clock();
         compute_delay_retval = compute_delays(cell_lib, &circuitMgr, spef);
         if (compute_delay_retval != 0) {
             printf("Error %d during delay calculation.  Exiting.", compute_delay_retval);
             exit(1);
         }
+        auto elapsed_t2 = std::chrono::steady_clock::now();
+        std::chrono::duration<float> elapsed_time = elapsed_t2 - elapsed_t1;
+        clock_t cpu_time_ticks = clock() - cpu_time_start ;
+        double cpu_time = (float) cpu_time_ticks / (float) CLOCKS_PER_SEC ; 
+
         // write out results file
 
         // format data
@@ -223,6 +230,11 @@ main(int argc, char **argv)
             circuitMgr[i]->gen_yaml(emitter);
         }
         emitter << YAML::EndSeq;
+        emitter << YAML::Key << "Statistics";
+        emitter << YAML::BeginMap;
+        emitter << YAML::Key << "elasped_time" << YAML::Value << elapsed_time.count() ;
+        emitter << YAML::Key << "cpu_time" << YAML::Value << (float) cpu_time ;
+        emitter << YAML::EndMap;
         emitter << YAML::EndMap;
 
         // write to file

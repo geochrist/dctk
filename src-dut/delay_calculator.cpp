@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 
 #include "dctk.hpp"
 #include "CellLib.hpp"
@@ -21,6 +22,9 @@ int compute_delays(dctk::CellLib* cell_lib, dctk::CircuitPtrVec* circuitMgr, spe
 	(*circuitMgr)[i]->set_ccs_fall_slew(i*0.2);
 
     }
+
+    // 2.3 seconds of delay
+    std::this_thread::sleep_for(std::chrono::milliseconds(2300));
 	
     return 0;
 
