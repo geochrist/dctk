@@ -640,7 +640,7 @@ bool RCNetsData::dump_spice( std::ofstream & ofs ) const
  * ****************************************************************************************/
 
 bool create_random_nets( int num_nets, int max_num_receivers, double max_len, int max_layer_index,
-                         RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr, bool pimodels )
+                         RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr, bool pimodels, char* waveform )
 {
     int max_len_int = int( ceil(max_len) );
 
@@ -777,7 +777,13 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         // add to a circuit library
         dctk::Circuit* c = new dctk::Circuit(net_name);
 
-        std::string input_waveform = "ramp " + to_string(ramp_time) ;
+        // default to ramp if waveform not given
+        std::string waveform_str("ramp");
+        if (waveform) {
+            waveform_str = std::string(waveform);
+        }
+        
+        std::string input_waveform = waveform_str + " " + to_string(ramp_time) ;
         c->set_input_waveform(input_waveform);
 
         // driver
@@ -809,6 +815,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 //   --liberty LIBERTY    Liberty model (input)
 //   --circuits CIRCUITS  Test Circuits file (output)
 //   --spef SPEF          SPEF with parasitics
+//   --waveform WAVEFORM  waveform
 
 //
 // Format for circuits file (using YAML format)
@@ -853,6 +860,9 @@ int main( int argc, char * const argv[] )
     // pi models
     bool pimodels = false;
 
+    // waveform
+    char *waveform = nullptr;
+    
     // get options
     int c;
     int option_index = 0;
@@ -861,10 +871,11 @@ int main( int argc, char * const argv[] )
         {"dataset", required_argument, 0, 'd'},
         {"number", required_argument, 0, 'n'},
         {"pimodels", optional_argument, 0, 'p'},
+        {"waveform", required_argument, 0, 'w'},
         {0,         0,                 0,  0 }
     };
 
-    while  ((c = getopt_long(argc, argv, "l:d:n:p", long_options, &option_index))) {
+    while  ((c = getopt_long(argc, argv, "l:d:n:pw:", long_options, &option_index))) {
 
         if (c == -1)
             break;
@@ -889,6 +900,12 @@ int main( int argc, char * const argv[] )
         case 'p':
             // pi models only
             pimodels = true;
+            break;
+
+        case 'w':
+            // waveform
+            waveform = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(waveform, optarg);
             break;
 
         case '?':
@@ -922,7 +939,7 @@ int main( int argc, char * const argv[] )
 
     // seed random generator
     std::srand(std::time(nullptr));
-    create_random_nets( n, 4, 1000.0, 14, all_nets, cell_lib, circuitMgr, pimodels );
+    create_random_nets( n, 4, 1000.0, 14, all_nets, cell_lib, circuitMgr, pimodels, waveform );
 
     //
     // write out SPEF file

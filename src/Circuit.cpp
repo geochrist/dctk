@@ -13,7 +13,9 @@
 #include <regex>
 #include <stdlib.h>
 #include <cstdlib>
+#include <algorithm>
 #include <src/Circuit.hpp>
+#include <src/AsuDriverWave.hpp>
 
 namespace dctk {
 
@@ -201,29 +203,86 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
 
     // there should be exactly 2 tokens
     const std::string& type = results[0];
-    if (type != "ramp") {
-        std::cout << "Warning:  Found " << type << " waveform, but only ramp supported.  Assuming is ramp." << std::endl;
-    }
 
     // TODO: convert to strtod() for consistency
     float tramp = atof(results[1].c_str());
+
+    // set power_rail
+    const float power_rail_voltage = get_power_rail_voltage();
+
+    // we use a pulse
+    std::vector<std::string> driver_info = split(_driver, '/');
+
+    if (type == "asu_exp") {
+
+        float offset = tramp * 2.0;
+        // offset translates the waveform left/right.          
+        auto w = AsuDriverWave(tramp, offset, power_rail_voltage,
+                               cellLib.get_slew_upper_threshold_pct_rise(),
+                               cellLib.get_slew_lower_threshold_pct_rise());
+        
+        // duplicating same trip points as characterization
+        auto voltages = w.voltages();
+        auto times = w.times();
+
+        // now write out the voltages for rising portion
+
+        // stimulus
+        std::string vstim_str = "Vinput";
+
+        // build up PWL; times in ps
+        // voltage source
+        fs << "Vinput";
+       
+        // nodes
+        fs << " " + driver_info[0] + ':' + driver_info[1] << " 0";
+        // TODO:  pull ramp time from circuits.yaml
+        fs << " pwl(0p 0v" ;
+
+        size_t n = voltages.size();
+        for (size_t i = 0; i < n; i++) {
+            fs << " " << times[i] << "p " << voltages[i] << "v";
+        }
+        // now for the falling waveform.  Assume a pulse width of 500ps to separate the two waveforms.
+        offset = 500.0 + times[n-1] + tramp * 2.0;
+
+        w = AsuDriverWave(tramp, offset, power_rail_voltage,
+                          cellLib.get_slew_upper_threshold_pct_fall(),
+                          cellLib.get_slew_lower_threshold_pct_fall());
+
+        // duplicating same trip points as characterization
+        voltages = w.voltages();
+        times = w.times();
+
+        // continue writing out waveform for falling portion
+        n = voltages.size();
+  
+        for (size_t i = 0; i < n; i++) {
+            fs << " " << times[i] << "p " << std::max((float)(power_rail_voltage - voltages[i]),(float)0.0) << "v";
+        }
+        fs << ")\n" ;
+
+        // add additional delay to make sure we capture trailing waveform
+        set_sim_time(times[n-1] + 500.0);
+        return;
+    }
     
+    if (type != "ramp") {
+        
+        std::cout << "Error:  Found " << type << " waveform, but only ramp and asu_exp supported. Assumping ramp." << std::endl;
+    }
+    
+
     // TODO: scale according to library thresholds
     float scale = 100.0 / (cellLib.get_slew_upper_threshold_pct_rise() -
                            cellLib.get_slew_lower_threshold_pct_rise());
     float tramp_rise = tramp * scale;
-
+        
     scale = 100.0 / (cellLib.get_slew_upper_threshold_pct_fall() -
                      cellLib.get_slew_lower_threshold_pct_fall());
     float tramp_fall = tramp * scale;
         
-    // set power_rail
-    const float power_rail_voltage = get_power_rail_voltage();
-
     fs << "* stimulus" << std::endl;
-
-    // we use a pulse
-    std::vector<std::string> driver_info = split(_driver, '/');
 
     // stimulus
     std::string vstim_str = "Vinput";
@@ -234,7 +293,7 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
 
     // voltage source
     fs << "Vinput";
-
+       
     // nodes
     fs << " " + driver_info[0] + ':' + driver_info[1] << " 0";
     // TODO:  pull ramp time from circuits.yaml
@@ -253,6 +312,8 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
 
     // store the total simulation time for the .tran statement
     set_sim_time(tstart + tramp_rise + tpulse + tramp_fall + tpulse);
+
+    return;
 
 }
 
