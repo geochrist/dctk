@@ -38,4 +38,6 @@ It needs updates to handle multi input/output cells.
 ## Available tags
 
 tau2020_alpha200119 -- build against this tag for alpha release
+tau2020_alpha200120 -- OK to build against this tag for alpha release
+
 
