@@ -515,7 +515,7 @@ bool Circuit::is_positive_unate(CellLib& cellLib) {
 void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
 
 
-    fs << ".tran 1p " << get_sim_time() << "p" << std::endl;
+    fs << ".tran 0.05p " << get_sim_time() << "p 0 0.05p" << std::endl;
 
     std::vector<std::string> driver_tokens = split(_driver, '/');
     const std::string& inst = driver_tokens[0];
@@ -614,6 +614,10 @@ void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spe
     // title
     fs << "* SPICE circuit for " << _name << std::endl;
 
+    // temperature
+    fs << ".options device temp=25" << std::endl;
+    fs << ".options device tnom=25" << std::endl;
+    
     // write out spice lib
     fs << ".include " << spice_lib_name << std::endl;
 
