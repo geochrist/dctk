@@ -12,8 +12,9 @@
 #include "dctk.hpp"
 #include "circuit_reader.hpp"
 #include "Circuit.hpp"
+#include "Benchmarks.hpp"
 
-int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
+int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr, dctk::Benchmarks* benchmarks) {
 
     std::ifstream infile(circuit_file_name);
     if (!infile.good()) {
@@ -92,6 +93,22 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr) {
         circuitMgr->push_back(cir);
     }
 
+    if (config["Statistics"]) {
+
+        const YAML::Node& stats_yaml = config["Statistics"];
+    
+        // cpu time
+        if (stats_yaml["cpu_time"]) {
+            benchmarks->cpu_time = stats_yaml["cpu_time"].as<float>();
+        }
+        if (stats_yaml["elapsed_time"]) {
+            benchmarks->elapsed_time = stats_yaml["elapsed_time"].as<float>();
+        }
+        if (stats_yaml["incremental_memory"]) {
+            benchmarks->incremental_memory = stats_yaml["incremental_memory"].as<float>();
+        }
+        
+    }
 
     return 0;
 

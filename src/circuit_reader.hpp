@@ -4,7 +4,8 @@
 
 #include <vector>
 #include "Circuit.hpp"
+#include "Benchmarks.hpp"
 
-int read_circuits(char *filename, std::vector<dctk::Circuit*>* circuit_lib);
+int read_circuits(char *filename, std::vector<dctk::Circuit*>* circuit_lib, dctk::Benchmarks* benchmarks);
 
 #endif
