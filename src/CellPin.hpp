@@ -48,6 +48,31 @@ public:
         return _direction;
     }
 
+    float get_rise_capacitance() {
+        return _rise_capacitance;
+    }
+    float get_rise_capacitance_range_min() {
+        return _rise_capacitance_range_min;
+    }
+    float get_rise_capacitance_range_max() {
+        return _rise_capacitance_range_max;
+    }
+
+    float get_fall_capacitance() {
+        return _fall_capacitance;
+    }
+    float get_fall_capacitance_range_min() {
+        return _fall_capacitance_range_min;
+    }
+    float get_fall_capacitance_range_max() {
+        return _fall_capacitance_range_max;
+    }
+
+    const std::vector<CellArc*>& get_cell_arcs() {
+        return _arcs;
+
+    }
+    
     void add_arc(CellArc* arc);
 
     void dump();
