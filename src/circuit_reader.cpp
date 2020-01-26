@@ -107,6 +107,12 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr, dctk
         if (stats_yaml["incremental_memory"]) {
             benchmarks->incremental_memory = stats_yaml["incremental_memory"].as<float>();
         }
+        if (stats_yaml["rms_delay_diff"]) {
+            benchmarks->rms_delay_diff = stats_yaml["rms_delay_diff"].as<float>();
+        }
+        if (stats_yaml["rms_slew_diff"]) {
+            benchmarks->rms_slew_diff = stats_yaml["rms_slew_diff"].as<float>();
+        }
         
     }
 

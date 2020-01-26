@@ -7,7 +7,7 @@
 #include <optional>
 #include <stdlib.h>
 #include <chrono>
-//#include <algorithm>
+#include <cmath>
 
 #include <yaml-cpp/yaml.h>
 #include <parser-spef.hpp>
@@ -26,6 +26,9 @@
 
 // SPICE lib reader
 #include "spice_lib_reader.hpp"
+
+// Benchmarks object definition
+#include "Benchmarks.hpp"
 
 //
 // Usage:
@@ -49,6 +52,37 @@
 //     name: circuitname2
 //     ...
 //
+
+void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
+
+    // average_delay_diff = average(abs(ccs_*_delay - spice_*_delay)/spice_*_delay)*100 [change to %]
+    // slew_benchmark = average(abs(ccs_*_slew - spice_*_slew)/spice_*_slew)*100 [change to %]
+
+    float accumulated_delay_diff = 0.0;
+    float accumulated_slew_diff = 0.0;
+    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+        // delay
+        const float ccs_rise_delay = circuitMgr[i]->get_ccs_rise_delay();
+        const float ccs_fall_delay = circuitMgr[i]->get_ccs_fall_delay();
+        const float spice_rise_delay = circuitMgr[i]->get_spice_rise_delay();
+        const float spice_fall_delay = circuitMgr[i]->get_spice_fall_delay();
+        accumulated_delay_diff += pow(100.0*(ccs_rise_delay - spice_rise_delay) / spice_rise_delay, 2) ;
+        accumulated_delay_diff += pow(100.0*(ccs_fall_delay - spice_fall_delay) / spice_fall_delay, 2) ;
+        
+        // slew
+        const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
+        const float ccs_fall_slew = circuitMgr[i]->get_ccs_fall_slew();
+        const float spice_rise_slew = circuitMgr[i]->get_spice_rise_slew();
+        const float spice_fall_slew = circuitMgr[i]->get_spice_fall_slew();
+        accumulated_slew_diff += pow(100.0*(ccs_rise_slew - spice_rise_slew) / spice_rise_slew, 2) ;
+        accumulated_slew_diff += pow(100.0*(ccs_fall_slew - spice_fall_slew) / spice_fall_slew, 2) ;
+        
+    }
+    benchmarks->rms_delay_diff = sqrt(accumulated_delay_diff/(2.0*circuitMgr.size()));
+    benchmarks->rms_slew_diff = sqrt(accumulated_slew_diff/(2.0*circuitMgr.size()));
+
+}
+
 
 int
 main(int argc, char **argv)
@@ -92,6 +126,9 @@ main(int argc, char **argv)
 
     // run delay calculation
     char* dc_file = nullptr;
+    
+    // benchmarks
+    dctk::Benchmarks benchmarks;
     
     // get options
     int option_index = 0;
@@ -196,7 +233,7 @@ main(int argc, char **argv)
     if (test_circuits_file) {
 
         printf("Reading Test Circuits file %s\n", test_circuits_file);
-        read_circuit_retval = read_circuits(test_circuits_file, &circuitMgr);
+        read_circuit_retval = read_circuits(test_circuits_file, &circuitMgr, &benchmarks);
 
         if (read_circuit_retval != 0) {
             printf("Error %d during Test Circuit processing.  Exiting.", read_circuit_retval);
@@ -216,9 +253,12 @@ main(int argc, char **argv)
         }
         auto elapsed_t2 = std::chrono::steady_clock::now();
         std::chrono::duration<float> elapsed_time = elapsed_t2 - elapsed_t1;
+        benchmarks.elapsed_time = elapsed_time.count();
+
         clock_t cpu_time_ticks = clock() - cpu_time_start ;
         double cpu_time = (float) cpu_time_ticks / (float) CLOCKS_PER_SEC ; 
-
+        benchmarks.cpu_time = cpu_time;
+        
         // write out results file
 
         // format data
@@ -230,11 +270,7 @@ main(int argc, char **argv)
             circuitMgr[i]->gen_yaml(emitter);
         }
         emitter << YAML::EndSeq;
-        emitter << YAML::Key << "Statistics";
-        emitter << YAML::BeginMap;
-        emitter << YAML::Key << "elasped_time" << YAML::Value << elapsed_time.count() ;
-        emitter << YAML::Key << "cpu_time" << YAML::Value << (float) cpu_time ;
-        emitter << YAML::EndMap;
+        benchmarks.dump_yaml(emitter);
         emitter << YAML::EndMap;
 
         // write to file
@@ -304,7 +340,9 @@ main(int argc, char **argv)
             }
             
         }
-        // write out results file
+
+        // analyze accuracy of results
+        analyze_results(circuitMgr, &benchmarks);
 
         // format data
         YAML::Emitter emitter;
@@ -315,6 +353,7 @@ main(int argc, char **argv)
             circuitMgr[i]->gen_yaml(emitter);
         }
         emitter << YAML::EndSeq;
+        benchmarks.dump_yaml(emitter);
         emitter << YAML::EndMap;
 
         // write to file

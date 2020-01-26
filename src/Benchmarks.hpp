@@ -13,6 +13,9 @@ public:
         cpu_time = 0.0;
         elapsed_time = 0.0;
         incremental_memory = 0.0;
+        rms_delay_diff = -1.0;
+        rms_slew_diff = -1.0;
+        
     }
     
     void dump_yaml(YAML::Emitter& emitter) {
@@ -21,6 +24,8 @@ public:
         emitter << YAML::Key << "elapsed_time" << YAML::Value << elapsed_time ;
         emitter << YAML::Key << "cpu_time" << YAML::Value << cpu_time ;
         emitter << YAML::Key << "incremental_memory" << YAML::Value <<  incremental_memory ;
+        emitter << YAML::Key << "rms_delay_diff" << YAML::Value <<  rms_delay_diff ;
+        emitter << YAML::Key << "rms_slew_diff" << YAML::Value <<  rms_slew_diff ;
         emitter << YAML::EndMap;
 
     }
@@ -31,6 +36,11 @@ public:
     float elapsed_time;
     // in MB
     float incremental_memory;
+    // in percentage
+    float rms_delay_diff;
+    // in percentage
+    float rms_slew_diff;
+    
 
 };
 
