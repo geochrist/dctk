@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <chrono>
 #include <cmath>
+#include <sys/time.h>   /* for rusage */
+#include <sys/resource.h> /* for rusage */
 
 #include <yaml-cpp/yaml.h>
 #include <parser-spef.hpp>
@@ -53,7 +55,7 @@
 //     ...
 //
 
-void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
+void analyze_results_old(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
 
     // average_delay_diff = average(abs(ccs_*_delay - spice_*_delay)/spice_*_delay)*100 [change to %]
     // slew_benchmark = average(abs(ccs_*_slew - spice_*_slew)/spice_*_slew)*100 [change to %]
@@ -80,6 +82,113 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
     }
     benchmarks->rms_delay_diff = sqrt(accumulated_delay_diff/(2.0*circuitMgr.size()));
     benchmarks->rms_slew_diff = sqrt(accumulated_slew_diff/(2.0*circuitMgr.size()));
+
+}
+
+// constants needed for scoring
+
+const float DELAY_PTS = 80.0 ;
+const float SLEW_PTS = 120.0 ;
+const float DELAY_PEN = 20.0 ;
+const float SLEW_PEN = 20.0 ;
+const float DELAY_TA = 2.0e-12 ;
+const float SLEW_TA = 4.0e-12 ;
+const float DELAY_TO = 0.05 ;
+const float SLEW_TO = 0.10 ;
+
+
+// The following implements the scoring algorithm described in the TAU2020 contest rules
+void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
+
+    // average_delay_diff = average(abs(ccs_*_delay - spice_*_delay)/spice_*_delay)*100 [change to %]
+    // slew_benchmark = average(abs(ccs_*_slew - spice_*_slew)/spice_*_slew)*100 [change to %]
+
+    float accumulated_delay_diff = 0.0;
+    float accumulated_slew_diff = 0.0;
+    int NO_delay = 0;
+    int NO_slew = 0;
+
+    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+        // delay
+        const float ccs_rise_delay = circuitMgr[i]->get_ccs_rise_delay();
+        const float ccs_fall_delay = circuitMgr[i]->get_ccs_fall_delay();
+        const float spice_rise_delay = circuitMgr[i]->get_spice_rise_delay();
+        const float spice_fall_delay = circuitMgr[i]->get_spice_fall_delay();
+
+        // check for thresholding
+        float dx_delay_rise;
+        float dx_delay_fall;
+        if (std::abs(ccs_rise_delay - spice_rise_delay) > DELAY_TA) {
+            dx_delay_rise = std::abs(ccs_rise_delay - spice_rise_delay)/std::abs(spice_rise_delay) ;
+        } else {
+            dx_delay_rise = 0.0;
+        }
+        if (std::abs(ccs_fall_delay - spice_fall_delay) > DELAY_TA) {
+            dx_delay_fall = std::abs(ccs_fall_delay - spice_fall_delay)/std::abs(spice_fall_delay) ;
+        } else {
+            dx_delay_fall = 0.0;
+        }
+
+        // accumulate RMS
+        accumulated_delay_diff += pow(dx_delay_rise, 2);
+        accumulated_delay_diff += pow(dx_delay_fall, 2);
+
+
+        // count outliers
+        if (dx_delay_rise > DELAY_TO) {
+            NO_delay++;
+        }
+        
+        if (dx_delay_fall > DELAY_TO) {
+            NO_delay++;
+        }
+
+        // delay
+        const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
+        const float ccs_fall_slew = circuitMgr[i]->get_ccs_fall_slew();
+        const float spice_rise_slew = circuitMgr[i]->get_spice_rise_slew();
+        const float spice_fall_slew = circuitMgr[i]->get_spice_fall_slew();
+
+        // check for thresholding
+        float dx_slew_rise;
+        float dx_slew_fall;
+        if (std::abs(ccs_rise_slew - spice_rise_slew) > SLEW_TA) {
+            dx_slew_rise = std::abs(ccs_rise_slew - spice_rise_slew)/std::abs(spice_rise_slew) ;
+        } else {
+            dx_slew_rise = 0.0;
+        }
+        if (std::abs(ccs_fall_slew - spice_fall_slew) > SLEW_TA) {
+            dx_slew_fall = std::abs(ccs_fall_slew - spice_fall_slew)/std::abs(spice_fall_slew) ;
+        } else {
+            dx_slew_fall = 0.0;
+        }
+
+        // accumulate RMS
+        accumulated_slew_diff += pow(dx_slew_rise, 2);
+        accumulated_slew_diff += pow(dx_slew_fall, 2);
+        
+        // count outliers
+        if (dx_slew_rise > SLEW_TO) {
+            NO_slew++;
+        }
+        
+        if (dx_slew_fall > SLEW_TO) {
+            NO_slew++;
+        }
+
+    }
+
+    const float N = 2.0*circuitMgr.size();
+    const float measAccuracy_delay = sqrt(accumulated_delay_diff/N);
+    const float measAccuracy_slew = sqrt(accumulated_slew_diff/N);
+    const float measPTS_delay = (1.0 - 2.0 * measAccuracy_delay) * DELAY_PTS - NO_delay/N * DELAY_PEN;
+    const float measPTS_slew = (1.0 - 2.0 * measAccuracy_slew) * SLEW_PTS - NO_slew/N * SLEW_PEN;
+    
+    // store results
+    benchmarks->rms_delay_diff = sqrt(accumulated_delay_diff/(2.0*circuitMgr.size()));
+    benchmarks->rms_slew_diff = sqrt(accumulated_slew_diff/(2.0*circuitMgr.size()));
+    benchmarks->delay_pts = measPTS_delay;
+    benchmarks->slew_pts = measPTS_slew;
 
 }
 
@@ -130,6 +239,10 @@ main(int argc, char **argv)
     // benchmarks
     dctk::Benchmarks benchmarks;
     
+    // rusage
+    rusage rusage_before ;
+    rusage rusage_after ;
+
     // get options
     int option_index = 0;
     static struct option long_options[] = {
@@ -244,21 +357,40 @@ main(int argc, char **argv)
 
     // Compute delays
     if (dc_file) {
+
+        // benchmarking before computation
+        getrusage(RUSAGE_SELF, &rusage_before);
         auto elapsed_t1 = std::chrono::steady_clock::now();
-        clock_t cpu_time_start = clock();
+
+        // computation
         compute_delay_retval = compute_delays(cell_lib, &circuitMgr, spef);
         if (compute_delay_retval != 0) {
             printf("Error %d during delay calculation.  Exiting.", compute_delay_retval);
             exit(1);
         }
-        auto elapsed_t2 = std::chrono::steady_clock::now();
-        std::chrono::duration<float> elapsed_time = elapsed_t2 - elapsed_t1;
-        benchmarks.elapsed_time = elapsed_time.count();
 
-        clock_t cpu_time_ticks = clock() - cpu_time_start ;
-        double cpu_time = (float) cpu_time_ticks / (float) CLOCKS_PER_SEC ; 
-        benchmarks.cpu_time = cpu_time;
+        // benchmarking after computation
+        getrusage(RUSAGE_SELF, &rusage_after);
+        auto elapsed_t2 = std::chrono::steady_clock::now();
+
+        // elapsed time
+        std::chrono::duration<float> elapsed_time = elapsed_t2 - elapsed_t1;
+
+        // total user time
+        float user_time_after = (float) rusage_after.ru_utime.tv_sec + 0.000001*(float)rusage_after.ru_utime.tv_usec;
+        float user_time_before = (float) rusage_before.ru_utime.tv_sec + 0.000001*(float)rusage_before.ru_utime.tv_usec;
+        float net_user_time = user_time_after - user_time_before;
+
+        // total system time
+        float system_time_after = (float) rusage_after.ru_stime.tv_sec + 0.000001*(float)rusage_after.ru_stime.tv_usec;
+        float system_time_before = (float) rusage_before.ru_stime.tv_sec + 0.000001*(float)rusage_before.ru_stime.tv_usec;
+        float net_system_time = system_time_after - system_time_before;
         
+        // store results
+        benchmarks.elapsed_time = elapsed_time.count();
+        benchmarks.cpu_time = net_user_time + net_system_time;
+        benchmarks.incremental_memory = rusage_after.ru_maxrss - rusage_before.ru_maxrss; 
+
         // write out results file
 
         // format data
