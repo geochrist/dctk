@@ -17,7 +17,8 @@ public:
         rms_slew_diff = -1.0;
         delay_pts = 0.0;
         slew_pts = 0.0;
-        
+        delay_outliers = 0;
+        slew_outliers = 0;
     }
     
     void dump_yaml(YAML::Emitter& emitter) {
@@ -28,6 +29,8 @@ public:
         emitter << YAML::Key << "incremental_memory" << YAML::Value <<  incremental_memory ;
         emitter << YAML::Key << "rms_delay_diff" << YAML::Value <<  rms_delay_diff ;
         emitter << YAML::Key << "rms_slew_diff" << YAML::Value <<  rms_slew_diff ;
+        emitter << YAML::Key << "delay_outliers" << YAML::Value <<  delay_outliers ;
+        emitter << YAML::Key << "slew_outliers" << YAML::Value <<  slew_outliers ;
         emitter << YAML::Key << "delay_pts" << YAML::Value <<  delay_pts ;
         emitter << YAML::Key << "slew_pts" << YAML::Value <<  slew_pts ;
         emitter << YAML::EndMap;
@@ -48,6 +51,10 @@ public:
     float delay_pts;
     // points for slew accuracy
     float slew_pts;
+
+    // number of outliers
+    unsigned int delay_outliers;
+    unsigned int slew_outliers;
 
 };
 
