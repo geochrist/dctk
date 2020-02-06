@@ -188,7 +188,8 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
     for ( ; iter != iterEnd; iter++) {
         const std::string& rail = iter->first;
         float voltage = iter->second;
-        fs << "V" << rail << " " << rail << " 0 " << voltage << std::endl;
+        fs << "V" << rail << "_rise " << rail << "_rise 0 " << voltage << std::endl;
+        fs << "V" << rail << "_fall " << rail << "_fall 0 " << voltage << std::endl;
         // identify voltage rail by the one that is not at 0.0V
         if (voltage != 0.0) {
             set_power_rail_voltage(voltage);
@@ -209,9 +210,12 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
 
     // set power_rail
     const float power_rail_voltage = get_power_rail_voltage();
+    const float ground_rail_voltage = 0.0;
 
     // we use a pulse
     std::vector<std::string> driver_info = split(_driver, '/');
+
+    bool invert = not is_positive_unate(cellLib);
 
     if (type == "asu_exp") {
 
@@ -226,44 +230,65 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
         auto times = w.times();
 
         // now write out the voltages for rising portion
+        float initial_rail_voltage;
+        float final_rail_voltage;
+        if (invert) {
+            initial_rail_voltage = power_rail_voltage;
+            final_rail_voltage = ground_rail_voltage;
+        } else {
+            initial_rail_voltage = ground_rail_voltage;
+            final_rail_voltage = power_rail_voltage;
+        }
+            
 
         // stimulus
-        std::string vstim_str = "Vinput";
-
         // build up PWL; times in ps
         // voltage source
-        fs << "Vinput";
+        fs << "Vinput_rise";
        
         // nodes
-        fs << " " + driver_info[0] + ':' + driver_info[1] << " 0";
+        fs << " " + driver_info[0] + ':' + driver_info[1] << "_rise 0";
         // TODO:  pull ramp time from circuits.yaml
-        fs << " pwl(0p 0v" ;
+        fs << " pwl(0p " << initial_rail_voltage << "v" ;
 
         size_t n = voltages.size();
+        float total_sim_time;
         for (size_t i = 0; i < n; i++) {
-            fs << " " << times[i] << "p " << voltages[i] << "v";
-        }
-        // now for the falling waveform.  Assume a pulse width of 500ps to separate the two waveforms.
-        offset = 500.0 + times[n-1] + tramp * 2.0;
+            float voltage;
+            if (invert) {
+                voltage = std::max((float)(power_rail_voltage - voltages[i]),(float)0.0);
+            } else {
+                voltage = voltages[i];
+            }
 
-        w = AsuDriverWave(tramp, offset, power_rail_voltage,
-                          cellLib.get_slew_upper_threshold_pct_fall(),
-                          cellLib.get_slew_lower_threshold_pct_fall());
-
-        // duplicating same trip points as characterization
-        voltages = w.voltages();
-        times = w.times();
-
-        // continue writing out waveform for falling portion
-        n = voltages.size();
-  
-        for (size_t i = 0; i < n; i++) {
-            fs << " " << times[i] << "p " << std::max((float)(power_rail_voltage - voltages[i]),(float)0.0) << "v";
+            fs << " " << times[i] << "p " << voltage << "v";
+            total_sim_time = times[i] + tramp * 2.0 + 500.0;
         }
         fs << ")\n" ;
 
+        // now work on falling measurement
+        // voltage source
+        fs << "Vinput_fall";
+       
+        // nodes
+        fs << " " + driver_info[0] + ':' + driver_info[1] << "_fall 0";
+        // TODO:  pull ramp time from circuits.yaml
+        fs << " pwl(0p " << final_rail_voltage << "v" ;
+
+        for (size_t i = 0; i < n; i++) {
+            float voltage;
+            if (invert) {
+                voltage = voltages[i];
+            } else {
+                voltage = std::max((float)(power_rail_voltage - voltages[i]),(float)0.0);
+            }
+            fs << " " << times[i] << "p " << voltage << "v";
+        }
+        fs << ")\n" ;
+
+
         // add additional delay to make sure we capture trailing waveform
-        set_sim_time(times[n-1] + 500.0);
+        set_sim_time(total_sim_time);
         return;
     }
     
@@ -284,34 +309,71 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
         
     fs << "* stimulus" << std::endl;
 
-    // stimulus
-    std::string vstim_str = "Vinput";
+    // stimulus rise
+    std::string vstim_str = "Vinput_rise";
 
     // build up PWL; times in ps
     const float tstart = 100.0;
     const float tpulse = 1900.0;
 
+    float initial_rail_voltage;
+    float pulse_rail_voltage;
+    
+    // set initial and pulse voltages based on unateness
+    if (invert) {
+        initial_rail_voltage = power_rail_voltage;
+        pulse_rail_voltage = 0.0;
+    } else {
+        initial_rail_voltage = 0.0;
+        pulse_rail_voltage = power_rail_voltage;
+    }
+
     // voltage source
-    fs << "Vinput";
+    fs << "Vinput_rise";
        
     // nodes
-    fs << " " + driver_info[0] + ':' + driver_info[1] << " 0";
+    fs << " " + driver_info[0] + ':' + driver_info[1] << "_rise 0";
     // TODO:  pull ramp time from circuits.yaml
-    fs << " pwl(0p 0v" ;
+    fs << " pwl(0p " << initial_rail_voltage << "v" ;
     // beginning of rise
-    fs << " " << tstart << "p 0.0v";
+    fs << " " << tstart << "p " << initial_rail_voltage << "v";
     // end of rise
-    fs << " " << tstart + tramp_rise << "p " << power_rail_voltage << "v" ;
+    fs << " " << tstart + tramp_rise << "p " << pulse_rail_voltage << "v" ;
     // beginning of fall
-    fs << " " << tstart + tramp_rise + tpulse << "p " << power_rail_voltage << "v" ;
+    fs << " " << tstart + tramp_rise + tpulse << "p " << pulse_rail_voltage << "v" ;
     // end of fall
-    fs << " " << tstart + tramp_rise + tpulse + tramp_fall << "p 0.0v";
+    fs << " " << tstart + tramp_rise + tpulse + tramp_fall << "p " << initial_rail_voltage << "v";
     // end of simulation
-    fs << " " << tstart + tramp_rise + tpulse + tramp_fall + tpulse << "p 0.0v";
+    fs << " " << tstart + tramp_rise + tpulse + tramp_fall + tpulse << "p " << initial_rail_voltage << "v";
     fs << ")" << std::endl;
 
+
+    // stimulus fall
+    vstim_str = "Vinput_fall";
+
+    // voltage source
+    fs << "Vinput_fall";
+       
+    // nodes
+    fs << " " + driver_info[0] + ':' + driver_info[1] << "_fall 0";
+    // TODO:  pull ramp time from circuits.yaml
+    fs << " pwl(0p " << pulse_rail_voltage << "v" ;
+    // beginning of rise
+    fs << " " << tstart << "p " << pulse_rail_voltage << "v";
+    // end of rise
+    fs << " " << tstart + tramp_rise << "p " << initial_rail_voltage << "v" ;
+    // beginning of fall
+    fs << " " << tstart + tramp_rise + tpulse << "p " << initial_rail_voltage << "v" ;
+    // end of fall
+    fs << " " << tstart + tramp_rise + tpulse + tramp_fall << "p " << pulse_rail_voltage << "v";
+    // end of simulation
+    fs << " " << tstart + tramp_rise + tpulse + tramp_fall + tpulse << "p " << pulse_rail_voltage << "v";
+    fs << ")" << std::endl;
+
+
     // store the total simulation time for the .tran statement
-    set_sim_time(tstart + tramp_rise + tpulse + tramp_fall + tpulse);
+    // set_sim_time(tstart + tramp_rise + tpulse + tramp_fall + tpulse);
+    set_sim_time(tstart + tramp_rise + tpulse);
 
     return;
 
@@ -351,12 +413,23 @@ void Circuit::write_spice_driver(std::fstream& fs, CellLib& cellLib) {
     //
     fs << "* Driver" << std::endl;
 
-    // instance
-    fs << "X" << driver_info[0];
+    // instance rise
+    fs << "X" << driver_info[0] << "_rise";
 
     // pins
     for (unsigned int i=0; i< pins.size(); i++) {
-        fs << " " << pins[i];
+        fs << " " << pins[i] << "_rise";
+    }
+    // celltype
+    fs << " " << _driver_celltype << std::endl;
+
+
+    // instance fall
+    fs << "X" << driver_info[0] << "_fall";
+
+    // pins
+    for (unsigned int i=0; i< pins.size(); i++) {
+        fs << " " << pins[i] << "_fall";
     }
     // celltype
     fs << " " << _driver_celltype << std::endl;
@@ -383,9 +456,11 @@ void Circuit::write_spice_net(std::fstream& fs, spef::Spef& spef) {
                 // TODO -- figure out units from SPEF.  Support only FF right now.
 
                 // ground coupling caps
-                fs << "C" << index << ' ' << node1 << " VSS " << value << "FF \n";
+                fs << "C" << index << "_rise " << node1 << "_rise VSS_rise " << value << "FF \n";
+                fs << "C" << index << "_fall " << node1 << "_fall VSS_fall " << value << "FF \n";
             } else {
-                fs << "C" << index << ' ' << node1 << ' ' << node2 << ' ' << value << "FF \n";
+                fs << "C" << index << "_rise " << node1 << "_rise " << node2 << "_rise " << value << "FF \n";
+                fs << "C" << index << "_fall " << node1 << "_fall " << node2 << "_fall " << value << "FF \n";
             }
             index++;
         }
@@ -396,7 +471,8 @@ void Circuit::write_spice_net(std::fstream& fs, spef::Spef& spef) {
             auto& [node1, node2, value] = r;
             // TODO -- figure out units from SPEF.  Support only ohms right now.
 
-            fs << "R" << index << ' ' << node1 << ' ' << node2 << ' ' << value << '\n';
+            fs << "R" << index << "_rise " << node1 << "_rise " << node2 << "_rise " << value << '\n';
+            fs << "R" << index << "_fall " << node1 << "_fall " << node2 << "_fall " << value << '\n';
             index++;
         }
 
@@ -435,16 +511,26 @@ void Circuit::write_spice_load(std::fstream& fs, CellLib& cellLib) {
     }
         
     //
-    // write out load instance
+    // write out load instances
     //
     fs << "* Load" << std::endl;
     
-    // instance
-    fs << "X" << load_info[0];
+    // instance rise
+    fs << "X" << load_info[0] << "_rise";
 
-    // pins
+    // pins rise
     for (unsigned int i=0; i< pins.size(); i++) {
-        fs << " " << pins[i];
+        fs << " " << pins[i] << "_rise";
+    }
+    // celltype
+    fs << " " << _load_celltype << std::endl;
+
+    // instance fall
+    fs << "X" << load_info[0] << "_fall";
+
+    // pins rise
+    for (unsigned int i=0; i< pins.size(); i++) {
+        fs << " " << pins[i] << "_fall";
     }
     // celltype
     fs << " " << _load_celltype << std::endl;
@@ -462,13 +548,16 @@ void Circuit::write_spice_load_parasitics(std::fstream& fs, CellLib& cellLib) {
     // write out load's parasitics
     //
     fs << "* Load parasitics" << std::endl;
-    fs << "Cnear " << output_pin << " 0 " << _load_interconnect.get_cnear() << "f" << std::endl;
+    fs << "Cnear_rise " << output_pin << "_rise 0 " << _load_interconnect.get_cnear() << "f" << std::endl;
+    fs << "Cnear_fall " << output_pin << "_fall 0 " << _load_interconnect.get_cnear() << "f" << std::endl;
 
     // write out res and cfar only if they are non-zero
     // (most of time, load parasitics may be pure capacitance with only cnear)
     if ((_load_interconnect.get_res() != 0.0) || (_load_interconnect.get_cfar() != 0.0)) {
-        fs << "Rres " << output_pin << " far_node " << _load_interconnect.get_res() << std::endl;
-        fs << "Cfar far_node 0 " << _load_interconnect.get_cfar() << "f" << std::endl;
+        fs << "Rres_rise " << output_pin << "_rise far_node_rise " << _load_interconnect.get_res() << std::endl;
+        fs << "Rres_fall " << output_pin << "_fall far_node_fall " << _load_interconnect.get_res() << std::endl;
+        fs << "Cfar_rise far_node_rise 0 " << _load_interconnect.get_cfar() << "f" << std::endl;
+        fs << "Cfar_fall far_node_fall 0 " << _load_interconnect.get_cfar() << "f" << std::endl;
     }
 
 }
@@ -538,27 +627,27 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
     if (_spice_measure == SpiceMeasure::ngspice ) {
 
         if (is_positive_unate(cellLib)) {
-            fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
-               << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
+            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise) val="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << "_rise) val="
                << delay_threshold << " rise=1" << std::endl;
-            fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
-               << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
+            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall) val="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << "_fall) val="
                << delay_threshold << "v fall=1" << std::endl;
         } else {
-            fs << ".measure tran fall_delay trig v(" << input_pin << ") val="
-               << delay_threshold << "v rise=1 targ v(" << output_pin << ") val="
+            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall) val="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << "_fall) val="
                << delay_threshold << "v fall=1" << std::endl;
-            fs << ".measure tran rise_delay trig v(" << input_pin << ") val="
-               << delay_threshold << "v fall=1 targ v(" << output_pin << ") val="
+            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise) val="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << "_rise) val="
                << delay_threshold << "v rise=1" << std::endl;
         }
 
-        fs << ".measure tran rise_slew trig v(" << output_pin << ") val="
-           << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << ") val="
+        fs << ".measure tran rise_slew trig v(" << output_pin << "_rise) val="
+           << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << "_rise) val="
            << rise_slew_upper_threshold << "v rise=1" << std::endl;
         
         fs << ".measure tran fall_slew trig v(" << output_pin << ") val="
-           << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << ") val="
+           << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << "_fall) val="
            << fall_slew_lower_threshold << "v fall=1" << std::endl;
 
         return;
@@ -567,28 +656,28 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
     if (_spice_measure == SpiceMeasure::xyce ) {
 
         if (is_positive_unate(cellLib)) {
-            fs << ".measure tran rise_delay trig v(" << input_pin << ")="
-               << delay_threshold << "v rise=1 targ v(" << output_pin << ")="
+            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise)="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << "_rise)="
                << delay_threshold << " rise=1" << std::endl;
-            fs << ".measure tran fall_delay trig v(" << input_pin << ")="
-               << delay_threshold << "v fall=1 targ v(" << output_pin << ")="
+            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall)="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << "_fall)="
                << delay_threshold << "v fall=1" << std::endl;
 
         } else {
-            fs << ".measure tran fall_delay trig v(" << input_pin << ")="
-               << delay_threshold << "v rise=1 targ v(" << output_pin << ")="
+            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall)="
+               << delay_threshold << "v rise=1 targ v(" << output_pin << "_fall)="
                << delay_threshold << "v fall=1" << std::endl;
-            fs << ".measure tran rise_delay trig v(" << input_pin << ")="
-               << delay_threshold << "v fall=1 targ v(" << output_pin << ")="
+            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise)="
+               << delay_threshold << "v fall=1 targ v(" << output_pin << "_rise)="
                << delay_threshold << "v rise=1" << std::endl;
         }
 
         // slews
-        fs << ".measure tran rise_slew trig v(" << output_pin << ")="
-           << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << ")="
+        fs << ".measure tran rise_slew trig v(" << output_pin << "_rise)="
+           << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << "_rise)="
            << rise_slew_upper_threshold << " rise=1" << std::endl;
-        fs << ".measure tran fall_slew trig v(" << output_pin << ")="
-           << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << ")="
+        fs << ".measure tran fall_slew trig v(" << output_pin << "_fall)="
+           << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << "_fall)="
            << fall_slew_lower_threshold << " fall=1" << std::endl;
         return;
     }
