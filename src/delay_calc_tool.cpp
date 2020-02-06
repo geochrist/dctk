@@ -90,7 +90,7 @@ void analyze_results_old(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benc
 const float DELAY_PTS = 80.0 ;
 const float SLEW_PTS = 120.0 ;
 const float DELAY_PEN = 20.0 ;
-const float SLEW_PEN = 20.0 ;
+const float SLEW_PEN = 30.0 ;
 const float DELAY_TA = 2.0 ; // units of ps
 const float SLEW_TA = 4.0 ; // units of ps
 const float DELAY_TO = 0.05 ;
@@ -187,8 +187,12 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
     // store results
     benchmarks->rms_delay_diff = sqrt(accumulated_delay_diff/(2.0*circuitMgr.size()));
     benchmarks->rms_slew_diff = sqrt(accumulated_slew_diff/(2.0*circuitMgr.size()));
+    // benchmarks->delay_outliers = NO_delay;
+    // benchmarks->slew_outliers = NO_slew;
     benchmarks->delay_pts = measPTS_delay;
     benchmarks->slew_pts = measPTS_slew;
+    std::cout << "delay outliers = " << NO_delay << std::endl;
+    std::cout << "slew outliers = " << NO_slew << std::endl;
 
 }
 
