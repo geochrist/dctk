@@ -646,7 +646,7 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
            << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << "_rise) val="
            << rise_slew_upper_threshold << "v rise=1" << std::endl;
         
-        fs << ".measure tran fall_slew trig v(" << output_pin << ") val="
+        fs << ".measure tran fall_slew trig v(" << output_pin << "_fall) val="
            << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << "_fall) val="
            << fall_slew_lower_threshold << "v fall=1" << std::endl;
 
