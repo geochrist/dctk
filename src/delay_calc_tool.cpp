@@ -91,8 +91,8 @@ const float DELAY_PTS = 80.0 ;
 const float SLEW_PTS = 120.0 ;
 const float DELAY_PEN = 20.0 ;
 const float SLEW_PEN = 20.0 ;
-const float DELAY_TA = 2.0e-12 ;
-const float SLEW_TA = 4.0e-12 ;
+const float DELAY_TA = 2.0 ; // units of ps
+const float SLEW_TA = 4.0 ; // units of ps
 const float DELAY_TO = 0.05 ;
 const float SLEW_TO = 0.10 ;
 
