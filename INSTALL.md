@@ -205,19 +205,16 @@ In addtion, note that the spice models are level 72 (bsimcmg/finfets) and need S
   Test this executable:
 
     cd $DIR/test
-    ./runme.nangate # for Nangate Library -- works with ngspice
     ./runme.asu     # for ASU -- requires Xyce
  
 
   The result should be:
   
-  * random circuits based on inverters/buffers only (tau2020v1.circuits.yaml)
+  * random circuits based on inverters/buffers only (tau2020_asu.circuits.yaml)
   * corresponding spice decks (spice_decks/)
-  * automatically run ngspice or Xyce if --run_sims option given. (see runme.* files)
+  * automatically run Xyce
 
-  The SPICE decks for the Nangate test circuits should work with ngspice -- this has been tested.  
   The SPICE decks for the ASU-based test circuits should work for Xyce -- this has been tested.
-
 
  
 
