@@ -17,6 +17,10 @@ def run_sim(filename):
 
     print "Dispatching " + filename
     cmd = "Xyce -l " + filename + ".log " + filename
+
+    # for ngspice, uncomment the following line
+    # cmd = "ngspice -b -o " + filename + ".log " + filename
+    
     subprocess.call(cmd, shell=True)
 
 def main():
