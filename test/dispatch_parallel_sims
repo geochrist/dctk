@@ -1,0 +1,46 @@
+#!/usr/bin/python
+
+"""
+# This script dispatches parallel sim jobs
+"""
+
+import glob
+import os
+import argparse
+import subprocess
+from multiprocessing import Pool
+
+POOL_SIZE = 4
+
+def run_sim(filename):
+    """ Run simulation """
+
+    print "Dispatching " + filename
+    cmd = "Xyce -l " + filename + ".log " + filename
+    subprocess.call(cmd, shell=True)
+
+def main():
+    """main routine"""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--spice_decks', required=True)
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.spice_decks):
+        print "Fatal: Cannot open spice decks directory %s." % args.spice_decks
+        exit(0)
+
+    # get list of files to simulate
+    spice_files = sorted(glob.glob("%s/*.sp" % args.spice_decks))
+
+    # generate pool
+    pool = Pool(processes=POOL_SIZE)
+
+    # map spice files into the pool
+    pool.map(run_sim, spice_files)
+
+    exit(0)
+
+if __name__ == "__main__":
+    main()
