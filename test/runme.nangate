@@ -3,9 +3,6 @@
 # This script shows the general contest flow
 # then read it into the delay calculator
 
-# team name
-set team = "taucommittee"
-
 # dataset name
 set dataset = tau2020_nangate
 
@@ -48,22 +45,20 @@ mkdir $spice_decks
 ################################################################
 
 # Run contestant's simulation based on $dataset.circuits.yaml
-# Product $dataset.$team.dc.circuits.yaml
+# Product $dataset.dc.circuits.yaml
 ../build/delay_calc_tool \
   --circuits $dataset.circuits.yaml \
   --liberty $library \
   --spef $dataset.spef \
-  --dc_file $dataset.$team.dc.circuits.yaml
+  --dc_file $dataset.dc.circuits.yaml
 
-# Merge spice results contestant's results into a *.$team.merged.circuits.yaml
+# Merge spice results contestant's results into a *..merged.circuits.yaml
 ../build/delay_calc_tool \
-  --circuits $dataset.$team.dc.circuits.yaml \
+  --circuits $dataset.dc.circuits.yaml \
   --spice_dir $spice_decks \
   --simulator ngspice \
-  --merged_circuits $dataset.$team.merged.circuits.yaml
-  
-# Analyze results  
-#TBD  
+  --merged_circuits $dataset..merged.circuits.yaml
+
 
 
 

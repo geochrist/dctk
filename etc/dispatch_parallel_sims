@@ -38,7 +38,7 @@ def main():
     spice_files = sorted(glob.glob("%s/*.sp" % args.spice_decks))
 
     # generate pool
-    pool = Pool(processes=args.num_cores)
+    pool = Pool(processes=int(args.num_cores))
 
     # map spice files into the pool
     pool.map(run_sim, spice_files)
