@@ -229,6 +229,9 @@ main(int argc, char **argv)
     // simulator
     char* simulator = nullptr;
     
+    // generate spice decks
+    bool gen_spice_decks = false;
+    
     // run simulation
     bool run_sims = false;
     
@@ -255,6 +258,7 @@ main(int argc, char **argv)
         {"spice_lib", required_argument, 0, 'x'},
         {"spice_models", required_argument, 0, 'm'},
         {"simulator", required_argument, 0, 'z'},
+        {"gen_spice_decks", no_argument, 0, 'g'},
         {"run_sims", no_argument, 0, 'r'},
         {"dc_file", required_argument, 0, 'y'},
         {"merged_circuits", required_argument, 0, 'e'},
@@ -301,6 +305,9 @@ main(int argc, char **argv)
             break;
         case 'r':
             run_sims = true;
+            break;
+        case 'g':
+            gen_spice_decks = true;
             break;
         case 'y':
             dc_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
@@ -423,7 +430,7 @@ main(int argc, char **argv)
     }
 
     // write spice decks to directory
-    if (spice_dir_name && run_sims) {
+    if (spice_dir_name && gen_spice_decks) {
 
         printf("Writing spice decks into %s\n", spice_dir_name);
         for (std::size_t i = 0; i < circuitMgr.size(); i++) {
@@ -434,7 +441,7 @@ main(int argc, char **argv)
         }
     }
 
-    // run simulations if reqested
+    // run simulations if requested
     if (run_sims) {
         printf("Running simulations\n");
         for (std::size_t i = 0; i < circuitMgr.size(); i++) {
