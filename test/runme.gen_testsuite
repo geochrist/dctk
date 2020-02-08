@@ -29,7 +29,7 @@ set library = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/
 ../build/gen_random_nets --liberty $library --dataset $dataset -n $count $pimodels --waveform asu_exp
 
 # Generate SPICE-based golden results for benchmarking
-set spice_decks = "spice_decks.asu"
+set spice_decks = "spice_decks.asu.$dataset"
 set spice_lib = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp.modified"
 set spice_models = "../../ASAP7_PDKandLIB_v1p6/asap7PDK_r1p6/models/hspice/7nm_TT.pm.modified"
 rm -rf $spice_decks
