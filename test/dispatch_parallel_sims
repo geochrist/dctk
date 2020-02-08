@@ -10,7 +10,7 @@ import argparse
 import subprocess
 from multiprocessing import Pool
 
-POOL_SIZE = 4
+POOL_SIZE = 16
 
 def run_sim(filename):
     """ Run simulation """
