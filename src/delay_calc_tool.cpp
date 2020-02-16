@@ -186,8 +186,8 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
     const float measPTS_slew = (1.0 - 2.0 * measAccuracy_slew) * SLEW_PTS - NO_slew/N * SLEW_PEN;
     
     // store results
-    benchmarks->rms_delay_diff = sqrt(accumulated_delay_diff/(2.0*circuitMgr.size()));
-    benchmarks->rms_slew_diff = sqrt(accumulated_slew_diff/(2.0*circuitMgr.size()));
+    benchmarks->rms_delay_diff = measAccuracy_delay;
+    benchmarks->rms_slew_diff = measAccuracy_slew;
     benchmarks->delay_outliers = NO_delay;
     benchmarks->slew_outliers = NO_slew;
     benchmarks->delay_pts = measPTS_delay;
@@ -399,7 +399,9 @@ main(int argc, char **argv)
         // store results
         benchmarks.elapsed_time = elapsed_time.count();
         benchmarks.cpu_time = net_user_time + net_system_time;
-        benchmarks.incremental_memory = rusage_after.ru_maxrss - rusage_before.ru_maxrss; 
+        std::cout << "memory after = " << rusage_after.ru_maxrss << "; memory before = " << rusage_before.ru_maxrss << std::endl;
+
+        benchmarks.incremental_memory = (float) rusage_after.ru_maxrss - (float) rusage_before.ru_maxrss; 
 
         // write out results file
 
