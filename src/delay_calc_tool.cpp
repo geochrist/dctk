@@ -129,19 +129,20 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
             dx_delay_fall = 0.0;
         }
 
-        // accumulate RMS
-        accumulated_delay_diff += pow(dx_delay_rise, 2);
-        accumulated_delay_diff += pow(dx_delay_fall, 2);
-
-
-        // count outliers
+        // accumulate RMS if not an outlier
         if (dx_delay_rise > DELAY_TO) {
             NO_delay++;
+        } else {
+            accumulated_delay_diff += pow(dx_delay_rise, 2);
         }
+            
         
         if (dx_delay_fall > DELAY_TO) {
             NO_delay++;
+        } else {
+            accumulated_delay_diff += pow(dx_delay_fall, 2);
         }
+            
 
         // delay
         const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
@@ -163,24 +164,24 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
             dx_slew_fall = 0.0;
         }
 
-        // accumulate RMS
-        accumulated_slew_diff += pow(dx_slew_rise, 2);
-        accumulated_slew_diff += pow(dx_slew_fall, 2);
-        
-        // count outliers
+        // accumulate RMS if not outlier
         if (dx_slew_rise > SLEW_TO) {
             NO_slew++;
+        } else {
+            accumulated_slew_diff += pow(dx_slew_rise, 2);
         }
         
         if (dx_slew_fall > SLEW_TO) {
             NO_slew++;
+        } else {
+            accumulated_slew_diff += pow(dx_slew_fall, 2);
         }
 
     }
 
     const float N = 2.0*circuitMgr.size();
-    const float measAccuracy_delay = sqrt(accumulated_delay_diff/N);
-    const float measAccuracy_slew = sqrt(accumulated_slew_diff/N);
+    const float measAccuracy_delay = sqrt(accumulated_delay_diff / (N - NO_delay) );
+    const float measAccuracy_slew = sqrt(accumulated_slew_diff / (N - NO_slew) );
     const float measPTS_delay = (1.0 - 2.0 * measAccuracy_delay) * DELAY_PTS - NO_delay/N * DELAY_PEN;
     const float measPTS_slew = (1.0 - 2.0 * measAccuracy_slew) * SLEW_PTS - NO_slew/N * SLEW_PEN;
     
