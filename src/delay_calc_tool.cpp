@@ -108,12 +108,28 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
     int NO_delay = 0;
     int NO_slew = 0;
 
+    int skipped_circuits = 0;
+
+
     for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+
+        // if any of the spice results are negative, we skip the circuit from inclusion
+
+        const float spice_rise_delay = circuitMgr[i]->get_spice_rise_delay();
+        const float spice_fall_delay = circuitMgr[i]->get_spice_fall_delay();
+        const float spice_rise_slew = circuitMgr[i]->get_spice_rise_slew();
+        const float spice_fall_slew = circuitMgr[i]->get_spice_fall_slew();
+
+        if ((spice_rise_delay < -1.0) || (spice_fall_delay < -1.0) ||
+            (spice_rise_slew < -1.0) || (spice_fall_slew < -1.0)) {
+            skipped_circuits++;
+            std::cout << "Ignore circuit " << circuitMgr[i]->get_name() << std::endl;
+            continue;
+        }
+
         // delay
         const float ccs_rise_delay = circuitMgr[i]->get_ccs_rise_delay();
         const float ccs_fall_delay = circuitMgr[i]->get_ccs_fall_delay();
-        const float spice_rise_delay = circuitMgr[i]->get_spice_rise_delay();
-        const float spice_fall_delay = circuitMgr[i]->get_spice_fall_delay();
 
         // check for thresholding
         float dx_delay_rise;
@@ -147,8 +163,6 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
         // delay
         const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
         const float ccs_fall_slew = circuitMgr[i]->get_ccs_fall_slew();
-        const float spice_rise_slew = circuitMgr[i]->get_spice_rise_slew();
-        const float spice_fall_slew = circuitMgr[i]->get_spice_fall_slew();
 
         // check for thresholding
         float dx_slew_rise;
@@ -179,7 +193,7 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
 
     }
 
-    const float N = 2.0*circuitMgr.size();
+    const float N = 2.0*(circuitMgr.size() - skipped_circuits);
     const float measAccuracy_delay = sqrt(accumulated_delay_diff / (N - NO_delay) );
     const float measAccuracy_slew = sqrt(accumulated_slew_diff / (N - NO_slew) );
     const float measPTS_delay = (1.0 - 2.0 * measAccuracy_delay) * DELAY_PTS - NO_delay/N * DELAY_PEN;
