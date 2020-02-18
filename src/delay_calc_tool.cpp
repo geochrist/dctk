@@ -55,38 +55,7 @@
 //     ...
 //
 
-void analyze_results_old(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
-
-    // average_delay_diff = average(abs(ccs_*_delay - spice_*_delay)/spice_*_delay)*100 [change to %]
-    // slew_benchmark = average(abs(ccs_*_slew - spice_*_slew)/spice_*_slew)*100 [change to %]
-
-    float accumulated_delay_diff = 0.0;
-    float accumulated_slew_diff = 0.0;
-    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
-        // delay
-        const float ccs_rise_delay = circuitMgr[i]->get_ccs_rise_delay();
-        const float ccs_fall_delay = circuitMgr[i]->get_ccs_fall_delay();
-        const float spice_rise_delay = circuitMgr[i]->get_spice_rise_delay();
-        const float spice_fall_delay = circuitMgr[i]->get_spice_fall_delay();
-        accumulated_delay_diff += pow(100.0*(ccs_rise_delay - spice_rise_delay) / spice_rise_delay, 2) ;
-        accumulated_delay_diff += pow(100.0*(ccs_fall_delay - spice_fall_delay) / spice_fall_delay, 2) ;
-        
-        // slew
-        const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
-        const float ccs_fall_slew = circuitMgr[i]->get_ccs_fall_slew();
-        const float spice_rise_slew = circuitMgr[i]->get_spice_rise_slew();
-        const float spice_fall_slew = circuitMgr[i]->get_spice_fall_slew();
-        accumulated_slew_diff += pow(100.0*(ccs_rise_slew - spice_rise_slew) / spice_rise_slew, 2) ;
-        accumulated_slew_diff += pow(100.0*(ccs_fall_slew - spice_fall_slew) / spice_fall_slew, 2) ;
-        
-    }
-    benchmarks->rms_delay_diff = sqrt(accumulated_delay_diff/(2.0*circuitMgr.size()));
-    benchmarks->rms_slew_diff = sqrt(accumulated_slew_diff/(2.0*circuitMgr.size()));
-
-}
-
 // constants needed for scoring
-
 const float DELAY_PTS = 80.0 ;
 const float SLEW_PTS = 120.0 ;
 const float DELAY_PEN = 20.0 ;
@@ -145,20 +114,17 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
             dx_delay_fall = 0.0;
         }
 
-        // accumulate RMS if not an outlier
+        accumulated_delay_diff += pow(dx_delay_rise, 2);
+        accumulated_delay_diff += pow(dx_delay_fall, 2);
+
+        // count outliers
         if (dx_delay_rise > DELAY_TO) {
             NO_delay++;
-        } else {
-            accumulated_delay_diff += pow(dx_delay_rise, 2);
         }
-            
         
         if (dx_delay_fall > DELAY_TO) {
             NO_delay++;
-        } else {
-            accumulated_delay_diff += pow(dx_delay_fall, 2);
         }
-            
 
         // delay
         const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
@@ -178,24 +144,22 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
             dx_slew_fall = 0.0;
         }
 
-        // accumulate RMS if not outlier
+        accumulated_slew_diff += pow(dx_slew_rise, 2);
+        accumulated_slew_diff += pow(dx_slew_fall, 2);
+        // count outliers
         if (dx_slew_rise > SLEW_TO) {
             NO_slew++;
-        } else {
-            accumulated_slew_diff += pow(dx_slew_rise, 2);
         }
         
         if (dx_slew_fall > SLEW_TO) {
             NO_slew++;
-        } else {
-            accumulated_slew_diff += pow(dx_slew_fall, 2);
         }
 
     }
 
     const float N = 2.0*(circuitMgr.size() - skipped_circuits);
-    const float measAccuracy_delay = sqrt(accumulated_delay_diff / (N - NO_delay) );
-    const float measAccuracy_slew = sqrt(accumulated_slew_diff / (N - NO_slew) );
+    const float measAccuracy_delay = sqrt(accumulated_delay_diff / (N) );
+    const float measAccuracy_slew = sqrt(accumulated_slew_diff / (N) );
     const float measPTS_delay = (1.0 - 2.0 * measAccuracy_delay) * DELAY_PTS - NO_delay/N * DELAY_PEN;
     const float measPTS_slew = (1.0 - 2.0 * measAccuracy_slew) * SLEW_PTS - NO_slew/N * SLEW_PEN;
     
