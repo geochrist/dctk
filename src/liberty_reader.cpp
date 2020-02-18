@@ -636,7 +636,7 @@ int read_liberty(char *filename, dctk::CellLib*& cell_lib) {
                                             // must not have already found reference_time
                                             assert(!found_reference_time);
                                             float reference_time = si2drSimpleAttrGetFloat64Value(vector_attr, &err);
-                                            arc->add_current_rise_tables_reference_times(reference_time);
+                                            arc->add_current_fall_tables_reference_times(reference_time);
                                             //printf("reference_time = %f\n", reference_time);
                                             found_reference_time = true;
                                         }
