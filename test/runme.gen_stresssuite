@@ -1,0 +1,54 @@
+#!/bin/csh -f
+
+# This script shows the general contest flow
+# then read it into the delay calculator
+
+# dataset name
+set dataset = tau2020_stress0314
+
+# number of test circuits
+set count = 100
+
+# number of cores
+set num_cores = 8
+
+# enable pi models
+set pimodels = "--pimodels"
+
+# enable stress
+set stress = "--stress"
+
+# File containing Liberty models in CCS form
+set library = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.postprocessed.lib"
+
+###########################################
+# This section run once for the contest
+#
+# All contestants will use the same $dataset.circuits.yaml file.
+###########################################
+
+# Generate random dataset 
+# output will be $dataset.circuits.yaml and $dataset.spef
+../build/gen_random_nets --liberty $library --dataset $dataset -n $count $pimodels $stress --waveform asu_exp
+
+exit
+
+# Generate SPICE-based golden results for benchmarking
+set spice_decks = "spice_decks.asu.$dataset"
+set spice_lib = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp.modified"
+set spice_models = "../../ASAP7_PDKandLIB_v1p6/asap7PDK_r1p6/models/hspice/7nm_TT.pm.modified"
+rm -rf $spice_decks
+mkdir $spice_decks
+../build/delay_calc_tool \
+  --circuits $dataset.circuits.yaml \
+  --liberty $library \
+  --spef $dataset.spef \
+  --spice_lib $spice_lib \
+  --spice_models $spice_models \
+  --spice_dir $spice_decks \
+  --simulator xyce \
+  --gen_spice_decks
+
+# run sims in parallel
+../etc/dispatch_parallel_sims --spice_decks $spice_decks --num_cores $num_cores
+

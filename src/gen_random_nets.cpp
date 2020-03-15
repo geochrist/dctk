@@ -242,6 +242,51 @@ bool RandomRCNet::populate_pimodel_data( const std::string & net_name,
     return true;
 }
 
+bool RandomRCNet::populate_pimodel_data_scaled( const std::string & net_name,
+        const std::string & drv_node, const std::string & rcvr_node,
+        double total_length, int max_layer_index, const LayerRCData & layer_data,
+        double total_cap, double cnear_cfar_ratio, double res_scale )
+{
+    if( max_layer_index < 0 or max_layer_index >= layer_data.get_num_layers() ) {
+        return false;
+    }
+
+    net_index_ = net_name;
+    pi_model_ = true;
+    all_rc_devices_.clear();
+    all_node_types_.clear();
+
+    double via_val = layer_data.get_via_stack_res( -1, max_layer_index );
+    double shape_res = layer_data.get_shape_layer_res(max_layer_index, total_length);
+    shape_res = shape_res + 2.0 * via_val;
+    double shape_cap = layer_data.get_shape_layer_cap(max_layer_index, total_length);
+
+    // Now scale resistances and capacitances linearly to match given cap
+    double factor = total_cap / shape_cap; 
+    shape_res = factor * shape_res;
+    shape_cap = factor * shape_cap;
+
+    // Further adjust base on ratios
+    double res  = shape_res * res_scale;
+    double cfar = shape_cap / (1.0 +  cnear_cfar_ratio);
+    double cnear = cnear_cfar_ratio * cfar;
+
+    std::string gnd_node = "gnd";
+    RCDevice near_cap( 3, 1, drv_node, gnd_node, cnear );
+    all_rc_devices_.push_back( near_cap );
+
+    RCDevice shp_res( 2, 2, drv_node, rcvr_node, res);
+    all_rc_devices_.push_back( shp_res );
+    RCDevice far_cap( 3, 2, rcvr_node, gnd_node, cfar );
+    all_rc_devices_.push_back( far_cap );
+
+    all_node_types_.insert( std::map<std::string, int>::value_type( gnd_node, 0 ) );  // gnd
+    all_node_types_.insert( std::map<std::string, int>::value_type( drv_node, 1 ) );  // drv
+    all_node_types_.insert( std::map<std::string, int>::value_type( rcvr_node, 2 ) );  // rcvr
+
+    return true;
+}
+
 bool RandomRCNet::populate_net_data( const std::string & net_name,
                                      const std::string & drv_node, const std::vector<std::string > & receivers,
                                      double total_length, int max_layer_index, const LayerRCData & layer_data )
@@ -522,8 +567,6 @@ bool RCNetsData::write_spef_ports( std::ofstream & ofs ) const
 }
 
 
-
-
 bool RCNetsData::create_random_net( const std::string& net_name,
                                     const std::string& drv_node,
                                     const std::string& driver_celltype,
@@ -563,6 +606,29 @@ bool RCNetsData::create_random_net( const std::string& net_name,
             
     }
                     
+    all_nets_data_.insert( std::map<std::string, RandomRCNet& >::value_type( net_name, *new_net ) );
+
+    return true;
+}
+
+bool RCNetsData::create_random_net_scaled( const std::string& net_name,
+                                    const std::string& drv_node,
+                                    const std::string& driver_celltype,
+                                    const std::vector<std::string> & receivers,
+                                    const std::vector<std::string> & receivers_celltypes,
+                                    double total_length, int max_layer_num,
+                                    double total_cap, double cnear_cfar_ratio, double res_scale )
+{
+    RandomRCNet* new_net = nullptr;
+
+    if( have_net( net_name ) ) {
+        std::cout << "Error: net " << net_name << "is already present" << std::endl;
+        return false;
+    }
+
+    new_net = new RandomRCNet( net_name, drv_node, receivers, total_length, max_layer_num, layer_data_, 
+                                total_cap, cnear_cfar_ratio, res_scale);
+
     all_nets_data_.insert( std::map<std::string, RandomRCNet& >::value_type( net_name, *new_net ) );
 
     return true;
@@ -638,6 +704,171 @@ bool RCNetsData::dump_spice( std::ofstream & ofs ) const
 /******************************************************************************************
  * Test
  * ****************************************************************************************/
+
+float rand_float(float from, float to) {
+  float rand_scale = float(rand()) / float(RAND_MAX);
+
+  return (to-from)*rand_scale + from;
+}
+
+// stress test version of create_random_nets()
+bool create_random_nets_stress( int num_nets, int max_num_receivers, double max_len, int max_layer_index,
+                         RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr, bool pimodels, char* waveform )
+{
+    int max_len_int = int( ceil(max_len) );
+    
+    int test_per_stratus = num_nets;
+
+    int inst_num = 1;
+
+    float scale_to_ps = cell_lib->get_scale_to_ps();
+    float scale_to_ff = cell_lib->get_scale_to_ff();
+
+    std::vector<dctk::Cell*> driver_cells;
+
+    driver_cells.push_back(cell_lib->get_cell("INVx2_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("INVx4_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("INVx13_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("BUFx2_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("BUFx4_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("BUFx12_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("BUFx24_ASAP7_75t_R"));
+
+    dctk::Cell* receiver = cell_lib->get_cell("INVx2_ASAP7_75t_R");
+
+    std::vector<dctk::Cell*> receiver_cells;
+    std::vector<float> receiver_loads;
+    receiver_cells.push_back(cell_lib->get_cell("INVx2_ASAP7_75t_R"));
+    receiver_loads.push_back(4.0 * 0.00119678); //FO4 
+
+    int i = 0; // Curent net 
+ 
+    for( int d = 0; d<driver_cells.size(); ++d) {
+      for( int r = 0; r<receiver_cells.size(); ++r) {
+
+        // Driver
+        dctk::Cell* driver = driver_cells[d];
+        dctk::CellPin* driver_output_pin = driver->get_output_pin();
+        dctk::CellPin* driver_input_pin  = driver->get_random_input_pin(); 
+        dctk::CellArc* driver_arc        = driver_output_pin->get_random_arc();
+
+        // Receiver
+        int num_receivers = 1;
+        std::vector<std::string> receivers;
+        std::vector<std::string> receivers_celltypes;
+        std::string receiver_input_output_str;
+ 
+        float       receiver_load = receiver_loads[r] * scale_to_ff;  
+        dctk::Cell* receiver = receiver_cells[r];
+        dctk::CellPin* receiver_output_pin = receiver->get_output_pin();
+        dctk::CellPin* receiver_input_pin  = receiver->get_random_input_pin();
+        dctk::CellArc* receiver_arc        = receiver_output_pin->get_random_arc();
+
+        // Find input slew and load ranges
+        std::vector<float> slew_values = driver_arc->get_slew_values();
+        std::vector<float> load_values = driver_arc->get_load_values();
+      
+        //-2 so we skip the largest slew and largest load 
+        for( int s=0; s<slew_values.size()-2; ++s) {
+          for(int l=0; l<load_values.size()-2; ++l) {
+            float s_min = slew_values[s] * scale_to_ps;
+            float s_max = slew_values[s+1] * scale_to_ps;
+
+            float l_min = load_values[l] * scale_to_ff;
+            float l_max = load_values[l+1] * scale_to_ff;
+
+            std::cout << "\n Slew [" <<  s_min << ", " << s_max << "] Load [" << l_min << ", " << l_max << "]" << std::endl;
+
+            for (int n=0; n<test_per_stratus; ++n) {
+              // Build driver node
+              std::string driver_inst = "I" + std::to_string(inst_num);
+              std::string driver_node = driver_inst + ":" + driver_output_pin->get_name();
+              std::string driver_celltype = driver->get_name(); // needed later
+              std::string driver_input_output_str =
+                  driver_inst + "/" + driver_input_pin->get_name() + "/" + driver_output_pin->get_name();
+              inst_num++;
+      
+              std::cout << "Driver Inst: " << driver_inst << std::endl;
+              std::cout << "Driver Node: " << driver_node << std::endl;
+              std::cout << "Driver CellType: " << driver_celltype << std::endl;
+              std::cout << "Driver InputOutputString: " << driver_input_output_str << std::endl;
+         
+              // Build receiver node
+              std::string receiver_inst = "I" + std::to_string(inst_num);
+              std::string receiver_node = receiver_inst + ":" + receiver_input_pin->get_name();
+              receiver_input_output_str = receiver_inst + "/" + receiver_input_pin->get_name() + "/" + receiver_output_pin->get_name();
+              inst_num++;
+      
+              receivers.push_back( receiver_node );
+              receivers_celltypes.push_back(receiver->get_name());
+      
+              std::cout << "Receiver Inst: " << receiver_inst << std::endl;
+              std::cout << "Receiver Node: " << receiver_node << std::endl;
+              std::cout << "Receiver CellType: " << receivers_celltypes[receivers_celltypes.size()-1] << std::endl;
+              std::cout << "Receiver InputOutputString: " << receiver_input_output_str << std::endl;
+
+              // Random values
+              float ramp_time        = rand_float(s_min, s_max);
+              float total_cap        = rand_float(l_min, l_max);
+              float cnear_cfar_ratio = rand_float(0.2, 1.5);
+              float res_scale        = rand_float(1.0, 2.0);
+
+              std::cout << "Ramp Time: " << ramp_time << std::endl;
+              std::cout << "Total Cap: " << total_cap << std::endl;
+              std::cout << "Cn/Cf Rat: " << cnear_cfar_ratio << std::endl;
+              std::cout << "Res Scale: " << res_scale << std::endl;
+
+              // Net
+              std::string net_name = "net_" + std::to_string(i);
+              ++i;
+
+              std::cout << "Net Name: " << net_name << std::endl;
+
+              double net_len =  double(rand() % max_len_int + 1);
+              int net_max_lyr = rand() % max_layer_index + 1;
+
+              cout << "Creating random net with " << 1 << " rcvrs " << net_len << " length "
+                           << net_max_lyr << " max layer" << std::endl;
+
+
+              all_nets.create_random_net_scaled( net_name, driver_node, driver_celltype, receivers,
+                                          receivers_celltypes, net_len, net_max_lyr,
+                                          total_cap, cnear_cfar_ratio, res_scale);
+
+              // add to a circuit library
+              dctk::Circuit* c = new dctk::Circuit(net_name);
+
+              // default to ramp if waveform not given
+              std::string waveform_str("ramp");
+              if (waveform) {
+                waveform_str = std::string(waveform);
+              }
+        
+              std::string input_waveform = waveform_str + " " + to_string(ramp_time) ;
+              c->set_input_waveform(input_waveform);
+
+              // driver
+              c->set_driver(driver_input_output_str);
+              c->set_driver_celltype(driver_celltype);
+
+              // load (first receiver)
+              c->set_load(receiver_input_output_str);
+              c->set_load_celltype(receivers_celltypes[0]);
+
+              // Start with a fixed load
+              std::string load_interconnect = to_string(receiver_load) + " 0 0";
+              c->set_load_interconnect(load_interconnect.c_str());
+
+              // add to library
+              cktmgr.push_back(c); 
+            }
+          }
+        } 
+      }
+    }
+
+    return true;
+}
 
 bool create_random_nets( int num_nets, int max_num_receivers, double max_len, int max_layer_index,
                          RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr, bool pimodels, char* waveform )
@@ -872,6 +1103,9 @@ int main( int argc, char * const argv[] )
 
     // waveform
     char *waveform = nullptr;
+
+    // stress test
+    bool stress = false;
     
     // get options
     int c;
@@ -882,10 +1116,11 @@ int main( int argc, char * const argv[] )
         {"number", required_argument, 0, 'n'},
         {"pimodels", optional_argument, 0, 'p'},
         {"waveform", required_argument, 0, 'w'},
+        {"stress", optional_argument, 0, 's'},
         {0,         0,                 0,  0 }
     };
 
-    while  ((c = getopt_long(argc, argv, "l:d:n:pw:", long_options, &option_index))) {
+    while  ((c = getopt_long(argc, argv, "l:d:n:psw:", long_options, &option_index))) {
 
         if (c == -1)
             break;
@@ -910,6 +1145,11 @@ int main( int argc, char * const argv[] )
         case 'p':
             // pi models only
             pimodels = true;
+            break;
+
+        case 's':
+            // stress test
+            stress = true;
             break;
 
         case 'w':
@@ -949,7 +1189,11 @@ int main( int argc, char * const argv[] )
 
     // seed random generator
     std::srand(std::time(nullptr));
-    create_random_nets( n, 4, 1000.0, 14, all_nets, cell_lib, circuitMgr, pimodels, waveform );
+    if (stress) {
+        create_random_nets_stress( n, 4, 1000.0, 14, all_nets, cell_lib, circuitMgr, pimodels, waveform );
+    } else {
+        create_random_nets( n, 4, 1000.0, 14, all_nets, cell_lib, circuitMgr, pimodels, waveform );
+    }
 
     //
     // write out SPEF file

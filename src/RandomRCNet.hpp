@@ -186,7 +186,7 @@ public:
     RandomRCNet( const std::string & net_name, const std::string & drv_node,
                  const std::vector<std::string > & receivers,
                  double total_length, int max_layer_num,
-                 const LayerRCData & layer_data, bool pimodel_net = true )
+                 const LayerRCData & layer_data, bool pimodel_net = true)
     {
         net_index_ = net_name;
         drv_node_ = drv_node;
@@ -202,8 +202,28 @@ public:
         } else {
             populate_net_data( net_name, drv_node, receivers, total_length,
                                max_layer_num, layer_data );
-        }
+        }    
     }
+
+    RandomRCNet( const std::string & net_name, const std::string & drv_node,
+                 const std::vector<std::string > & receivers,
+                 double total_length, int max_layer_num,
+                 const LayerRCData & layer_data, double total_cap, double cnear_cfar_ratio, double res_scale )
+    {
+        net_index_ = net_name;
+        drv_node_ = drv_node;
+        pi_model_ = true;
+        for( std::vector< std::string >::const_iterator rcv_it = receivers.begin();
+                rcv_it != receivers.end(); ++rcv_it) {
+            std::string new_rcv = *rcv_it;
+            rcv_nodes_.push_back( new_rcv );
+        }
+
+        populate_pimodel_data_scaled( net_name, drv_node, receivers[0], total_length,
+                                      max_layer_num, layer_data, total_cap, cnear_cfar_ratio, res_scale);
+    }
+
+
 
     RandomRCNet( const RandomRCNet & other )
     {
@@ -261,6 +281,12 @@ public:
                                 const std::string & drv_node, const std::string & rcvr_node,
                                 double total_length, int max_layer_num, const LayerRCData & layer_data );
 
+    // method to create a pimodel net scaled to certain cap/res values
+    bool populate_pimodel_data_scaled( const std::string & net_name,
+                                const std::string & drv_node, const std::string & rcvr_node,
+                                double total_length, int max_layer_num, const LayerRCData & layer_data,
+                                double total_cap, double cnear_cfar_ratio, double res_scale );
+
     // method that creates the actual RC devices for this net
     bool populate_net_data( const std::string & net_name,
                             const std::string & drv_node, const std::vector<std::string > & receivers,
@@ -312,6 +338,14 @@ public:
                             const std::vector<std::string >& receivers,
                             const std::vector<std::string >& receivers_celltypes,
                             double total_length, int max_layer_num, bool pimodel_net, float largest_min_load, float smallest_max_load );
+    bool create_random_net_scaled( const std::string& net_name,
+                            const std::string& drv_node,
+                            const std::string& driver_celltype,
+                            const std::vector<std::string >& receivers,
+                            const std::vector<std::string >& receivers_celltypes,
+                            double total_length, int max_layer_num, 
+                            double total_cap, double cnear_cfar_ratio, double res_scale );
+
 
     bool add_new_port( const std::string & port_name, const char port_type );
 

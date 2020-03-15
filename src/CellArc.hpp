@@ -121,6 +121,31 @@ public:
     // debug
     void dump();
 
+    std::vector<float> get_load_values() {
+      liberty_value_data* table = _cell_rise_table;
+
+      std::vector<float> ret;
+    
+      int num_load = table->dim_sizes[1];
+      for (int i=0; i<num_load; ++i) {
+        ret.push_back(table->index_info[1][i]);
+      }
+
+      return ret;
+    }
+
+    std::vector<float> get_slew_values() {
+      liberty_value_data* table = _cell_rise_table;
+
+      std::vector<float> ret;
+    
+      int num_slew = table->dim_sizes[0];
+      for (int i=0; i<num_slew; ++i) {
+        ret.push_back(table->index_info[0][i]);
+      }
+
+      return ret;
+    }
 private:
 
     friend class Cell;
