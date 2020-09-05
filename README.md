@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This toolkit is currently used to house the files for the TAU 2020 contest.
+This toolkit is currently used to house the files for the TAU 2021 contest.
 Please look in INSTALL.md for installation and testing directions.
 
 ## Inventory
