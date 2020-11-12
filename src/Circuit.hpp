@@ -3,9 +3,9 @@
 
 #include <string>
 #include <yaml-cpp/yaml.h>
-#include "PiModel.hpp"
-#include "CellLib.hpp"
 #include <parser-spef.hpp>
+#include "CellLib.hpp"
+#include "RCNet.hpp"
 
 namespace dctk {
 
@@ -33,15 +33,18 @@ public:
     const std::string& get_driver();
     const std::string& get_driver_celltype();
 
-
     // receiver info
     Circuit& set_load(const std::string&); // instance name
     Circuit& set_load_celltype(const std::string&);
-    Circuit& set_load_interconnect(const std::string&);
 
     const std::string& get_load();
     const std::string& get_load_celltype();
-    const PiModel& get_load_interconnect();
+
+    // interconnect
+    Circuit& set_pimodel_interconnect(float cnear, float res, float cfar);
+    Circuit& set_pimodel_interconnect(const std::string& s);
+        
+    const RCNet& get_interconnect();
     
     // misc routines
     bool is_positive_unate(CellLib& cl);
@@ -152,8 +155,7 @@ private:
     std::string _load;
     std::string _load_celltype; 
 
-    // Cnear (ff), Res (ohms), Cfar (ff)
-    PiModel _load_interconnect;
+    RCNet _interconnect;
 
     float _power_rail_voltage;
 
