@@ -48,20 +48,20 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr, dctk
 
         dctk::Circuit* cir = new dctk::Circuit(name);
 
-        const std::string& str_vs=circuit["input_waveform"].as<std::string>();
-        cir->set_input_waveform(str_vs);
-
         const std::string& str_driver=circuit["driver"].as<std::string>();
-        cir->set_driver(str_driver);
+        cir->add_driver(str_driver);
 
         const std::string& str_driver_celltype=circuit["driver_celltype"].as<std::string>();
-        cir->set_driver_celltype(str_driver_celltype);
+        cir->set_driver_celltype(str_driver, str_driver_celltype);
 
+        const std::string& str_vs=circuit["input_waveform"].as<std::string>();
+        cir->set_input_waveform(str_driver, str_vs);
+        
         const std::string& str_load=circuit["load"].as<std::string>();
-        cir->set_load(str_load);
+        cir->add_load(str_load);
 
         const std::string& str_load_celltype=circuit["load_celltype"].as<std::string>();
-        cir->set_load_celltype(str_load_celltype);
+        cir->set_load_celltype(str_load, str_load_celltype);
 
         const std::string& str_load_interconnect=circuit["load_interconnect"].as<std::string>();
         cir->set_pimodel_interconnect(str_load_interconnect);

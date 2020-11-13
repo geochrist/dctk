@@ -30,62 +30,58 @@ Circuit::Circuit(const std::string& s) {
     _ccs_rise_slew = 0.0;
     _ccs_fall_slew = 0.0;
     _spice_measure = SpiceMeasure::ngspice;
-    
-}
-
-Circuit& Circuit::set_input_waveform(const std::string& s) {
-    this->_input_waveform = s;
-    return *this;
 }
 
 const std::string& Circuit::get_name() {
-        return _name;
+   return _name;
+}
+
+// driver info
+Circuit& Circuit::add_driver(std::string iname) {
+    this->_driver = iname;
+    return *this;
+}
+    
+Circuit& Circuit::set_driver_celltype(std::string iname, std::string cell_type) {
+    if (_driver == iname) {
+        this->_driver_celltype = cell_type;
     }
-
-const std::string& Circuit::get_input_waveform() {
-    return _input_waveform;
-}
-
-// driver
-Circuit& Circuit::set_driver(const std::string& s) {
-
-    this->_driver = s;
-    return *this;
-}
-Circuit& Circuit::set_driver_celltype(const std::string& s) {
-
-    this->_driver_celltype = s;
     return *this;
 }
 
-const std::string& Circuit::get_driver() {
-
-    return _driver;
+Circuit& Circuit::set_input_waveform(std::string iname, std::string waveform) {
+    if (_driver == iname) {
+        this->_input_waveform = waveform;
+    }
+    return *this;
 }
-const std::string& Circuit::get_driver_celltype() {
 
-    return _driver_celltype;
+std::vector<std::string> Circuit::get_drivers() {
+    return { _driver };
+}
+std::string Circuit::get_driver_celltype(std::string iname) {
+    return (_driver == iname) ? _driver_celltype : "";
+}
+std::string Circuit::get_input_waveform(std::string iname) {
+    return (_driver == iname) ? _input_waveform : "";
 }
 
 // receiver
-Circuit& Circuit::set_load(const std::string& s) {
-
-    this->_load = s;
+Circuit& Circuit::add_load(std::string iname) {
+    this->_load = iname;
     return *this;
 }
-Circuit& Circuit::set_load_celltype(const std::string& s) {
-
-    this->_load_celltype = s;
+Circuit& Circuit::set_load_celltype(std::string iname, std::string cell_type) {
+    if (_load == iname) {
+        this->_load_celltype = cell_type;
+    }
     return *this;
 }
-
-const std::string& Circuit::get_load() {
-
-    return _load;
+std::vector<std::string> Circuit::get_loads() {
+    return { _load };
 }
-const std::string& Circuit::get_load_celltype() {
-
-    return _load_celltype;
+std::string Circuit::get_load_celltype(std::string iname) {
+    return (_load == iname) ? _load_celltype : "";
 }
 
 // interconnect

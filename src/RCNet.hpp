@@ -103,7 +103,7 @@ public:
     
 private:
 
-    // TEMP: equivalent of PiModel
+    // TEMP(anton): implementation equivalent of PiModel
     std::string _name   = "";
     std::string _driver = "";
     std::string _load   = "";
