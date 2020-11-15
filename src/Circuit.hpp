@@ -10,6 +10,17 @@
 
 namespace dctk {
 
+//
+// Representation of a stage.
+//
+// A stage an interconnect (net) together with one or more driving cells, one or
+// and one or more load cells. Limitations:
+//   - driving cells are assumed to have only one input, and hence only one
+//     (rise/fall) cell delay value.
+//   - load cells are assumed to have only one input, and hence only one
+//     (rise/fall) slew value.
+// Based on the above delay(driver_cell, load_cell) is well-defined net delay.
+// 
 class Circuit {
 
 public:
@@ -49,7 +60,7 @@ public:
     Circuit& set_pimodel_interconnect(float cnear, float res, float cfar);
     Circuit& set_pimodel_interconnect(const std::string& s);
         
-    const RCNet& get_interconnect();
+    RCNet& get_interconnect();
     
     // misc routines
     bool is_positive_unate(CellLib& cl);

@@ -1012,7 +1012,7 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 
         // add to a circuit library
         dctk::Circuit* c = new dctk::Circuit(net_name);
-
+        
         // driver
         c->add_driver(driver_input_output_str);
         c->set_driver_celltype(driver_input_output_str, driver_celltype);
