@@ -69,7 +69,7 @@ private:
     std::vector<node_info>                      _node_infos{
         node_info(/*default = UNDEF*/)};
     std::unordered_map<std::string, unsigned>   _node_id_map{
-        { "UNDEF", UNDEF_ID } };
+        { "UNDEF", 0/*UNDEF_ID*/ } };
 
     // helper APIs
     bool        _is_valid_node(std::string node);

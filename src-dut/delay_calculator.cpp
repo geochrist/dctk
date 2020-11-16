@@ -132,10 +132,10 @@ spef::Net* find_net(spef::Spef *spef, const std::string& name) {
 void compute_delays_bilinear(dctk::CellLib* cell_lib, dctk::Circuit* circuit, spef::Spef* spef) {
 
     // get driver
-    const std::string& driver = circuit->get_drivers().front();
+    std::string driver = circuit->get_drivers()[0];
 
     // get slew in ps
-    const std::string& waveform = circuit->get_input_waveform(driver);
+    std::string waveform = circuit->get_input_waveform(driver);
     
     std::istringstream iss(waveform);
     std::vector<std::string> results((std::istream_iterator<std::string>(iss)),
@@ -149,7 +149,7 @@ void compute_delays_bilinear(dctk::CellLib* cell_lib, dctk::Circuit* circuit, sp
     float load = net->lcap; // in ff
     
     // driver cell
-    const std::string& driver_celltype = circuit->get_driver_celltype(driver);
+    std::string driver_celltype = circuit->get_driver_celltype(driver);
     dctk::Cell* cell = cell_lib->get_cell(driver_celltype);
 
     // get output pin
