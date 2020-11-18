@@ -67,28 +67,28 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr, dctk
         cir->set_pimodel_interconnect(str_load_interconnect);
 
         const std::string& str_spice_rise_delay=circuit["spice_rise_delay"].as<std::string>();
-        cir->set_spice_rise_delay(atof(str_spice_rise_delay.c_str()));
+        cir->set_spice_delay(str_driver, true, atof(str_spice_rise_delay.c_str()));
 
         const std::string& str_spice_fall_delay=circuit["spice_fall_delay"].as<std::string>();
-        cir->set_spice_fall_delay(atof(str_spice_fall_delay.c_str()));
+        cir->set_spice_delay(str_driver, false, atof(str_spice_fall_delay.c_str()));
 
         const std::string& str_spice_rise_slew=circuit["spice_rise_slew"].as<std::string>();
-        cir->set_spice_rise_slew(atof(str_spice_rise_slew.c_str()));
+        cir->set_spice_slew(str_driver, true, atof(str_spice_rise_slew.c_str()));
 
         const std::string& str_spice_fall_slew=circuit["spice_fall_slew"].as<std::string>();
-        cir->set_spice_fall_slew(atof(str_spice_fall_slew.c_str()));
+        cir->set_spice_slew(str_driver, false,atof(str_spice_fall_slew.c_str()));
 
         const std::string& str_ccs_rise_delay=circuit["ccs_rise_delay"].as<std::string>();
-        cir->set_ccs_rise_delay(atof(str_ccs_rise_delay.c_str()));
+        cir->set_ccs_delay(str_driver, true, atof(str_ccs_rise_delay.c_str()));
 
         const std::string& str_ccs_fall_delay=circuit["ccs_fall_delay"].as<std::string>();
-        cir->set_ccs_fall_delay(atof(str_ccs_fall_delay.c_str()));
+        cir->set_ccs_delay(str_driver, false, atof(str_ccs_fall_delay.c_str()));
 
         const std::string& str_ccs_rise_slew=circuit["ccs_rise_slew"].as<std::string>();
-        cir->set_ccs_rise_slew(atof(str_ccs_rise_slew.c_str()));
+        cir->set_ccs_slew(str_driver, true, atof(str_ccs_rise_slew.c_str()));
 
         const std::string& str_ccs_fall_slew=circuit["ccs_fall_slew"].as<std::string>();
-        cir->set_ccs_fall_slew(atof(str_ccs_fall_slew.c_str()));
+        cir->set_ccs_slew(str_driver, false, atof(str_ccs_fall_slew.c_str()));
 
         circuitMgr->push_back(cir);
     }

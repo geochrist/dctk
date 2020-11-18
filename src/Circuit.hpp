@@ -19,7 +19,15 @@ namespace dctk {
 //     (rise/fall) cell delay value.
 //   - load cells are assumed to have only one input, and hence only one
 //     (rise/fall) slew value.
-// Based on the above delay(driver_cell, load_cell) is well-defined net delay.
+// Based on the above delays and slews can be referered using driver/load cells
+// as opposed to arcs, i.e.
+//   set/get_input_waveform(driver)  -- waveform at input of a driver cell
+//   set/get_delay(driver)           -- cell delay of a driver cell
+//   set/get_slew(drive)             -- slew at the output of a driver cell
+//   set/get_delay(driver, load)     -- net delay between driver cell output
+//                                      and load cell input
+//   set/get_slew(load)              -- slew on the input of load cell
+//   get_stage_delay(driver, load) = get_delay(driver) + get_delay(driver, load)
 // 
 class Circuit {
 
@@ -93,57 +101,44 @@ public:
         return _power_rail_voltage;
     }
 
+    // TEMP(anton): implementation is still only for a single-cell delay
+    
     // SPICE delay and slews
-    void set_spice_rise_slew(float f) {
-        _spice_rise_slew = f;
+    void set_spice_slew(std::string iname, bool rise, float f) {
+        assert(iname == _driver); // TEMP
+        (rise ? _spice_rise_slew : _spice_fall_slew) = f;
     }
-    void set_spice_fall_slew(float f) {
-        _spice_fall_slew = f;
-    }
-    void set_spice_rise_delay(float f) {
-        _spice_rise_delay = f;
-    }
-    void set_spice_fall_delay(float f) {
-        _spice_fall_delay = f;
+    void set_spice_delay(std::string iname, bool rise, float f) {
+        assert(iname == _driver); // TEMP
+        (rise ? _spice_rise_delay : _spice_fall_delay) = f;
     }
 
-    float get_spice_rise_slew() {
-        return _spice_rise_slew;
+    float get_spice_slew(std::string iname, bool rise) {
+        assert(iname == _driver); // TEMP
+        return rise ? _spice_rise_slew : _spice_fall_slew;
     }
-    float get_spice_fall_slew() {
-        return _spice_fall_slew;
-    }
-    float get_spice_rise_delay() {
-        return _spice_rise_delay;
-    }
-    float get_spice_fall_delay() {
-        return _spice_fall_delay;
+    float get_spice_delay(std::string iname, bool rise) {
+        assert(iname == _driver); // TEMP
+        return rise ? _spice_rise_delay : _spice_fall_delay;
     }
 
     // CCS delay and slews
-    void set_ccs_rise_slew(float f) {
-        _ccs_rise_slew = f;
+    void set_ccs_slew(std::string iname, bool rise, float f) {
+        assert(iname == _driver); // TEMP
+        (rise ? _ccs_rise_slew : _ccs_fall_slew) = f;
     }
-    void set_ccs_fall_slew(float f) {
-        _ccs_fall_slew = f;
+    void set_ccs_delay(std::string iname, bool rise, float f) {
+        assert(iname == _driver); // TEMP
+        (rise ? _ccs_rise_delay : _ccs_fall_delay) = f;
     }
-    void set_ccs_rise_delay(float f) {
-        _ccs_rise_delay = f;
+
+    float get_ccs_slew(std::string iname, bool rise) {
+        assert(iname == _driver);  // TEMP
+        return rise ? _ccs_rise_slew : _ccs_fall_slew;
     }
-    void set_ccs_fall_delay(float f) {
-        _ccs_fall_delay = f;
-    }
-    float get_ccs_rise_slew() {
-        return _ccs_rise_slew;
-    }
-    float get_ccs_fall_slew() {
-        return _ccs_fall_slew;
-    }
-    float get_ccs_rise_delay() {
-        return _ccs_rise_delay;
-    }
-    float get_ccs_fall_delay() {
-        return _ccs_fall_delay;
+    float get_ccs_delay(std::string iname, bool rise) {
+        assert(iname == _driver);  // TEMP
+        return rise ? _ccs_rise_delay : _ccs_fall_delay;
     }
 
     // simulation time
