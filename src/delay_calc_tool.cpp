@@ -83,23 +83,22 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
     for (std::size_t i = 0; i < circuitMgr.size(); i++) {
 
         // if any of the spice results are negative, we skip the circuit from inclusion
-        dctk::Circuit* circuit = circuitMgr[i];
-        std::string driver = circuit->get_drivers()[0];
-        const float spice_rise_delay = circuit->get_spice_delay(driver, true);
-        const float spice_fall_delay = circuit->get_spice_delay(driver, false);
-        const float spice_rise_slew = circuit->get_spice_slew(driver, true);
-        const float spice_fall_slew = circuit->get_spice_slew(driver, false);
+
+        const float spice_rise_delay = circuitMgr[i]->get_spice_rise_delay();
+        const float spice_fall_delay = circuitMgr[i]->get_spice_fall_delay();
+        const float spice_rise_slew = circuitMgr[i]->get_spice_rise_slew();
+        const float spice_fall_slew = circuitMgr[i]->get_spice_fall_slew();
 
         if ((spice_rise_delay < -1.0) || (spice_fall_delay < -1.0) ||
             (spice_rise_slew < -1.0) || (spice_fall_slew < -1.0)) {
             skipped_circuits++;
-            std::cout << "Ignore circuit " << circuit->get_name() << std::endl;
+            std::cout << "Ignore circuit " << circuitMgr[i]->get_name() << std::endl;
             continue;
         }
 
         // delay
-        const float ccs_rise_delay = circuit->get_ccs_delay(driver, true);
-        const float ccs_fall_delay = circuit->get_ccs_delay(driver, false);
+        const float ccs_rise_delay = circuitMgr[i]->get_ccs_rise_delay();
+        const float ccs_fall_delay = circuitMgr[i]->get_ccs_fall_delay();
 
         // check for thresholding
         float dx_delay_rise;
@@ -127,9 +126,9 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
             NO_delay++;
         }
 
-        // slew
-        const float ccs_rise_slew = circuit->get_ccs_slew(driver, true);
-        const float ccs_fall_slew = circuit->get_ccs_slew(driver, false);
+        // delay
+        const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
+        const float ccs_fall_slew = circuitMgr[i]->get_ccs_fall_slew();
 
         // check for thresholding
         float dx_slew_rise;
