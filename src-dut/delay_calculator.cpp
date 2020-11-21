@@ -131,15 +131,13 @@ spef::Net* find_net(spef::Spef *spef, const std::string& name) {
 
 void compute_delays_bilinear(dctk::CellLib* cell_lib, dctk::Circuit* circuit, spef::Spef* spef) {
 
-    // get driver
-    const std::string& driver = circuit->get_drivers().front();
-
     // get slew in ps
-    const std::string& waveform = circuit->get_input_waveform(driver);
+    const std::string& waveform = circuit->get_input_waveform();
     
     std::istringstream iss(waveform);
     std::vector<std::string> results((std::istream_iterator<std::string>(iss)),
                                      std::istream_iterator<std::string>());
+
     char *end;
     float slew = strtod(results[1].c_str(), &end);
 
@@ -149,17 +147,19 @@ void compute_delays_bilinear(dctk::CellLib* cell_lib, dctk::Circuit* circuit, sp
     float load = net->lcap; // in ff
     
     // driver cell
-    const std::string& driver_celltype = circuit->get_driver_celltype(driver);
+    const std::string& driver_celltype = circuit->get_driver_celltype();
+    // get pointer to driver
     dctk::Cell* cell = cell_lib->get_cell(driver_celltype);
 
     // get output pin
     dctk::CellPin* output_pin = cell->get_output_pin();
 
     // get input pin name from driver string
-    std::string input_pin = split(driver, '/')[1];
+    const std::string& driver = circuit->get_driver() ;
+    std::vector<std::string> results1 = split(driver, '/');
 
     // find arc (second token is input pin)
-    dctk::CellArc* arc = output_pin->find_arc(input_pin);
+    dctk::CellArc* arc = output_pin->find_arc(results1[1]);
 
     // convert slew and load to library units
     float scale_to_ps = cell_lib->get_scale_to_ps();

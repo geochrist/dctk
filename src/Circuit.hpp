@@ -2,7 +2,6 @@
 #define DCTK_CIRCUIT_HPP_
 
 #include <string>
-#include <vector>
 #include <yaml-cpp/yaml.h>
 #include <parser-spef.hpp>
 #include "CellLib.hpp"
@@ -22,28 +21,24 @@ public:
     static std::string ground;
 
     Circuit(const std::string&);
+    Circuit& set_input_waveform(const std::string&);
 
-    // maintenance APIs
     const std::string& get_name();
-
-    // topology APIs
+    const std::string& get_input_waveform();
 
     // driver info
-    Circuit& add_driver(std::string iname); // instance name
-    Circuit& set_driver_celltype(std::string iname, std::string cell_type);
-    // driver cells are assumed to be 1-input
-    Circuit& set_input_waveform(std::string iname, std::string waveform);
-                                
-    std::vector<std::string> get_drivers();
-    std::string get_driver_celltype(std::string iname);
-    std::string get_input_waveform(std::string iname);
-    
-    // load info
-    Circuit& add_load(std::string iname); // instance name
-    Circuit& set_load_celltype(std::string iname, std::string cell_type);
+    Circuit& set_driver(const std::string&); // instance name
+    Circuit& set_driver_celltype(const std::string&);
 
-    std::vector<std::string> get_loads();
-    std::string get_load_celltype(std::string iname);
+    const std::string& get_driver();
+    const std::string& get_driver_celltype();
+
+    // receiver info
+    Circuit& set_load(const std::string&); // instance name
+    Circuit& set_load_celltype(const std::string&);
+
+    const std::string& get_load();
+    const std::string& get_load_celltype();
 
     // interconnect
     Circuit& set_pimodel_interconnect(float cnear, float res, float cfar);
@@ -153,7 +148,6 @@ public:
 
 private:
 
-    // TEMP(anton): implementation equivalent to old 1-input/1-load
     std::string _name;
     std::string _input_waveform;
     std::string _driver;

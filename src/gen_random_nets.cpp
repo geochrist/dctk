@@ -834,21 +834,22 @@ bool create_random_nets_stress( int num_nets, int max_num_receivers, double max_
               // add to a circuit library
               dctk::Circuit* c = new dctk::Circuit(net_name);
 
-              // driver
-              c->add_driver(driver_input_output_str);
-              c->set_driver_celltype(driver_input_output_str, driver_celltype);
-
               // default to ramp if waveform not given
               std::string waveform_str("ramp");
               if (waveform) {
                 waveform_str = std::string(waveform);
               }
+        
               std::string input_waveform = waveform_str + " " + to_string(ramp_time) ;
-              c->set_input_waveform(driver_input_output_str, input_waveform);
+              c->set_input_waveform(input_waveform);
+
+              // driver
+              c->set_driver(driver_input_output_str);
+              c->set_driver_celltype(driver_celltype);
 
               // load (first receiver)
-              c->add_load(receiver_input_output_str);
-              c->set_load_celltype(receiver_input_output_str, receivers_celltypes[0]);
+              c->set_load(receiver_input_output_str);
+              c->set_load_celltype(receivers_celltypes[0]);
 
               // Start with a fixed load
               std::string load_interconnect = to_string(receiver_load) + " 0 0";
@@ -1013,21 +1014,22 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         // add to a circuit library
         dctk::Circuit* c = new dctk::Circuit(net_name);
 
-        // driver
-        c->add_driver(driver_input_output_str);
-        c->set_driver_celltype(driver_input_output_str, driver_celltype);
-
         // default to ramp if waveform not given
         std::string waveform_str("ramp");
         if (waveform) {
             waveform_str = std::string(waveform);
         }
+        
         std::string input_waveform = waveform_str + " " + to_string(ramp_time) ;
-        c->set_input_waveform(driver_input_output_str, input_waveform);
+        c->set_input_waveform(input_waveform);
+
+        // driver
+        c->set_driver(driver_input_output_str);
+        c->set_driver_celltype(driver_celltype);
 
         // load (first receiver)
-        c->add_load(receiver_input_output_str);
-        c->set_load_celltype(receiver_input_output_str, receivers_celltypes[0]);
+        c->set_load(receiver_input_output_str);
+        c->set_load_celltype(receivers_celltypes[0]);
 
         // Start with a fixed load
         std::string load_interconnect = to_string(load_cap) + " 0 0";
