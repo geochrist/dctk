@@ -64,7 +64,7 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr, dctk
         cir->set_load_celltype(str_load_celltype);
 
         const std::string& str_load_interconnect=circuit["load_interconnect"].as<std::string>();
-        cir->set_pimodel_interconnect(str_load_interconnect);
+        cir->set_load_interconnect(str_load_interconnect);
 
         const std::string& str_spice_rise_delay=circuit["spice_rise_delay"].as<std::string>();
         cir->set_spice_rise_delay(atof(str_spice_rise_delay.c_str()));

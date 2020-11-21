@@ -73,9 +73,23 @@ Circuit& Circuit::set_load(const std::string& s) {
     this->_load = s;
     return *this;
 }
+
 Circuit& Circuit::set_load_celltype(const std::string& s) {
 
     this->_load_celltype = s;
+    return *this;
+}
+
+Circuit& Circuit::set_load_interconnect(const std::string& s) {
+
+    std::istringstream iss(s);
+    std::vector<std::string> results((std::istream_iterator<std::string>(iss)),
+                                     std::istream_iterator<std::string>());
+
+    // there should be exactly 3 tokens
+    this->_load_interconnect.set_cnear(stof(results[0]));
+    this->_load_interconnect.set_res(stof(results[1]));
+    this->_load_interconnect.set_cfar(stof(results[2]));
     return *this;
 }
 
@@ -83,39 +97,15 @@ const std::string& Circuit::get_load() {
 
     return _load;
 }
+
 const std::string& Circuit::get_load_celltype() {
 
     return _load_celltype;
 }
 
-// interconnect
-Circuit& Circuit::set_pimodel_interconnect(float cnear, float res, float cfar) {
+const PiModel& Circuit::get_load_interconnect() {
 
-    _interconnect.clear();
-    _interconnect.set_name("net1");
-    std::string driver_node = _interconnect.add_driver(_driver);
-    std::string load_node = _interconnect.add_load(_load);
-    _interconnect
-        .set_cap(driver_node, cnear)
-        .set_cap(load_node, cfar)
-        .set_res(driver_node, load_node, res);
-    return *this;
-
-}
-Circuit& Circuit::set_pimodel_interconnect(const std::string& s) {
-
-    std::istringstream iss(s);
-    std::vector<std::string> results((std::istream_iterator<std::string>(iss)),
-                                     std::istream_iterator<std::string>());
-    set_pimodel_interconnect(stof(results[0]),
-                             stof(results[1]),
-                             stof(results[2]));
-    return *this;
-}
-   
-const RCNet& Circuit::get_interconnect() {
-
-    return _interconnect;
+    return _load_interconnect;
 }
 
 void Circuit::dump() {
@@ -125,7 +115,10 @@ void Circuit::dump() {
     std::cout << "Driver Celltype = " << this->_driver_celltype << std::endl;
     std::cout << "Load = " << this->_load << std::endl;
     std::cout << "Load Celltype = " << this->_load_celltype << std::endl;
-    std::cout << "Interconnect = " << this->_interconnect.to_string() << std::endl;
+    std::cout << "load_interconnect = " << this->_load_interconnect.get_cnear()
+              << " " << this->_load_interconnect.get_res()
+              << " " << this->_load_interconnect.get_cfar()
+              << std::endl;
     std::cout << "spice rise delay = " << this->_spice_rise_delay << std::endl;
     std::cout << "spice fall delay = " << this->_spice_fall_delay << std::endl;
     std::cout << "spice rise slew = " << this->_spice_rise_slew << std::endl;
@@ -153,7 +146,12 @@ void Circuit::gen_yaml(YAML::Emitter& emitter) {
 
     emitter << YAML::Key << "load_celltype" << YAML::Value << this->_load_celltype;
 
-    emitter << YAML::Key << "load_interconnect" << YAML::Value << this->_interconnect.to_string();
+    std::stringstream ss2;
+    ss2 << this->_load_interconnect.get_cnear()
+        << " " << this->_load_interconnect.get_res()
+        << " " << this->_load_interconnect.get_cfar();
+
+    emitter << YAML::Key << "load_interconnect" << YAML::Value << ss2.str();
 
     emitter << YAML::Key << "spice_rise_delay" << YAML::Value << this->_spice_rise_delay;
     emitter << YAML::Key << "spice_fall_delay" << YAML::Value << this->_spice_fall_delay;
@@ -254,7 +252,7 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
         fs << " pwl(0p " << initial_rail_voltage << "v" ;
 
         size_t n = voltages.size();
-        float total_sim_time = 0.0;
+        float total_sim_time;
         for (size_t i = 0; i < n; i++) {
             float voltage;
             if (invert) {
@@ -540,9 +538,7 @@ void Circuit::write_spice_load(std::fstream& fs, CellLib& cellLib) {
 }
 
 void Circuit::write_spice_load_parasitics(std::fstream& fs, CellLib& cellLib) {
-    
-    // TODO(anton): rewrite to accomodate RCNet interconnect
-    
+
     // _load = I2/CK/Q
     std::vector<std::string> load_tokens = split(_load, '/');
     const std::string& inst = load_tokens[0];
@@ -551,25 +547,17 @@ void Circuit::write_spice_load_parasitics(std::fstream& fs, CellLib& cellLib) {
     //
     // write out load's parasitics
     //
-
-    // TEMP(anton)
-    std::string driver_node = _interconnect.get_drivers()[0];
-    std::string load_node   = _interconnect.get_loads()[0];
-    float cnear = _interconnect.get_cap(driver_node);
-    float cfar  = _interconnect.get_cap(load_node);
-    float res   = _interconnect.get_res(driver_node, load_node);
-    
     fs << "* Load parasitics" << std::endl;
-    fs << "Cnear_rise " << output_pin << "_rise 0 " << cnear << "f" << std::endl;
-    fs << "Cnear_fall " << output_pin << "_fall 0 " << cnear << "f" << std::endl;
+    fs << "Cnear_rise " << output_pin << "_rise 0 " << _load_interconnect.get_cnear() << "f" << std::endl;
+    fs << "Cnear_fall " << output_pin << "_fall 0 " << _load_interconnect.get_cnear() << "f" << std::endl;
 
     // write out res and cfar only if they are non-zero
     // (most of time, load parasitics may be pure capacitance with only cnear)
-    if ((res != 0.0) || (cfar != 0.0)) {
-        fs << "Rres_rise " << output_pin << "_rise far_node_rise " << res << std::endl;
-        fs << "Rres_fall " << output_pin << "_fall far_node_fall " << res << std::endl;
-        fs << "Cfar_rise far_node_rise 0 " << cfar << "f" << std::endl;
-        fs << "Cfar_fall far_node_fall 0 " << cfar << "f" << std::endl;
+    if ((_load_interconnect.get_res() != 0.0) || (_load_interconnect.get_cfar() != 0.0)) {
+        fs << "Rres_rise " << output_pin << "_rise far_node_rise " << _load_interconnect.get_res() << std::endl;
+        fs << "Rres_fall " << output_pin << "_fall far_node_fall " << _load_interconnect.get_res() << std::endl;
+        fs << "Cfar_rise far_node_rise 0 " << _load_interconnect.get_cfar() << "f" << std::endl;
+        fs << "Cfar_fall far_node_fall 0 " << _load_interconnect.get_cfar() << "f" << std::endl;
     }
 
 }

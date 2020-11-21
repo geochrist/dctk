@@ -431,14 +431,12 @@ main(int argc, char **argv)
 
             if (!strcmp(simulator,"xyce")) {
                 std::string cmd = "Xyce -l " + deck_name + ".log " + deck_name;
-                int res = system(cmd.c_str());
-                (void)res; // -Wunused_result
+                system(cmd.c_str());
             }
             
             if (!strcmp(simulator,"ngspice")) {
                 std::string cmd = "ngspice -b -o " + deck_name + ".log " + deck_name;
-                int res = system(cmd.c_str());
-                (void)res; // -Wunused_result
+                system(cmd.c_str());
             }
 
         }
