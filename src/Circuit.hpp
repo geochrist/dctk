@@ -57,11 +57,10 @@ public:
     std::string get_load_celltype(std::string iname);
 
     // interconnect
-    RCNet& get_interconnect();
-    // TEMP(anton) - backward compatibility routines; will be gone soon
     Circuit& set_pimodel_interconnect(float cnear, float res, float cfar);
     Circuit& set_pimodel_interconnect(const std::string& s);
-    std::string get_pimodel_interconnect();
+        
+    RCNet& get_interconnect();
     
     // misc routines
     bool is_positive_unate(CellLib& cl);

@@ -91,10 +91,6 @@ std::string Circuit::get_load_celltype(std::string iname) {
 }
 
 // interconnect
-RCNet& Circuit::get_interconnect() {
-
-    return _interconnect;
-}
 Circuit& Circuit::set_pimodel_interconnect(float cnear, float res, float cfar) {
 
     _interconnect.clear();
@@ -118,19 +114,11 @@ Circuit& Circuit::set_pimodel_interconnect(const std::string& s) {
                              stof(results[2]));
     return *this;
 }
-std::string Circuit::get_pimodel_interconnect() {
-    assert(_interconnect.get_driver_nodes().size() == 1);
-    assert(_interconnect.get_load_nodes().size() == 1);
-    assert(_interconnect.get_internal_nodes().size() == 0);
-    std::string dr = _interconnect.get_driver_nodes()[0];
-    std::string ld = _interconnect.get_load_nodes()[0];
-    float cnear = _interconnect.get_cap(dr);
-    float cfar = _interconnect.get_cap(ld);
-    float res = _interconnect.get_res(dr, ld);
-    return std::to_string(cnear) + " " + std::to_string(res)
-        + " " + std::to_string(cfar);
-}
    
+RCNet& Circuit::get_interconnect() {
+
+    return _interconnect;
+}
 
 void Circuit::dump() {
     std::cout << "Name = " << this->_name << std::endl;
@@ -167,7 +155,7 @@ void Circuit::gen_yaml(YAML::Emitter& emitter) {
 
     emitter << YAML::Key << "load_celltype" << YAML::Value << this->_load_celltype;
 
-    emitter << YAML::Key << "load_interconnect" << YAML::Value << this->get_pimodel_interconnect();
+    emitter << YAML::Key << "load_interconnect" << YAML::Value << this->_interconnect.to_string();
 
     emitter << YAML::Key << "spice_rise_delay" << YAML::Value << this->_spice_rise_delay;
     emitter << YAML::Key << "spice_fall_delay" << YAML::Value << this->_spice_fall_delay;
