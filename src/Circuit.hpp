@@ -116,7 +116,7 @@ public:
     float get_spice_rise_delay() {
         return _spice_rise_delay;
     }
-    float get_spice_fall_delay() {
+   float get_spice_fall_delay() {
         return _spice_fall_delay;
     }
 
