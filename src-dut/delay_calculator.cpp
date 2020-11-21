@@ -10,6 +10,7 @@
 #include "dctk.hpp"
 #include "CellLib.hpp"
 #include "Circuit.hpp"
+#include "PiModel.hpp"
 #include <parser-spef.hpp>
 
 
