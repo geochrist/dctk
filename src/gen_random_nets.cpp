@@ -734,8 +734,6 @@ bool create_random_nets_stress( int num_nets, int max_num_receivers, double max_
     driver_cells.push_back(cell_lib->get_cell("BUFx12_ASAP7_75t_R"));
     driver_cells.push_back(cell_lib->get_cell("BUFx24_ASAP7_75t_R"));
 
-    dctk::Cell* receiver = cell_lib->get_cell("INVx2_ASAP7_75t_R");
-
     std::vector<dctk::Cell*> receiver_cells;
     std::vector<float> receiver_loads;
     receiver_cells.push_back(cell_lib->get_cell("INVx2_ASAP7_75t_R"));
@@ -743,8 +741,8 @@ bool create_random_nets_stress( int num_nets, int max_num_receivers, double max_
 
     int i = 0; // Curent net 
  
-    for( int d = 0; d<driver_cells.size(); ++d) {
-      for( int r = 0; r<receiver_cells.size(); ++r) {
+    for( unsigned int d = 0; d<driver_cells.size(); ++d) {
+      for( unsigned int r = 0; r<receiver_cells.size(); ++r) {
 
         // Driver
         dctk::Cell* driver = driver_cells[d];
@@ -753,7 +751,6 @@ bool create_random_nets_stress( int num_nets, int max_num_receivers, double max_
         dctk::CellArc* driver_arc        = driver_output_pin->get_random_arc();
 
         // Receiver
-        int num_receivers = 1;
         std::vector<std::string> receivers;
         std::vector<std::string> receivers_celltypes;
         std::string receiver_input_output_str;
@@ -762,15 +759,14 @@ bool create_random_nets_stress( int num_nets, int max_num_receivers, double max_
         dctk::Cell* receiver = receiver_cells[r];
         dctk::CellPin* receiver_output_pin = receiver->get_output_pin();
         dctk::CellPin* receiver_input_pin  = receiver->get_random_input_pin();
-        dctk::CellArc* receiver_arc        = receiver_output_pin->get_random_arc();
 
         // Find input slew and load ranges
         std::vector<float> slew_values = driver_arc->get_slew_values();
         std::vector<float> load_values = driver_arc->get_load_values();
       
         //-2 so we skip the largest slew and largest load 
-        for( int s=0; s<slew_values.size()-2; ++s) {
-          for(int l=0; l<load_values.size()-2; ++l) {
+        for( unsigned int s=0; s<slew_values.size()-2; ++s) {
+          for(unsigned int l=0; l<load_values.size()-2; ++l) {
             float s_min = slew_values[s] * scale_to_ps;
             float s_max = slew_values[s+1] * scale_to_ps;
 
