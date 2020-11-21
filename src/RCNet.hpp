@@ -1,9 +1,9 @@
 #ifndef DCTK_RCNET_HPP_
 #define DCTK_RCNET_HPP_
 
-#include <cassert>
+#include <cmath>
 #include <string>
-#include <unordered_map>
+#include <sstream>
 #include <vector>
 
 namespace dctk {
@@ -13,73 +13,104 @@ namespace dctk {
 // i.e. its a collection of nodes, each node has a capacitance to ground, and
 // pair-wire resistances with some other nodes.
 //
-// Currently we do not support cross-caps.
+// TEMP(anton): only supports Pi networks
 //
 class RCNet {
 
 public:
 
+    RCNet() {
+    }
+
     // maintenance APIs
-    RCNet();
-    void set_name(std::string name);
-    std::string get_name();
-    void clear();
+    void set_name(std::string name) {
+        _name = name;
+    }
+    std::string get_name() {
+        return _name;
+    }
+    void clear() {
+        _name = _driver = _load = "";
+        _cnear = _cfar = _res = NAN;
+    }
 
     // topology APIs - set... APIs return node name
-    std::string add_driver_node(std::string name);
-    std::string add_load_node(std::string name);
-    std::string add_internal_node();
+    const std::string& add_driver(std::string name) {
+        _driver = name;
+        return _driver;
+    }
+    const std::string& add_load(std::string name) {
+        _load = name;
+        return _load;
+    }
+    std::string add_internal() {
+        return "";
+    }
     
-    std::vector<std::string> get_driver_nodes();
-    std::vector<std::string> get_load_nodes();
-    std::vector<std::string> get_internal_nodes();
-    std::vector<std::string> get_connected_nodes(std::string node);
+    std::vector<std::string> get_drivers() {
+        return {_driver};
+    }
+    std::vector<std::string> get_loads() {
+        return {_load};
+    }
+    std::vector<std::string> get_internals() {
+        return {};
+    }
+    std::vector<std::string> get_connected_nodes(std::string node) {
+        if (node == _driver) {
+            return get_loads();
+        } else if (node == _load) {
+            return get_drivers();
+        } else {
+            return {};
+        }
+    }
     
     // RC values APIs
-    RCNet& set_cap(std::string node, float c);
-    RCNet& set_res(std::string node1, std::string node2, float r);
-    float get_cap(std::string node);
-    float get_res(std::string node1, std::string node2);
-    float get_total_cap();
+    RCNet& set_cap(std::string node, float c) {
+        if (node == _driver) {
+            _cnear = c;
+        } else if (node == _load) {
+            _cfar = c;
+        }
+        return *this;
+    }
+    RCNet& set_res(std::string node1, std::string node2, float r) {
+        if ((node1 == _driver && node2 == _load) ||
+            (node2 == _driver && node1 == _load)) {
+            _res = r;
+        }
+        return *this;
+    }
+
+    float get_cap(std::string node) {
+        return (node == _driver) ? _cnear : ((node == _load) ? _cfar : NAN);
+    }
+    float get_res(std::string node1, std::string node2) {
+        return ((node1 == _driver && node2 == _load) ||
+                (node2 == _driver && node1 == _load)) ? _res : NAN;
+    }
+    float get_total_cap() {
+        return _cnear + _cfar;
+    }
 
     // dump/debug
-    std::string to_string();
+    std::string to_string() {
+        std::stringstream str;
+        str << _cnear << " " << _res << " " << " " << _cfar;
+        return str.str();
+    }
     
 private:
 
-    std::string _name      = "";
-    float       _total_cap = NAN;
-    
-    // Data layout: node information is stored in the array of node_info's,
-    // index in the array is the node_id (not visible externally; 0 = invalid)
-    // the mapping from node name to node_id is stored in a separate map
-    static const unsigned UNDEF_ID = 0;
-    struct node_info {
-        enum class type { UNDEF_TYPE = 0, DRIVER, LOAD, INTERNAL };
-        std::string     _name = "UNDEF";
-        unsigned        _id   = UNDEF_ID;
-        type            _type = type::UNDEF_TYPE;
-        float           _cap  = NAN;
-        std::vector<std::pair<unsigned, float>> _res; // entry = <node_id, res>
-        node_info() {}
-        node_info(std::string name, type type, unsigned id) :
-            _name(name), _id(id), _type(type) {}
-        std::string to_string();
-    };
-    std::vector<node_info>                      _node_infos{
-        node_info(/*default = UNDEF*/)};
-    std::unordered_map<std::string, unsigned>   _node_id_map{
-        { "UNDEF", UNDEF_ID } };
+    // TEMP(anton): implementation equivalent of PiModel
+    std::string _name   = "";
+    std::string _driver = "";
+    std::string _load   = "";
+    float _cnear        = NAN;
+    float _cfar         = NAN;
+    float _res          = NAN;
 
-    // helper APIs
-    bool        _is_valid_node(std::string node);
-    bool        _is_valid_id(unsigned id);
-    unsigned    _node_to_id(std::string node);
-    std::string _id_to_node(unsigned id);
-    node_info&  _get_node_info(std::string node);
-    unsigned    _add_node(std::string node, node_info::type type);
-    unsigned    _get_max_node_id();
-    std::vector<std::string> _get_nodes_by_type(node_info::type type);
 };
 
 }

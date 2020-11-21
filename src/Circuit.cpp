@@ -1,14 +1,8 @@
+// Circuit
 //
-// Circuit is a representation of a stage.
+// A circuit is defined as a input voltage source, driver instance,
+// driver interconnect, load instance, and load interconnect
 //
-// A stage an interconnect (net) together with one or more driving cells, one or
-// and one or more load cells. Limitations:
-//   - driving cells are assumed to have only one input, and hence only one
-//     (rise/fall) cell delay value.
-//   - load cells are assumed to have only one input, and hence only one
-//     (rise/fall) slew value.
-// Based on the above delay(driver_cell, load_cell) is well-defined net delay.
-// 
 
 #include <string>
 #include <iostream>
@@ -95,8 +89,8 @@ Circuit& Circuit::set_pimodel_interconnect(float cnear, float res, float cfar) {
 
     _interconnect.clear();
     _interconnect.set_name("net1");
-    std::string driver_node = _interconnect.add_driver_node(_driver);
-    std::string load_node = _interconnect.add_load_node(_load);
+    std::string driver_node = _interconnect.add_driver(_driver);
+    std::string load_node = _interconnect.add_load(_load);
     _interconnect
         .set_cap(driver_node, cnear)
         .set_cap(load_node, cfar)
@@ -115,7 +109,7 @@ Circuit& Circuit::set_pimodel_interconnect(const std::string& s) {
     return *this;
 }
    
-RCNet& Circuit::get_interconnect() {
+const RCNet& Circuit::get_interconnect() {
 
     return _interconnect;
 }
@@ -554,9 +548,9 @@ void Circuit::write_spice_load_parasitics(std::fstream& fs, CellLib& cellLib) {
     // write out load's parasitics
     //
 
-    // TEMP(anton): Pi interconnect assumed
-    std::string driver_node = _interconnect.get_driver_nodes()[0];
-    std::string load_node   = _interconnect.get_load_nodes()[0];
+    // TEMP(anton)
+    std::string driver_node = _interconnect.get_drivers()[0];
+    std::string load_node   = _interconnect.get_loads()[0];
     float cnear = _interconnect.get_cap(driver_node);
     float cfar  = _interconnect.get_cap(load_node);
     float res   = _interconnect.get_res(driver_node, load_node);
