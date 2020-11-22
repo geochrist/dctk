@@ -33,7 +33,6 @@ public:
     const std::string& get_driver();
     const std::string& get_driver_celltype();
 
-
     // receiver info
     Circuit& set_load(const std::string&); // instance name
     Circuit& set_load_celltype(const std::string&);
@@ -43,6 +42,10 @@ public:
     const std::string& get_load_celltype();
     const PiModel& get_load_interconnect();
     
+    // unused loads
+    Circuit& set_unused_loads(const std::string&); // unused loads string
+    const std::string& get_unused_loads();
+
     // misc routines
     bool is_positive_unate(CellLib& cl);
 
@@ -57,6 +60,7 @@ public:
     void write_spice_net(std::fstream& fs, spef::Spef& s);
     void write_spice_load(std::fstream& fs, CellLib& cl);
     void write_spice_load_parasitics(std::fstream& fs, CellLib& cl);
+    void write_spice_unused_loads(std::fstream& fs, CellLib& cl);
     void write_spice_commands(std::fstream& fs, CellLib& cl);
     void write_spice_deck(const std::string&, CellLib* cl, spef::Spef* s,
                           const char* spice_lib_name, const char* spice_models,
@@ -151,6 +155,9 @@ private:
     std::string _driver_celltype;
     std::string _load;
     std::string _load_celltype; 
+
+    // instance1/inputpin1 celltype1 instance2/inputpin2 celltype2 ....
+    std::string _unused_loads;
 
     // Cnear (ff), Res (ohms), Cfar (ff)
     PiModel _load_interconnect;

@@ -108,6 +108,18 @@ const PiModel& Circuit::get_load_interconnect() {
     return _load_interconnect;
 }
 
+Circuit& Circuit::set_unused_loads(const std::string& s) {
+
+  _unused_loads = s;
+  return *this;
+}
+
+  const std::string& Circuit::get_unused_loads() {
+  return _unused_loads;
+    
+}
+
+
 void Circuit::dump() {
     std::cout << "Name = " << this->_name << std::endl;
     std::cout << "Input Waveform = " << this->_input_waveform << std::endl;
@@ -152,6 +164,7 @@ void Circuit::gen_yaml(YAML::Emitter& emitter) {
         << " " << this->_load_interconnect.get_cfar();
 
     emitter << YAML::Key << "load_interconnect" << YAML::Value << ss2.str();
+    emitter << YAML::Key << "unused_loads" << YAML::Value << this->_unused_loads;
 
     emitter << YAML::Key << "spice_rise_delay" << YAML::Value << this->_spice_rise_delay;
     emitter << YAML::Key << "spice_fall_delay" << YAML::Value << this->_spice_fall_delay;
@@ -562,6 +575,68 @@ void Circuit::write_spice_load_parasitics(std::fstream& fs, CellLib& cellLib) {
 
 }
 
+void Circuit::write_spice_unused_loads(std::fstream& fs, CellLib& cellLib) {
+
+
+    // get list of unused loads
+    std::vector<std::string> tokens = split(_unused_loads, ' ');
+    // no unused loads
+    if (tokens.size() == 0) {
+      return;
+    }
+
+    // setup for voltage rail identification
+    const std::map<std::string, float>& voltage_map = cellLib.get_voltage_map();
+    const std::map<std::string, float>::const_iterator iterEnd = voltage_map.end();
+
+    // tokens.size() should always be an even number
+    int num_loads = tokens.size()/2;
+
+    fs << "* Side Loads" << std::endl;
+    
+    for ( int i = 0; i < num_loads; i = i+2) {
+      // figure out celltype and look up in library
+      const std::string& celltype = tokens[i+1];
+      Cell* unused_load_cell = cellLib.get_cell(celltype);
+
+      // print out pins, in order
+      std::vector<std::string> load_info = split(tokens[i], ':');
+      const std::string& inst = load_info[0];
+
+      std::vector<std::string> pins;
+      std::vector<std::string> cellpins = unused_load_cell->get_pin_order();
+      for (unsigned int j=0; j < cellpins.size(); j++) {
+        // check to see if pin is a voltage rail
+        if (voltage_map.find(cellpins[j]) != iterEnd) {
+            pins.push_back(cellpins[j]);
+        } else {
+            pins.push_back(inst + ":" + cellpins[j]);
+        }
+      }
+
+      // instance rise
+      fs << "X" << inst << "_rise";
+
+      // pins rise
+      for (unsigned int k=0; k < pins.size(); k++) {
+        fs << " " << pins[k] << "_rise";
+      }
+      // celltype
+      fs << " " << celltype << std::endl;
+
+      // instance fall
+      fs << "X" << inst << "_fall";
+      
+      // pins rise
+      for (unsigned int k=0; k< pins.size(); k++) {
+        fs << " " << pins[k] << "_fall";
+      }
+      // celltype
+      fs << " " << celltype << std::endl;
+    }
+}
+
+
 bool Circuit::is_positive_unate(CellLib& cellLib) {
 
     // find arc with corresponding pin/related pin
@@ -728,6 +803,9 @@ void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spe
     // write out load's parasitics
     this->write_spice_load_parasitics(fs, *cellLib);
 
+    // write out unused loads
+    this->write_spice_unused_loads(fs, *cellLib);
+    
     // write out simulation commands
     this->write_spice_commands(fs, *cellLib);
 

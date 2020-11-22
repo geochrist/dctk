@@ -1035,6 +1035,18 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
         std::string load_interconnect = to_string(load_cap) + " 0 0";
         c->set_load_interconnect(load_interconnect.c_str());
 
+	// add unused loads
+	std::string unused_loads;
+	for (int i = 1; i < num_receivers; i++) {
+	  // create string such as I13/A inv32
+	  if (i == 1) {
+	    unused_loads = receivers[i] + " " + receivers_celltypes[i];
+	  } else {
+	    unused_loads = unused_loads + " " + receivers[i] + " " + receivers_celltypes[i];
+	  }
+        }
+        c->set_unused_loads(unused_loads);
+
         // add to library
         cktmgr.push_back(c);
 
@@ -1059,14 +1071,13 @@ bool create_random_nets( int num_nets, int max_num_receivers, double max_len, in
 //
 // Circuits:
 //   -
-//     name: circuitname1
+//     name: circuitname1 (also netname)
 //     voltage_source:
-//     driver: <celltype/input/output>
-//     load:  <celltype/input> <instance/input>
+//     driver: <instance/input/output>
+//     driver_celltype: <celltype>
+//     load:  <instance/input/output>
 //     load_interconnect: <c1> <r> <c2>
-//     driver_instance:  <instance>
 //     receiver_instance: <instance>
-//     spef: netname
 //   -
 //     name: circuitname2
 //     ...

@@ -66,6 +66,9 @@ int read_circuits(char *circuit_file_name, dctk::CircuitPtrVec *circuitMgr, dctk
         const std::string& str_load_interconnect=circuit["load_interconnect"].as<std::string>();
         cir->set_load_interconnect(str_load_interconnect);
 
+        const std::string& str_unused_loads=circuit["unused_loads"].as<std::string>();
+        cir->set_unused_loads(str_unused_loads);
+
         const std::string& str_spice_rise_delay=circuit["spice_rise_delay"].as<std::string>();
         cir->set_spice_rise_delay(atof(str_spice_rise_delay.c_str()));
 
