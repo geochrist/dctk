@@ -77,57 +77,110 @@ public:
         return _power_rail_voltage;
     }
 
-    // SPICE delay and slews
-    void set_spice_rise_slew(float f) {
-        _spice_rise_slew = f;
+    // SPICE cell delay and slews
+    void set_spice_cell_rise_slew(float f) {
+        _spice_cell_rise_slew = f;
     }
-    void set_spice_fall_slew(float f) {
-        _spice_fall_slew = f;
+    void set_spice_cell_fall_slew(float f) {
+        _spice_cell_fall_slew = f;
     }
-    void set_spice_rise_delay(float f) {
-        _spice_rise_delay = f;
+    void set_spice_cell_rise_delay(float f) {
+        _spice_cell_rise_delay = f;
     }
-    void set_spice_fall_delay(float f) {
-        _spice_fall_delay = f;
-    }
-
-    float get_spice_rise_slew() {
-        return _spice_rise_slew;
-    }
-    float get_spice_fall_slew() {
-        return _spice_fall_slew;
-    }
-    float get_spice_rise_delay() {
-        return _spice_rise_delay;
-    }
-   float get_spice_fall_delay() {
-        return _spice_fall_delay;
+    void set_spice_cell_fall_delay(float f) {
+        _spice_cell_fall_delay = f;
     }
 
-    // CCS delay and slews
-    void set_ccs_rise_slew(float f) {
-        _ccs_rise_slew = f;
+    float get_spice_cell_rise_slew() {
+        return _spice_cell_rise_slew;
     }
-    void set_ccs_fall_slew(float f) {
-        _ccs_fall_slew = f;
+    float get_spice_cell_fall_slew() {
+        return _spice_cell_fall_slew;
     }
-    void set_ccs_rise_delay(float f) {
-        _ccs_rise_delay = f;
+    float get_spice_cell_rise_delay() {
+        return _spice_cell_rise_delay;
     }
-    void set_ccs_fall_delay(float f) {
-        _ccs_fall_delay = f;
+    float get_spice_cell_fall_delay() {
+        return _spice_cell_fall_delay;
     }
-    float get_ccs_rise_slew() {
-        return _ccs_rise_slew;
+
+    void set_spice_net_rise_slew(float f) {
+        _spice_net_rise_slew = f;
     }
-    float get_ccs_fall_slew() {
-        return _ccs_fall_slew;
+    void set_spice_net_fall_slew(float f) {
+        _spice_net_fall_slew = f;
     }
-    float get_ccs_rise_delay() {
-        return _ccs_rise_delay;
+    void set_spice_net_rise_delay(float f) {
+        _spice_net_rise_delay = f;
     }
-    float get_ccs_fall_delay() {
-        return _ccs_fall_delay;
+    void set_spice_net_fall_delay(float f) {
+        _spice_net_fall_delay = f;
+    }
+
+    float get_spice_net_rise_slew() {
+        return _spice_net_rise_slew;
+    }
+    float get_spice_net_fall_slew() {
+        return _spice_net_fall_slew;
+    }
+    float get_spice_net_rise_delay() {
+        return _spice_net_rise_delay;
+    }
+   float get_spice_net_fall_delay() {
+        return _spice_net_fall_delay;
+    }
+
+    // CCS cell delay and slews
+    void set_ccs_cell_rise_slew(float f) {
+        _ccs_cell_rise_slew = f;
+    }
+    void set_ccs_cell_fall_slew(float f) {
+        _ccs_cell_fall_slew = f;
+    }
+    void set_ccs_cell_rise_delay(float f) {
+        _ccs_cell_rise_delay = f;
+    }
+    void set_ccs_cell_fall_delay(float f) {
+        _ccs_cell_fall_delay = f;
+    }
+    float get_ccs_cell_rise_slew() {
+        return _ccs_cell_rise_slew;
+    }
+    float get_ccs_cell_fall_slew() {
+        return _ccs_cell_fall_slew;
+    }
+    float get_ccs_cell_rise_delay() {
+        return _ccs_cell_rise_delay;
+    }
+    float get_ccs_cell_fall_delay() {
+        return _ccs_cell_fall_delay;
+    }
+
+
+      // CCS net delay and slews
+    void set_ccs_net_rise_slew(float f) {
+        _ccs_net_rise_slew = f;
+    }
+    void set_ccs_net_fall_slew(float f) {
+        _ccs_net_fall_slew = f;
+    }
+    void set_ccs_net_rise_delay(float f) {
+        _ccs_net_rise_delay = f;
+    }
+    void set_ccs_net_fall_delay(float f) {
+        _ccs_net_fall_delay = f;
+    }
+    float get_ccs_net_rise_slew() {
+        return _ccs_net_rise_slew;
+    }
+    float get_ccs_net_fall_slew() {
+        return _ccs_net_fall_slew;
+    }
+    float get_ccs_net_rise_delay() {
+        return _ccs_net_rise_delay;
+    }
+    float get_ccs_net_fall_delay() {
+        return _ccs_net_fall_delay;
     }
 
     // simulation time
@@ -165,14 +218,23 @@ private:
     float _power_rail_voltage;
 
     // spice/ccs delay and slew values in ps
-    float _spice_rise_delay;
-    float _spice_fall_delay;
-    float _spice_rise_slew;
-    float _spice_fall_slew;
-    float _ccs_rise_delay;
-    float _ccs_fall_delay;
-    float _ccs_rise_slew;
-    float _ccs_fall_slew;
+    float _spice_cell_rise_delay;
+    float _spice_cell_fall_delay;
+    float _spice_cell_rise_slew;
+    float _spice_cell_fall_slew;
+    float _spice_net_rise_delay;
+    float _spice_net_fall_delay;
+    float _spice_net_rise_slew;
+    float _spice_net_fall_slew;
+
+    float _ccs_cell_rise_delay;
+    float _ccs_cell_fall_delay;
+    float _ccs_cell_rise_slew;
+    float _ccs_cell_fall_slew;
+    float _ccs_net_rise_delay;
+    float _ccs_net_fall_delay;
+    float _ccs_net_rise_slew;
+    float _ccs_net_fall_slew;
 
     // in ps
     float _sim_time;

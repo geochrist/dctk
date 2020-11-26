@@ -173,10 +173,10 @@ void compute_delays_bilinear(dctk::CellLib* cell_lib, dctk::Circuit* circuit, sp
     float fall_transition = lookup_table_value(arc->get_fall_transition_table(), slew, load);
 
     // save results
-    circuit->set_ccs_rise_delay(rise_delay * scale_to_ps);
-    circuit->set_ccs_fall_delay(fall_delay * scale_to_ps);
-    circuit->set_ccs_rise_slew(rise_transition * scale_to_ps);
-    circuit->set_ccs_fall_slew(fall_transition * scale_to_ps);
+    circuit->set_ccs_cell_rise_delay(rise_delay * scale_to_ps);
+    circuit->set_ccs_cell_fall_delay(fall_delay * scale_to_ps);
+    circuit->set_ccs_cell_rise_slew(rise_transition * scale_to_ps);
+    circuit->set_ccs_cell_fall_slew(fall_transition * scale_to_ps);
 
     return ;
 }

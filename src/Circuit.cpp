@@ -21,14 +21,22 @@ namespace dctk {
 
 Circuit::Circuit(const std::string& s) {
     _name = s;
-    _spice_rise_delay = 0.0;
-    _spice_fall_delay = 0.0;
-    _spice_rise_slew = 0.0;
-    _spice_fall_slew = 0.0;
-    _ccs_rise_delay = 0.0;
-    _ccs_fall_delay = 0.0;
-    _ccs_rise_slew = 0.0;
-    _ccs_fall_slew = 0.0;
+    _spice_cell_rise_delay = 0.0;
+    _spice_cell_fall_delay = 0.0;
+    _spice_cell_rise_slew = 0.0;
+    _spice_cell_fall_slew = 0.0;
+    _spice_net_rise_delay = 0.0;
+    _spice_net_fall_delay = 0.0;
+    _spice_net_rise_slew = 0.0;
+    _spice_net_fall_slew = 0.0;
+    _ccs_cell_rise_delay = 0.0;
+    _ccs_cell_fall_delay = 0.0;
+    _ccs_cell_rise_slew = 0.0;
+    _ccs_cell_fall_slew = 0.0;
+    _ccs_net_rise_delay = 0.0;
+    _ccs_net_fall_delay = 0.0;
+    _ccs_net_rise_slew = 0.0;
+    _ccs_net_fall_slew = 0.0;
     _spice_measure = SpiceMeasure::ngspice;
     
 }
@@ -131,14 +139,24 @@ void Circuit::dump() {
               << " " << this->_load_interconnect.get_res()
               << " " << this->_load_interconnect.get_cfar()
               << std::endl;
-    std::cout << "spice rise delay = " << this->_spice_rise_delay << std::endl;
-    std::cout << "spice fall delay = " << this->_spice_fall_delay << std::endl;
-    std::cout << "spice rise slew = " << this->_spice_rise_slew << std::endl;
-    std::cout << "spice fall slew = " << this->_spice_fall_slew << std::endl;
-    std::cout << "ccs rise delay = " << this->_ccs_rise_delay << std::endl;
-    std::cout << "ccs fall delay = " << this->_ccs_fall_delay << std::endl;
-    std::cout << "ccs rise slew = " << this->_ccs_rise_slew << std::endl;
-    std::cout << "ccs fall slew = " << this->_ccs_fall_slew << std::endl;
+    std::cout << "spice cell rise delay = " << this->_spice_cell_rise_delay << std::endl;
+    std::cout << "spice cell fall delay = " << this->_spice_cell_fall_delay << std::endl;
+    std::cout << "spice cell rise slew = " << this->_spice_cell_rise_slew << std::endl;
+    std::cout << "spice cell fall slew = " << this->_spice_cell_fall_slew << std::endl;
+    std::cout << "spice net rise delay = " << this->_spice_net_rise_delay << std::endl;
+    std::cout << "spice net fall delay = " << this->_spice_net_fall_delay << std::endl;
+    std::cout << "spice net rise slew = " << this->_spice_net_rise_slew << std::endl;
+    std::cout << "spice net fall slew = " << this->_spice_net_fall_slew << std::endl;
+
+
+    std::cout << "ccs cell rise delay = " << this->_ccs_cell_rise_delay << std::endl;
+    std::cout << "ccs cell fall delay = " << this->_ccs_cell_fall_delay << std::endl;
+    std::cout << "ccs cell rise slew = " << this->_ccs_cell_rise_slew << std::endl;
+    std::cout << "ccs cell fall slew = " << this->_ccs_cell_fall_slew << std::endl;
+    std::cout << "ccs net rise delay = " << this->_ccs_net_rise_delay << std::endl;
+    std::cout << "ccs net fall delay = " << this->_ccs_net_fall_delay << std::endl;
+    std::cout << "ccs net rise slew = " << this->_ccs_net_rise_slew << std::endl;
+    std::cout << "ccs net fall slew = " << this->_ccs_net_fall_slew << std::endl;
     std::cout << "----------" << std::endl;
 }
 
@@ -166,14 +184,25 @@ void Circuit::gen_yaml(YAML::Emitter& emitter) {
     emitter << YAML::Key << "load_interconnect" << YAML::Value << ss2.str();
     emitter << YAML::Key << "unused_loads" << YAML::Value << this->_unused_loads;
 
-    emitter << YAML::Key << "spice_rise_delay" << YAML::Value << this->_spice_rise_delay;
-    emitter << YAML::Key << "spice_fall_delay" << YAML::Value << this->_spice_fall_delay;
-    emitter << YAML::Key << "spice_rise_slew" << YAML::Value << this->_spice_rise_slew;
-    emitter << YAML::Key << "spice_fall_slew" << YAML::Value << this->_spice_fall_slew;
-    emitter << YAML::Key << "ccs_rise_delay" << YAML::Value << this->_ccs_rise_delay;
-    emitter << YAML::Key << "ccs_fall_delay" << YAML::Value << this->_ccs_fall_delay;
-    emitter << YAML::Key << "ccs_rise_slew" << YAML::Value << this->_ccs_rise_slew;
-    emitter << YAML::Key << "ccs_fall_slew" << YAML::Value << this->_ccs_fall_slew;
+    emitter << YAML::Key << "spice_cell_rise_delay" << YAML::Value << this->_spice_cell_rise_delay;
+    emitter << YAML::Key << "spice_cell_fall_delay" << YAML::Value << this->_spice_cell_fall_delay;
+    emitter << YAML::Key << "spice_cell_rise_slew" << YAML::Value << this->_spice_cell_rise_slew;
+    emitter << YAML::Key << "spice_cell_fall_slew" << YAML::Value << this->_spice_cell_fall_slew;
+
+    emitter << YAML::Key << "spice_net_rise_delay" << YAML::Value << this->_spice_net_rise_delay;
+    emitter << YAML::Key << "spice_net_fall_delay" << YAML::Value << this->_spice_net_fall_delay;
+    emitter << YAML::Key << "spice_net_rise_slew" << YAML::Value << this->_spice_net_rise_slew;
+    emitter << YAML::Key << "spice_net_fall_slew" << YAML::Value << this->_spice_net_fall_slew;
+
+    emitter << YAML::Key << "ccs_cell_rise_delay" << YAML::Value << this->_ccs_cell_rise_delay;
+    emitter << YAML::Key << "ccs_cell_fall_delay" << YAML::Value << this->_ccs_cell_fall_delay;
+    emitter << YAML::Key << "ccs_cell_rise_slew" << YAML::Value << this->_ccs_cell_rise_slew;
+    emitter << YAML::Key << "ccs_cell_fall_slew" << YAML::Value << this->_ccs_cell_fall_slew;
+
+    emitter << YAML::Key << "ccs_net_rise_delay" << YAML::Value << this->_ccs_net_rise_delay;
+    emitter << YAML::Key << "ccs_net_fall_delay" << YAML::Value << this->_ccs_net_fall_delay;
+    emitter << YAML::Key << "ccs_net_rise_slew" << YAML::Value << this->_ccs_net_rise_slew;
+    emitter << YAML::Key << "ccs_net_fall_slew" << YAML::Value << this->_ccs_net_fall_slew;
 
     emitter << YAML::EndMap;
 
@@ -686,6 +715,10 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
     const std::string& input_pin = inst + ':' + driver_tokens[1];
     const std::string& output_pin = inst + ':' + driver_tokens[2];
 
+    std::vector<std::string> load_tokens = split(_load, '/');
+    const std::string& load_inst = load_tokens[0];
+    const std::string& load_pin = load_inst + ':' + load_tokens[1];
+
     const float delay_threshold = get_power_rail_voltage()/2.0;
 
 
@@ -701,28 +734,47 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
     // spice measure format
     if (_spice_measure == SpiceMeasure::ngspice ) {
 
+        // cell delays
         if (is_positive_unate(cellLib)) {
-            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise) val="
+            fs << ".measure tran cell_rise_delay trig v(" << input_pin << "_rise) val="
                << delay_threshold << "v rise=1 targ v(" << output_pin << "_rise) val="
                << delay_threshold << " rise=1" << std::endl;
-            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall) val="
+            fs << ".measure tran cell_fall_delay trig v(" << input_pin << "_fall) val="
                << delay_threshold << "v fall=1 targ v(" << output_pin << "_fall) val="
                << delay_threshold << "v fall=1" << std::endl;
         } else {
-            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall) val="
+            fs << ".measure tran cell_fall_delay trig v(" << input_pin << "_fall) val="
                << delay_threshold << "v rise=1 targ v(" << output_pin << "_fall) val="
                << delay_threshold << "v fall=1" << std::endl;
-            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise) val="
+            fs << ".measure tran cell_rise_delay trig v(" << input_pin << "_rise) val="
                << delay_threshold << "v fall=1 targ v(" << output_pin << "_rise) val="
                << delay_threshold << "v rise=1" << std::endl;
         }
 
-        fs << ".measure tran rise_slew trig v(" << output_pin << "_rise) val="
+        // cell slews
+        fs << ".measure tran cell_rise_slew trig v(" << output_pin << "_rise) val="
            << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << "_rise) val="
            << rise_slew_upper_threshold << "v rise=1" << std::endl;
         
-        fs << ".measure tran fall_slew trig v(" << output_pin << "_fall) val="
+        fs << ".measure tran cell_fall_slew trig v(" << output_pin << "_fall) val="
            << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << "_fall) val="
+           << fall_slew_lower_threshold << "v fall=1" << std::endl;
+
+        // net delays
+	fs << ".measure tran net_rise_delay trig v(" << output_pin << "_rise) val="
+	   << delay_threshold << "v rise=1 targ v(" << load_pin << "_rise) val="
+	   << delay_threshold << " rise=1" << std::endl;
+	fs << ".measure tran net_fall_delay trig v(" << output_pin << "_fall) val="
+	   << delay_threshold << "v fall=1 targ v(" << load_pin << "_fall) val="
+	   << delay_threshold << "v fall=1" << std::endl;
+
+        // net slews
+        fs << ".measure tran net_rise_slew trig v(" << load_pin << "_rise) val="
+           << rise_slew_lower_threshold << "v rise=1 targ v(" << load_pin << "_rise) val="
+           << rise_slew_upper_threshold << "v rise=1" << std::endl;
+        
+        fs << ".measure tran net_fall_slew trig v(" << load_pin << "_fall) val="
+           << fall_slew_upper_threshold << "v fall=1 targ v(" << load_pin << "_fall) val="
            << fall_slew_lower_threshold << "v fall=1" << std::endl;
 
         return;
@@ -730,30 +782,48 @@ void Circuit::write_spice_commands(std::fstream& fs, CellLib & cellLib) {
     
     if (_spice_measure == SpiceMeasure::xyce ) {
 
+        // cell delays
         if (is_positive_unate(cellLib)) {
-            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise)="
+            fs << ".measure tran cell_rise_delay trig v(" << input_pin << "_rise)="
                << delay_threshold << "v rise=1 targ v(" << output_pin << "_rise)="
                << delay_threshold << " rise=1" << std::endl;
-            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall)="
+            fs << ".measure tran cell_fall_delay trig v(" << input_pin << "_fall)="
                << delay_threshold << "v fall=1 targ v(" << output_pin << "_fall)="
                << delay_threshold << "v fall=1" << std::endl;
 
         } else {
-            fs << ".measure tran fall_delay trig v(" << input_pin << "_fall)="
+            fs << ".measure tran cell_fall_delay trig v(" << input_pin << "_fall)="
                << delay_threshold << "v rise=1 targ v(" << output_pin << "_fall)="
                << delay_threshold << "v fall=1" << std::endl;
-            fs << ".measure tran rise_delay trig v(" << input_pin << "_rise)="
+            fs << ".measure tran cell_rise_delay trig v(" << input_pin << "_rise)="
                << delay_threshold << "v fall=1 targ v(" << output_pin << "_rise)="
                << delay_threshold << "v rise=1" << std::endl;
         }
 
-        // slews
-        fs << ".measure tran rise_slew trig v(" << output_pin << "_rise)="
+        // cell slews
+        fs << ".measure tran cell_rise_slew trig v(" << output_pin << "_rise)="
            << rise_slew_lower_threshold << "v rise=1 targ v(" << output_pin << "_rise)="
            << rise_slew_upper_threshold << " rise=1" << std::endl;
-        fs << ".measure tran fall_slew trig v(" << output_pin << "_fall)="
+        fs << ".measure tran cell_fall_slew trig v(" << output_pin << "_fall)="
            << fall_slew_upper_threshold << "v fall=1 targ v(" << output_pin << "_fall)="
            << fall_slew_lower_threshold << " fall=1" << std::endl;
+
+	// net delays
+	fs << ".measure tran net_rise_delay trig v(" << output_pin << "_rise)="
+	   << delay_threshold << "v rise=1 targ v(" << load_pin << "_rise)="
+	   << delay_threshold << " rise=1" << std::endl;
+	fs << ".measure tran net_fall_delay trig v(" << output_pin << "_fall)="
+	   << delay_threshold << "v fall=1 targ v(" << load_pin << "_fall)="
+	   << delay_threshold << "v fall=1" << std::endl;
+	
+        // net slews
+        fs << ".measure tran net_rise_slew trig v(" << load_pin << "_rise)="
+           << rise_slew_lower_threshold << "v rise=1 targ v(" << load_pin << "_rise)="
+           << rise_slew_upper_threshold << " rise=1" << std::endl;
+        fs << ".measure tran net_fall_slew trig v(" << load_pin << "_fall)="
+           << fall_slew_upper_threshold << "v fall=1 targ v(" << load_pin << "_fall)="
+           << fall_slew_lower_threshold << " fall=1" << std::endl;
+
         return;
     }
 
@@ -818,34 +888,57 @@ void Circuit::write_spice_deck(const std::string& dirname, CellLib* cellLib, spe
 
 
 // patterns for reading simulation results
-static const std::regex XYCE_RISE_DELAY_RE("RISE_DELAY = (.*)");
-static const std::regex XYCE_FALL_DELAY_RE("FALL_DELAY = (.*)");
-static const std::regex XYCE_RISE_SLEW_RE("RISE_SLEW = (.*)");
-static const std::regex XYCE_FALL_SLEW_RE("FALL_SLEW = (.*)");
-static const std::regex NGSPICE_RISE_DELAY_RE("rise_delay\\s+=\\s+(.*)");
-static const std::regex NGSPICE_FALL_DELAY_RE("fall_delay\\s+=\\s+(.*)");
-static const std::regex NGSPICE_RISE_SLEW_RE("rise_slew\\s+=\\s+(.*)");
-static const std::regex NGSPICE_FALL_SLEW_RE("fall_slew\\s+=\\s+(.*)");
+static const std::regex XYCE_CELL_RISE_DELAY_RE("CELL_RISE_DELAY = (.*)");
+static const std::regex XYCE_CELL_FALL_DELAY_RE("CELL_FALL_DELAY = (.*)");
+static const std::regex XYCE_CELL_RISE_SLEW_RE("CELL_RISE_SLEW = (.*)");
+static const std::regex XYCE_CELL_FALL_SLEW_RE("CELL_FALL_SLEW = (.*)");
+static const std::regex XYCE_NET_RISE_DELAY_RE("NET_RISE_DELAY = (.*)");
+static const std::regex XYCE_NET_FALL_DELAY_RE("NET_FALL_DELAY = (.*)");
+static const std::regex XYCE_NET_RISE_SLEW_RE("NET_RISE_SLEW = (.*)");
+static const std::regex XYCE_NET_FALL_SLEW_RE("NET_FALL_SLEW = (.*)");
+static const std::regex NGSPICE_CELL_RISE_DELAY_RE("cell_rise_delay\\s+=\\s+(.*)");
+static const std::regex NGSPICE_CELL_FALL_DELAY_RE("cell_fall_delay\\s+=\\s+(.*)");
+static const std::regex NGSPICE_CELL_RISE_SLEW_RE("cell_rise_slew\\s+=\\s+(.*)");
+static const std::regex NGSPICE_CELL_FALL_SLEW_RE("cell_fall_slew\\s+=\\s+(.*)");
+static const std::regex NGSPICE_NET_RISE_DELAY_RE("net_rise_delay\\s+=\\s+(.*)");
+static const std::regex NGSPICE_NET_FALL_DELAY_RE("net_fall_delay\\s+=\\s+(.*)");
+static const std::regex NGSPICE_NET_RISE_SLEW_RE("net_rise_slew\\s+=\\s+(.*)");
+static const std::regex NGSPICE_NET_FALL_SLEW_RE("net_fall_slew\\s+=\\s+(.*)");
 
 void Circuit::read_spice_results(const char* simulator, const std::string& results_filename) {
 
-    std::regex rise_delay_re;
-    std::regex fall_delay_re;
-    std::regex rise_slew_re;
-    std::regex fall_slew_re;
+    std::regex cell_rise_delay_re;
+    std::regex cell_fall_delay_re;
+    std::regex cell_rise_slew_re;
+    std::regex cell_fall_slew_re;
+
+    std::regex net_rise_delay_re;
+    std::regex net_fall_delay_re;
+    std::regex net_rise_slew_re;
+    std::regex net_fall_slew_re;
     
     if (!strcmp(simulator, "xyce")) {
-        rise_delay_re = XYCE_RISE_DELAY_RE;
-        fall_delay_re = XYCE_FALL_DELAY_RE;
-        rise_slew_re = XYCE_RISE_SLEW_RE;
-        fall_slew_re = XYCE_FALL_SLEW_RE;
+        cell_rise_delay_re = XYCE_CELL_RISE_DELAY_RE;
+        cell_fall_delay_re = XYCE_CELL_FALL_DELAY_RE;
+        cell_rise_slew_re = XYCE_CELL_RISE_SLEW_RE;
+        cell_fall_slew_re = XYCE_CELL_FALL_SLEW_RE;
+
+        net_rise_delay_re = XYCE_NET_RISE_DELAY_RE;
+        net_fall_delay_re = XYCE_NET_FALL_DELAY_RE;
+        net_rise_slew_re = XYCE_NET_RISE_SLEW_RE;
+        net_fall_slew_re = XYCE_NET_FALL_SLEW_RE;
     }
 
     if (!strcmp(simulator, "ngspice")) {
-        rise_delay_re = NGSPICE_RISE_DELAY_RE;
-        fall_delay_re = NGSPICE_FALL_DELAY_RE;
-        rise_slew_re = NGSPICE_RISE_SLEW_RE;
-        fall_slew_re = NGSPICE_FALL_SLEW_RE;
+        cell_rise_delay_re = NGSPICE_CELL_RISE_DELAY_RE;
+        cell_fall_delay_re = NGSPICE_CELL_FALL_DELAY_RE;
+        cell_rise_slew_re = NGSPICE_CELL_RISE_SLEW_RE;
+        cell_fall_slew_re = NGSPICE_CELL_FALL_SLEW_RE;
+
+        net_rise_delay_re = NGSPICE_NET_RISE_DELAY_RE;
+        net_fall_delay_re = NGSPICE_NET_FALL_DELAY_RE;
+        net_rise_slew_re = NGSPICE_NET_RISE_SLEW_RE;
+        net_fall_slew_re = NGSPICE_NET_FALL_SLEW_RE;
     }
 
     // output is in a mt0 file format
@@ -856,20 +949,36 @@ void Circuit::read_spice_results(const char* simulator, const std::string& resul
     while (std::getline(infile, line)) {
 
         std::smatch match;
-        if (std::regex_search(line, match, rise_delay_re) && match.size() > 1) {
-            _spice_rise_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        if (std::regex_search(line, match, cell_rise_delay_re) && match.size() > 1) {
+            _spice_cell_rise_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
         }
             
-        if (std::regex_search(line, match, fall_delay_re) && match.size() > 1) {
-            _spice_fall_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        if (std::regex_search(line, match, cell_fall_delay_re) && match.size() > 1) {
+            _spice_cell_fall_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
         }
             
-        if (std::regex_search(line, match, rise_slew_re) && match.size() > 1) {
-            _spice_rise_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        if (std::regex_search(line, match, cell_rise_slew_re) && match.size() > 1) {
+            _spice_cell_rise_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
         }
             
-        if (std::regex_search(line, match, fall_slew_re) && match.size() > 1) {
-            _spice_fall_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        if (std::regex_search(line, match, cell_fall_slew_re) && match.size() > 1) {
+            _spice_cell_fall_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+
+        if (std::regex_search(line, match, net_rise_delay_re) && match.size() > 1) {
+            _spice_net_rise_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+            
+        if (std::regex_search(line, match, net_fall_delay_re) && match.size() > 1) {
+            _spice_net_fall_delay = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+            
+        if (std::regex_search(line, match, net_rise_slew_re) && match.size() > 1) {
+            _spice_net_rise_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
+        }
+            
+        if (std::regex_search(line, match, net_fall_slew_re) && match.size() > 1) {
+            _spice_net_fall_slew = strtod(match.str(1).c_str(), &end) * 1.0e+12 ;
         }
     }
 

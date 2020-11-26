@@ -84,74 +84,87 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
 
         // if any of the spice results are negative, we skip the circuit from inclusion
 
-        const float spice_rise_delay = circuitMgr[i]->get_spice_rise_delay();
-        const float spice_fall_delay = circuitMgr[i]->get_spice_fall_delay();
-        const float spice_rise_slew = circuitMgr[i]->get_spice_rise_slew();
-        const float spice_fall_slew = circuitMgr[i]->get_spice_fall_slew();
+        const float spice_cell_rise_delay = circuitMgr[i]->get_spice_cell_rise_delay();
+        const float spice_cell_fall_delay = circuitMgr[i]->get_spice_cell_fall_delay();
+        const float spice_cell_rise_slew = circuitMgr[i]->get_spice_cell_rise_slew();
+        const float spice_cell_fall_slew = circuitMgr[i]->get_spice_cell_fall_slew();
 
-        if ((spice_rise_delay < -1.0) || (spice_fall_delay < -1.0) ||
-            (spice_rise_slew < -1.0) || (spice_fall_slew < -1.0)) {
+
+        const float spice_net_rise_delay = circuitMgr[i]->get_spice_net_rise_delay();
+        const float spice_net_fall_delay = circuitMgr[i]->get_spice_net_fall_delay();
+        const float spice_net_rise_slew = circuitMgr[i]->get_spice_net_rise_slew();
+        const float spice_net_fall_slew = circuitMgr[i]->get_spice_net_fall_slew();
+
+	if ((spice_cell_rise_delay < -1.0) || (spice_cell_fall_delay < -1.0) ||
+            (spice_cell_rise_slew < -1.0) || (spice_cell_fall_slew < -1.0)) {
+            skipped_circuits++;
+            std::cout << "Ignore circuit " << circuitMgr[i]->get_name() << std::endl;
+            continue;
+        }
+
+	if ((spice_net_rise_delay < -1.0) || (spice_net_fall_delay < -1.0) ||
+            (spice_net_rise_slew < -1.0) || (spice_net_fall_slew < -1.0)) {
             skipped_circuits++;
             std::cout << "Ignore circuit " << circuitMgr[i]->get_name() << std::endl;
             continue;
         }
 
         // delay
-        const float ccs_rise_delay = circuitMgr[i]->get_ccs_rise_delay();
-        const float ccs_fall_delay = circuitMgr[i]->get_ccs_fall_delay();
+        const float ccs_cell_rise_delay = circuitMgr[i]->get_ccs_cell_rise_delay();
+        const float ccs_cell_fall_delay = circuitMgr[i]->get_ccs_cell_fall_delay();
 
         // check for thresholding
-        float dx_delay_rise;
-        float dx_delay_fall;
-        if (std::abs(ccs_rise_delay - spice_rise_delay) > DELAY_TA) {
-            dx_delay_rise = std::abs(ccs_rise_delay - spice_rise_delay)/std::abs(spice_rise_delay) ;
+        float dx_cell_delay_rise;
+        float dx_cell_delay_fall;
+        if (std::abs(ccs_cell_rise_delay - spice_cell_rise_delay) > DELAY_TA) {
+            dx_cell_delay_rise = std::abs(ccs_cell_rise_delay - spice_cell_rise_delay)/std::abs(spice_cell_rise_delay) ;
         } else {
-            dx_delay_rise = 0.0;
+            dx_cell_delay_rise = 0.0;
         }
-        if (std::abs(ccs_fall_delay - spice_fall_delay) > DELAY_TA) {
-            dx_delay_fall = std::abs(ccs_fall_delay - spice_fall_delay)/std::abs(spice_fall_delay) ;
+        if (std::abs(ccs_cell_fall_delay - spice_cell_fall_delay) > DELAY_TA) {
+            dx_cell_delay_fall = std::abs(ccs_cell_fall_delay - spice_cell_fall_delay)/std::abs(spice_cell_fall_delay) ;
         } else {
-            dx_delay_fall = 0.0;
+            dx_cell_delay_fall = 0.0;
         }
 
-        accumulated_delay_diff += pow(dx_delay_rise, 2);
-        accumulated_delay_diff += pow(dx_delay_fall, 2);
+        accumulated_delay_diff += pow(dx_cell_delay_rise, 2);
+        accumulated_delay_diff += pow(dx_cell_delay_fall, 2);
 
         // count outliers
-        if (dx_delay_rise > DELAY_TO) {
+        if (dx_cell_delay_rise > DELAY_TO) {
             NO_delay++;
         }
         
-        if (dx_delay_fall > DELAY_TO) {
+        if (dx_cell_delay_fall > DELAY_TO) {
             NO_delay++;
         }
 
         // delay
-        const float ccs_rise_slew = circuitMgr[i]->get_ccs_rise_slew();
-        const float ccs_fall_slew = circuitMgr[i]->get_ccs_fall_slew();
+        const float ccs_cell_rise_slew = circuitMgr[i]->get_ccs_cell_rise_slew();
+        const float ccs_cell_fall_slew = circuitMgr[i]->get_ccs_cell_fall_slew();
 
         // check for thresholding
-        float dx_slew_rise;
-        float dx_slew_fall;
-        if (std::abs(ccs_rise_slew - spice_rise_slew) > SLEW_TA) {
-            dx_slew_rise = std::abs(ccs_rise_slew - spice_rise_slew)/std::abs(spice_rise_slew) ;
+        float dx_cell_slew_rise;
+        float dx_cell_slew_fall;
+        if (std::abs(ccs_cell_rise_slew - spice_cell_rise_slew) > SLEW_TA) {
+            dx_cell_slew_rise = std::abs(ccs_cell_rise_slew - spice_cell_rise_slew)/std::abs(spice_cell_rise_slew) ;
         } else {
-            dx_slew_rise = 0.0;
+            dx_cell_slew_rise = 0.0;
         }
-        if (std::abs(ccs_fall_slew - spice_fall_slew) > SLEW_TA) {
-            dx_slew_fall = std::abs(ccs_fall_slew - spice_fall_slew)/std::abs(spice_fall_slew) ;
+        if (std::abs(ccs_cell_fall_slew - spice_cell_fall_slew) > SLEW_TA) {
+            dx_cell_slew_fall = std::abs(ccs_cell_fall_slew - spice_cell_fall_slew)/std::abs(spice_cell_fall_slew) ;
         } else {
-            dx_slew_fall = 0.0;
+            dx_cell_slew_fall = 0.0;
         }
 
-        accumulated_slew_diff += pow(dx_slew_rise, 2);
-        accumulated_slew_diff += pow(dx_slew_fall, 2);
+        accumulated_slew_diff += pow(dx_cell_slew_rise, 2);
+        accumulated_slew_diff += pow(dx_cell_slew_fall, 2);
         // count outliers
-        if (dx_slew_rise > SLEW_TO) {
+        if (dx_cell_slew_rise > SLEW_TO) {
             NO_slew++;
         }
         
-        if (dx_slew_fall > SLEW_TO) {
+        if (dx_cell_slew_fall > SLEW_TO) {
             NO_slew++;
         }
 
