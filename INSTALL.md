@@ -96,11 +96,9 @@ For the text below, assume:
 
   We will be using the extracted netlists:
 
-    asap7/asap7sc7p5t_27/CDL/xAct3D_extracted/asap7sc7p5t_27_R.sp
+      asap7/asap7sc7p5t_27/CDL/xAct3D_extracted/asap7sc7p5t_27_R.sp
 
-  They need to be modified as in the TAU2020 Contest:
-
-    The "W=<width>" parameter needs to be removed as well as all parameters prefixed with \$.  Use the following commands in the directory:
+  They need to be modified as in the TAU2020 Contest:  The "W=<width>" parameter needs to be removed as well as all parameters prefixed with \$.  Use the following commands in the directory:
   
     sed 's/ W=[a-zA-Z0-9\.\+-]*//g; s/\$.*//g' asap7sc7p5t_27_R.sp > asap7sc7p5t_27_R.sp.modified
 
@@ -114,23 +112,22 @@ For the text below, assume:
     sed '/waveform_time_template/,/\}/d ; /^[[:space:]]*driver_waveform/d' asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.lib > asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.postprocessed.lib
 
 
-  Now, one more thing needs to be done in order to get the ASAP7nm libraries to work:  
+  Now, one more thing needs to be done in order to get the ASAP7nm libraries to work:
     The ASAP7 Liberty model can't quite be read by the open source Liberty
     parser because it flags errors with less than 4 digits precision.  One
     can either fix all the numbers in the Liberty library to have 4 digits
     of precision, or just disable the error.  Here's how to disable the
     error:
 
-  *  Edit $DIR/src-liberty_parse-2.6/syntax_checks.c:
-        Comment out the following line (around line 5215):
+  *  Edit $DIR/src-liberty_parse-2.6/syntax_checks.c:  Comment out the following line (around line 5215):
 
                                         //                                      (*MsgPrinter)(SI2DR_SEVERITY_ERR, SI2DR_SEMANTIC_ERROR,                                                                     
                                         //                                                                EB,                                                                                               
                                         //                                                                &err);
-    The error message will still be displayed, but it will not stop
+
+  The error message will still be displayed, but it will not stop
 
   * Recompile (./configure && make)
-
 
 ### Nangate FreePDK45 Library (does not include spice models) (optional, not needed for contest)
 
@@ -223,7 +220,7 @@ For the text below, assume:
   Test this executable:
 
     cd $DIR/test
-    ./runme.asu     # for ASU -- requires Xyce
+    ./runme.asu.2021     # for ASU -- requires Xyce
  
 
   The result should be:
