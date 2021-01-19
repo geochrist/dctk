@@ -4,11 +4,10 @@
 # then read it into the delay calculator
 
 # dataset name
-set testsuite = tau2020_asu
+set testsuite = tau2021_asu
 
-# enable pi models?
+# do not enable pi models
 set pimodels = ""
-set pimodels = "--pimodels"
 
 # File containing Liberty models in CCS form
 set library = "../../asap7/asap7sc7p5t_27/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_201020.lib"
