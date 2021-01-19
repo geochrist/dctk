@@ -108,10 +108,6 @@ For the text below, assume:
 
   As before, they need to be modified to change the simulation model from 72 to 107, so as to work with Xyce.
 
-    cd ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/LIB/CCS
-    sed '/waveform_time_template/,/\}/d ; /^[[:space:]]*driver_waveform/d' asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.lib > asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.postprocessed.lib
-
-
   Now, one more thing needs to be done in order to get the ASAP7nm libraries to work:
     The ASAP7 Liberty model can't quite be read by the open source Liberty
     parser because it flags errors with less than 4 digits precision.  One
