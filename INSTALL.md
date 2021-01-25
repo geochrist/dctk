@@ -86,7 +86,7 @@ For the text below, assume:
 
       asap7/asap7sc7p5t_27/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_201020.lib.
 
-  The following modifications should be made:
+  The following modifications should be made, after gunzipping it:
 
   1.  Replace all values of 1e-22 with 1.0000e-5
 
@@ -104,9 +104,9 @@ For the text below, assume:
 
   We will be using the hspice models:
 
-    asap7/asap7PDK_r1p7/models/hspice/hspice/7nm_TT.pm
+    asap7/asap7PDK_r1p7/models/hspice/7nm_TT.pm
 
-  As before, they need to be modified to change the simulation model from 72 to 107, so as to work with Xyce.
+  As before, they need to be modified to change the simulation model from 72 to 107, so as to work with Xyce.  Copy 7nm_TT.pm to 7nm_TT.pm.modified and then make the change.
 
   Now, one more thing needs to be done in order to get the ASAP7nm libraries to work:
     The ASAP7 Liberty model can't quite be read by the open source Liberty
