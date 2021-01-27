@@ -5220,9 +5220,11 @@ static struct liberty_value_data *get_vector_data( si2drGroupIdT vector)
 							si2drObjectGetFileName(valuesd,&err),
 							(int)si2drObjectGetLineNo(valuesd,&err),x );
 #endif
+#if 0 // +ANTON ignore the error
 					(*MsgPrinter)(SI2DR_SEVERITY_ERR, SI2DR_SEMANTIC_ERROR, 
 								  EB, 
 								  &err);
+#endif // -ANTON
 				}
 				
 
