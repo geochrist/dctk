@@ -14,6 +14,8 @@ public:
         via_res_ = via_res;
         lyr_res_ = layer_res;
         tot_cap_ = total_cap;
+        min_len_ = 0.0;
+        max_len_ = 0.0;
     }
 
     VRCData( const VRCData & other )
@@ -22,6 +24,8 @@ public:
         via_res_ = other.via_res_;
         lyr_res_ = other.lyr_res_;
         tot_cap_ = other.tot_cap_;
+        min_len_ = other.min_len_;
+        max_len_ = other.max_len_;
     }
     const VRCData & operator = (const VRCData & other)
     {
@@ -29,6 +33,8 @@ public:
         via_res_ = other.via_res_;
         lyr_res_ = other.lyr_res_;
         tot_cap_ = other.tot_cap_;
+        min_len_ = other.min_len_;
+        max_len_ = other.max_len_;
         return *this;
     }
 
@@ -37,6 +43,8 @@ public:
     double via_res_;	// via resistance to lower layer
     double lyr_res_;	// layer resistance per unit length for min width
     double tot_cap_;	// layer total capacitance per unit length for min width
+    double min_len_;    // layer min drivable length
+    double max_len_;    // and max drivable length
 };
 
 
@@ -80,11 +88,17 @@ public:
 
     // get a guided random max layer index for the given technology
     // we choose the max layer to be suitable more or less for the given length
-    int get_guided_max_layer_index( double total_len ) const;
+    int get_guided_layer_lengths( double total_len );
+    int get_guided_layer_index_by_len ( double net_len ) const;
+    int get_guided_layer_index_by_cap ( double net_cap ) const;
 
     // get a resistance and capacitance for a metal shape of a given length and layer
     double get_shape_layer_res( int layer_index, double layer_length ) const;
     double get_shape_layer_cap( int layer_index, double layer_length ) const;
+
+    // get the res and cap per unit length for a given layer
+    double get_layer_res_per_len( int layer_index ) const;
+    double get_layer_cap_per_len( int layer_index ) const;
 
     // get the via stack resistance between two layers: for example the via stack
     // from M3 to M5 includes the via res from M3 to M4 and the via res from M4 to M5
@@ -185,24 +199,19 @@ public:
     RandomRCNet() : net_index_(), all_rc_devices_(), pi_model_(true) {}
     RandomRCNet( const std::string & net_name, const std::string & drv_node,
                  const std::vector<std::string > & receivers,
-                 double total_length, int max_layer_num,
-                 const LayerRCData & layer_data, bool pimodel_net = true)
+                 double total_load, int max_layer_num,
+                 const LayerRCData & layer_data)
     {
         net_index_ = net_name;
         drv_node_ = drv_node;
-        pi_model_ = pimodel_net;
+        pi_model_ = false;
         for( std::vector< std::string >::const_iterator rcv_it = receivers.begin();
                 rcv_it != receivers.end(); ++rcv_it) {
             std::string new_rcv = *rcv_it;
             rcv_nodes_.push_back( new_rcv );
         }
-        if( pimodel_net == true && receivers.size() == 1 ) {
-            populate_pimodel_data( net_name, drv_node, receivers[0], total_length,
-                                   max_layer_num, layer_data );
-        } else {
-            populate_net_data( net_name, drv_node, receivers, total_length,
+        populate_net_data( net_name, drv_node, receivers, total_load,
                                max_layer_num, layer_data );
-        }    
     }
 
     RandomRCNet( const std::string & net_name, const std::string & drv_node,
@@ -287,10 +296,34 @@ public:
                                 double total_length, int max_layer_num, const LayerRCData & layer_data,
                                 double total_cap, double cnear_cfar_ratio, double res_scale );
 
-    // method that creates the actual RC devices for this net
+    // method that creates the actual RC devices for this net in a random way
+    // using total cap as limit
     bool populate_net_data( const std::string & net_name,
                             const std::string & drv_node, const std::vector<std::string > & receivers,
-                            double total_length, int max_layer_num, const LayerRCData & layer_data );
+                            double total_cap, int max_layer_num, const LayerRCData & layer_data );
+
+    // add a segment to the net data, broken into smaller RC sections
+    // the segments is attached to an attachment node chosen randomly    
+    bool populate_rc_segment( std::string & attch_node, std::string & rcvr_node, int layer_indx,
+                            double attch_via_val, double rcvr_via_val, double seg_res, double seg_cap,
+                            int & node_count, int & res_indx, int & cap_indx, int seg_num_pieces );
+
+    // add one rc section of a net: the cap is attached to the "to_node"
+    bool populate_rc_piece( std::string & from_node, std::string & to_node,
+                            double res, double cap, int layer_indx, int res_indx, int cap_indx );
+
+    // add one node to the net structure, both node types map and node layers map
+    bool populate_new_node( std::string & node_name, int node_type, int node_layer );
+
+    // create random lengths for all receiver segments such that total_length is matched
+    bool create_random_net_segment_lengths( double total_length, int num_receivers,
+                                     std::vector<double> & net_lengths );
+
+    // create random lengths for all receiver segments such that the total cap is matched
+    bool create_random_net_segment_caps( double total_cap, int num_receivers,
+                                     int max_layer_num, const LayerRCData & layer_data,
+				     std::vector<int> & net_layers,
+                                     std::vector<double> & net_lengths  );
 
     void dump_spice_subckt_net( std::ofstream & ofs, double res_scale, double cap_scale ) const;
 
@@ -304,6 +337,7 @@ public:
     std::vector<std::string> rcv_nodes_;  // receiver names
     std::list< RCDevice > all_rc_devices_; 	// all the devices
     std::map< std::string, int > all_node_types_;	// map node number to node type
+    std::map< std::string, int > all_node_layers_;	// map node number to layer index
     // node 0 is always ground. The types can be 0 = ground
     // 1 = driver, 2 = receiver, 3 = internal node
     bool pi_model_;			// produce a pi model for the net (2 nodes: drv&rcvr, 1 R between them, 2 C's)
@@ -337,7 +371,8 @@ public:
                             const std::string& driver_celltype,
                             const std::vector<std::string >& receivers,
                             const std::vector<std::string >& receivers_celltypes,
-                            double total_length, int max_layer_num, bool pimodel_net, float largest_min_load, float smallest_max_load );
+                            double total_cap, int max_layer_num );
+
     bool create_random_net_scaled( const std::string& net_name,
                             const std::string& drv_node,
                             const std::string& driver_celltype,

@@ -623,7 +623,7 @@ void Circuit::write_spice_unused_loads(std::fstream& fs, CellLib& cellLib) {
 
     fs << "* Side Loads" << std::endl;
     
-    for ( int i = 0; i < num_loads; i = i+2) {
+    for ( int i = 0; i < tokens.size(); i=i+2) {
       // figure out celltype and look up in library
       const std::string& celltype = tokens[i+1];
       Cell* unused_load_cell = cellLib.get_cell(celltype);
