@@ -608,6 +608,32 @@ main(int argc, char **argv)
         // analyze accuracy of results
         analyze_results(circuitMgr, &benchmarks);
 
+        // +ANTON test
+        dctk::Benchmarks benchmarks2 = benchmarks;
+        analyze_results(circuitMgr, &benchmarks);
+        analyze_results_2021(circuitMgr, &benchmarks2);
+        if (benchmarks.rms_delay_diff != benchmarks2.rms_delay_diff) {
+            std::cout << "Fail: delay_diff " << benchmarks.rms_delay_diff << " " << benchmarks2.rms_delay_diff << std::endl;
+        }
+        if (benchmarks.rms_slew_diff != benchmarks2.rms_slew_diff) {
+            std::cout << "Fail: slew_diff " << benchmarks.rms_slew_diff << " " << benchmarks2.rms_slew_diff << std::endl;
+        }
+        if (benchmarks.delay_pts != benchmarks2.delay_pts) {
+            std::cout << "Fail: delay_pts " << benchmarks.delay_pts << " " << benchmarks2.delay_pts << std::endl;
+        }
+        if (benchmarks.slew_pts != benchmarks2.slew_pts) {
+            std::cout << "Fail: slew_pts " << benchmarks.slew_pts << " " << benchmarks2.slew_pts << std::endl;
+        }
+        if (benchmarks.delay_outliers != benchmarks2.delay_outliers) {
+            std::cout << "Fail: delay_outliers " << benchmarks.delay_outliers << " " << benchmarks2.delay_outliers << std::endl;
+        }
+        if (benchmarks.slew_outliers != benchmarks2.slew_outliers) {
+            std::cout << "Fail: slew_outliers " << benchmarks.slew_outliers << " " << benchmarks2.slew_outliers << std::endl;
+        }
+        std::cout << "ANTON" << std::endl;
+        // -ANTON
+
+        
         // format data
         YAML::Emitter emitter;
         emitter << YAML::BeginMap;
