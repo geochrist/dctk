@@ -66,6 +66,135 @@ const float DELAY_TO = 0.05 ;
 const float SLEW_TO = 0.10 ;
 
 
+//
+// Container for rise/fall delay/slew and all of the repeated calculation logic
+//
+struct delay_slew
+{
+    // data
+    static const unsigned RISE = 0, FALL = 1;
+    float delay[2];
+    float slew[2];
+    delay_slew(float d_R, float d_F, float s_R, float s_F)
+        : delay{d_R, d_F}, slew{s_R, s_F} {}
+    // Checks if all 4 enties are valid
+    bool is_valid(void) {
+        return (delay[RISE] >= -1.0 && delay[FALL] >= -1.0 &&
+                slew[RISE] >= -1.0 && slew[FALL] >= -1.0);
+    }
+};
+
+//
+// Calculates relative diffs of ccs delay/slew measurements from spice,
+// and updates RMS accumulators and outlier counters
+//
+void calculate_dx(const delay_slew& spice, const delay_slew& ccs,
+                  float* acc_delay_dx, float *acc_slew_dx,
+                  unsigned* NO_delay, unsigned* NO_slew)
+{
+    for (unsigned rf : {delay_slew::RISE, delay_slew::FALL}) {
+        // delay
+        float delay_dx = std::abs(ccs.delay[rf] - spice.delay[rf]);
+        if (delay_dx > DELAY_TA) {
+            delay_dx = delay_dx / std::abs(spice.delay[rf]);
+            (*acc_delay_dx) += pow(delay_dx, 2);
+            (*NO_delay) += (delay_dx > DELAY_TO);
+        }
+        // slew
+        float slew_dx = std::abs(ccs.slew[rf] - spice.slew[rf]);
+        if (slew_dx > SLEW_TA) {
+            slew_dx = slew_dx / std::abs(spice.slew[rf]);
+            (*acc_slew_dx) += pow(slew_dx, 2);
+            (*NO_slew) += (slew_dx > SLEW_TO);                    
+        }
+    }
+    return;
+}
+
+//
+// Implements the scoring algorithm described in the TAU2021 contest rules
+//
+void analyze_results_2021(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks)
+{
+    const unsigned CELL = 0, NET = 1;
+
+    // accumulated diffs for RMS calc (CELL, NET)
+    float accumulated_delay_dx[2] = { 0.0, 0.0 };
+    float accumulated_slew_dx[2] = { 0.0, 0.0 };
+
+    // outlier counts (CELL, NET)
+    unsigned NO_delay[2] = { 0, 0 };
+    unsigned NO_slew[2] = { 0, 0 };
+   
+    unsigned skipped_circuits = 0;
+
+    // go ..
+    for (std::size_t i = 0; i < circuitMgr.size(); i++) {
+
+        // spice data
+        delay_slew spice_cell(circuitMgr[i]->get_spice_cell_rise_delay(),
+                              circuitMgr[i]->get_spice_cell_fall_delay(),
+                              circuitMgr[i]->get_spice_cell_rise_slew(),
+                              circuitMgr[i]->get_spice_cell_fall_slew());
+        
+        delay_slew spice_net(circuitMgr[i]->get_spice_net_rise_delay(),
+                             circuitMgr[i]->get_spice_net_fall_delay(),
+                             circuitMgr[i]->get_spice_net_rise_slew(),
+                             circuitMgr[i]->get_spice_net_fall_slew());
+
+        // if any of the spice results are invalid, we skip the circuit from inclusion
+        if (!spice_cell.is_valid() || !spice_net.is_valid()) {
+            skipped_circuits++;
+            std::cout << "Ignore circuit " << circuitMgr[i]->get_name() << std::endl;
+            continue;
+        }
+
+        // ccs data
+        delay_slew ccs_cell(circuitMgr[i]->get_ccs_cell_rise_delay(),
+                            circuitMgr[i]->get_ccs_cell_fall_delay(),
+                            circuitMgr[i]->get_ccs_cell_rise_slew(),
+                            circuitMgr[i]->get_ccs_cell_fall_slew());
+        delay_slew ccs_net(circuitMgr[i]->get_ccs_net_rise_delay(),
+                           circuitMgr[i]->get_ccs_net_fall_delay(),
+                           circuitMgr[i]->get_ccs_net_rise_slew(),
+                           circuitMgr[i]->get_ccs_net_fall_slew());
+
+
+        // calculate diffs and update outlier counts
+        calculate_dx(spice_cell, ccs_cell,
+                     &accumulated_delay_dx[CELL], &accumulated_slew_dx[CELL],
+                     &NO_delay[CELL], &NO_slew[CELL]);
+        calculate_dx(spice_net, ccs_net,
+                     &accumulated_delay_dx[NET], &accumulated_slew_dx[NET],
+                     &NO_delay[NET], &NO_slew[NET]);
+
+    }
+
+    // tally up
+    float N = 2.0*(circuitMgr.size() - skipped_circuits);
+    float measAccuracy_delay[2];
+    float measAccuracy_slew[2];
+    float measPTS_delay[2];
+    float measPTS_slew[2];
+    for (unsigned cell_net : { CELL, NET }) {
+        measAccuracy_delay[cell_net] = sqrt(accumulated_delay_dx[cell_net] / N);
+        measAccuracy_slew[cell_net] = sqrt(accumulated_slew_dx[cell_net] / N);
+        measPTS_delay[cell_net] =
+            (1.0 - 2.0 * measAccuracy_delay[cell_net]) * DELAY_PTS - NO_delay[cell_net]/N * DELAY_PEN;        
+        measPTS_slew[cell_net] =
+            (1.0 - 2.0 * measAccuracy_slew[cell_net]) * SLEW_PTS - NO_slew[cell_net]/N * SLEW_PEN;
+    }
+    
+    // store results (TEMP)
+    benchmarks->rms_delay_diff = measAccuracy_delay[CELL];
+    benchmarks->rms_slew_diff = measAccuracy_slew[CELL];
+    benchmarks->delay_outliers = NO_delay[CELL];
+    benchmarks->slew_outliers = NO_slew[CELL];
+    benchmarks->delay_pts = measPTS_delay[CELL];
+    benchmarks->slew_pts = measPTS_slew[CELL];
+}
+
+
 // The following implements the scoring algorithm described in the TAU2020 contest rules
 void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
 
