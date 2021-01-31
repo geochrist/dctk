@@ -114,7 +114,7 @@ void calculate_dx(const delay_slew& spice, const delay_slew& ccs,
 //
 // Implements the scoring algorithm described in the TAU2021 contest rules
 //
-void analyze_results_2021(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks)
+void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks)
 {
     const unsigned CELL = 0, NET = 1;
 
@@ -185,18 +185,26 @@ void analyze_results_2021(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* ben
             (1.0 - 2.0 * measAccuracy_slew[cell_net]) * SLEW_PTS - NO_slew[cell_net]/N * SLEW_PEN;
     }
     
-    // store results (TEMP)
-    benchmarks->rms_delay_diff = measAccuracy_delay[CELL];
-    benchmarks->rms_slew_diff = measAccuracy_slew[CELL];
-    benchmarks->delay_outliers = NO_delay[CELL];
-    benchmarks->slew_outliers = NO_slew[CELL];
-    benchmarks->delay_pts = measPTS_delay[CELL];
-    benchmarks->slew_pts = measPTS_slew[CELL];
+    // store results
+    benchmarks->cell_rms_delay_diff = measAccuracy_delay[CELL];
+    benchmarks->cell_rms_slew_diff = measAccuracy_slew[CELL];
+    benchmarks->cell_delay_outliers = NO_delay[CELL];
+    benchmarks->cell_slew_outliers = NO_slew[CELL];
+    benchmarks->cell_delay_pts = measPTS_delay[CELL];
+    benchmarks->cell_slew_pts = measPTS_slew[CELL];
+    benchmarks->net_rms_delay_diff = measAccuracy_delay[NET];
+    benchmarks->net_rms_slew_diff = measAccuracy_slew[NET];
+    benchmarks->net_delay_outliers = NO_delay[NET];
+    benchmarks->net_slew_outliers = NO_slew[NET];
+    benchmarks->net_delay_pts = measPTS_delay[NET];
+    benchmarks->net_slew_pts = measPTS_slew[NET];
 }
 
-
-// The following implements the scoring algorithm described in the TAU2020 contest rules
-void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
+//
+// Implements the scoring algorithm described in the TAU2020 contest rules -
+// does not take into account net delay/slew. Here for backward compat.
+//
+void analyze_results_2020(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmarks) {
 
     // average_delay_diff = average(abs(ccs_*_delay - spice_*_delay)/spice_*_delay)*100 [change to %]
     // slew_benchmark = average(abs(ccs_*_slew - spice_*_slew)/spice_*_slew)*100 [change to %]
@@ -306,13 +314,12 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
     const float measPTS_slew = (1.0 - 2.0 * measAccuracy_slew) * SLEW_PTS - NO_slew/N * SLEW_PEN;
     
     // store results
-    benchmarks->rms_delay_diff = measAccuracy_delay;
-    benchmarks->rms_slew_diff = measAccuracy_slew;
-    benchmarks->delay_outliers = NO_delay;
-    benchmarks->slew_outliers = NO_slew;
-    benchmarks->delay_pts = measPTS_delay;
-    benchmarks->slew_pts = measPTS_slew;
-
+    benchmarks->cell_rms_delay_diff = measAccuracy_delay;
+    benchmarks->cell_rms_slew_diff = measAccuracy_slew;
+    benchmarks->cell_delay_outliers = NO_delay;
+    benchmarks->cell_slew_outliers = NO_slew;
+    benchmarks->cell_delay_pts = measPTS_delay;
+    benchmarks->cell_slew_pts = measPTS_slew;
 }
 
 
@@ -608,32 +615,6 @@ main(int argc, char **argv)
         // analyze accuracy of results
         analyze_results(circuitMgr, &benchmarks);
 
-        // +ANTON test
-        dctk::Benchmarks benchmarks2 = benchmarks;
-        analyze_results(circuitMgr, &benchmarks);
-        analyze_results_2021(circuitMgr, &benchmarks2);
-        if (benchmarks.rms_delay_diff != benchmarks2.rms_delay_diff) {
-            std::cout << "Fail: delay_diff " << benchmarks.rms_delay_diff << " " << benchmarks2.rms_delay_diff << std::endl;
-        }
-        if (benchmarks.rms_slew_diff != benchmarks2.rms_slew_diff) {
-            std::cout << "Fail: slew_diff " << benchmarks.rms_slew_diff << " " << benchmarks2.rms_slew_diff << std::endl;
-        }
-        if (benchmarks.delay_pts != benchmarks2.delay_pts) {
-            std::cout << "Fail: delay_pts " << benchmarks.delay_pts << " " << benchmarks2.delay_pts << std::endl;
-        }
-        if (benchmarks.slew_pts != benchmarks2.slew_pts) {
-            std::cout << "Fail: slew_pts " << benchmarks.slew_pts << " " << benchmarks2.slew_pts << std::endl;
-        }
-        if (benchmarks.delay_outliers != benchmarks2.delay_outliers) {
-            std::cout << "Fail: delay_outliers " << benchmarks.delay_outliers << " " << benchmarks2.delay_outliers << std::endl;
-        }
-        if (benchmarks.slew_outliers != benchmarks2.slew_outliers) {
-            std::cout << "Fail: slew_outliers " << benchmarks.slew_outliers << " " << benchmarks2.slew_outliers << std::endl;
-        }
-        std::cout << "ANTON" << std::endl;
-        // -ANTON
-
-        
         // format data
         YAML::Emitter emitter;
         emitter << YAML::BeginMap;
