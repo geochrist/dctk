@@ -962,6 +962,7 @@ bool create_random_nets( int num_nets, int max_num_receivers,
         // Receivers
         //
 
+ // B: the number of receivers and total cap should be limited by what the gate can drive, not viceversa
         int num_receivers = rand() % max_num_receivers + 1;
 
         std::vector<std::string> receivers;
@@ -973,7 +974,8 @@ bool create_random_nets( int num_nets, int max_num_receivers,
         float total_receiver_min_pin_cap = 0.0;
         float load_cap = std::numeric_limits<float>::quiet_NaN();
 
-        for( int j=0; j<num_receivers; j++ ) {
+        int pot_num_rcvrs = 0;
+        for( pot_num_rcvrs=0; pot_num_rcvrs<num_receivers; pot_num_rcvrs++ ) {
 
             // find a random cell that has an input pin
             dctk::CellPin* receiver_input_pin = nullptr;
@@ -1010,79 +1012,92 @@ bool create_random_nets( int num_nets, int max_num_receivers,
 
             total_receiver_max_pin_cap += max_pin_cap * scale_to_ff;
             total_receiver_min_pin_cap += min_pin_cap * scale_to_ff;
-            
 
-            // build receiver node
-            std::string receiver_inst = "I" + std::to_string(inst_num);
-            std::string receiver_node = receiver_inst + ":" + receiver_input_pin->get_name();
-            inst_num++;
-            receivers.push_back( receiver_node );
-            receivers_celltypes.push_back(receiver->get_name());
+// B: we add receivers only if it is possible to drive them
+            if(total_receiver_max_pin_cap < smallest_max_load){
 
-            // YAML file will use first pin processed
-            if (receiver_input_output_str == "") {
-                receiver_input_output_str = receiver_inst + "/" + receiver_input_pin->get_name() + "/" + receiver_output_pin->get_name();
-            }
-
-            // load interconnect will also be based on the first pin processed
-            if (isnan(load_cap)) {
-                load_cap = random_arc->get_random_load() * scale_to_ff;
+                // build receiver node
+                std::string receiver_inst = "I" + std::to_string(inst_num);
+                std::string receiver_node = receiver_inst + ":" + receiver_input_pin->get_name();
+                inst_num++;
+                receivers.push_back( receiver_node );
+                receivers_celltypes.push_back(receiver->get_name());
+    
+                // YAML file will use first pin processed
+                if (receiver_input_output_str == "") {
+                    receiver_input_output_str = receiver_inst + "/" + receiver_input_pin->get_name() + "/" + receiver_output_pin->get_name();
+                }
+    
+                // load interconnect will also be based on the first pin processed
+                if (isnan(load_cap)) {
+                    load_cap = random_arc->get_random_load() * scale_to_ff;
+                }
+            } else {
+                total_receiver_max_pin_cap -= max_pin_cap * scale_to_ff;
+                total_receiver_min_pin_cap -= min_pin_cap * scale_to_ff;
+                break;
             }
         }
+// B: set the actual number of receivers
+        num_receivers = pot_num_rcvrs;
 
 
         // now reduce the max load allowed by the amount of receiver pin caps
+// B: we do not need to reduce the minimum load!
         smallest_max_load -= total_receiver_max_pin_cap;
-        largest_min_load -= total_receiver_min_pin_cap;
+        largest_min_load = 0.0;
+// B: check again
+        if (smallest_max_load > 0.0 ){
 
-        // generate a random net cap value in the range largest_min_load, smallest_max_load
-        // such that lower loads have higher probability
-        double net_load_cap = rand_cap( largest_min_load, smallest_max_load );
+            // generate a random net cap value in the range largest_min_load, smallest_max_load
+            // such that lower loads have higher probability
+            double net_load_cap = rand_cap( largest_min_load, smallest_max_load );
 
-        // based on the chosen cap, identify an appropriate max layer
-        int net_max_lyr = all_nets.layer_data_.get_guided_layer_index_by_cap( net_load_cap );
+            // based on the chosen cap, identify an appropriate max layer
+            int net_max_lyr = all_nets.layer_data_.get_guided_layer_index_by_cap( net_load_cap );
 
-        all_nets.create_random_net( net_name, driver_node, driver_celltype, receivers,
+            all_nets.create_random_net( net_name, driver_node, driver_celltype, receivers,
                                     receivers_celltypes, net_load_cap, net_max_lyr );
+    
+            // add to a circuit library
+            dctk::Circuit* c = new dctk::Circuit(net_name);
 
-        // add to a circuit library
-        dctk::Circuit* c = new dctk::Circuit(net_name);
+            // default to ramp if waveform not given
+            std::string waveform_str("ramp");
+            if (waveform) {
+                waveform_str = std::string(waveform);
+            }
+            
+            std::string input_waveform = waveform_str + " " + to_string(ramp_time) ;
+            c->set_input_waveform(input_waveform);
+    
+            // driver
+            c->set_driver(driver_input_output_str);
+            c->set_driver_celltype(driver_celltype);
+    
+            // load (first receiver)
+            c->set_load(receiver_input_output_str);
+            c->set_load_celltype(receivers_celltypes[0]);
+    
+            // Start with a fixed load
+            std::string load_interconnect = to_string(load_cap) + " 0 0";
+            c->set_load_interconnect(load_interconnect.c_str());
+    
+	    // add unused loads
+	    std::string unused_loads;
+	    for (int i = 1; i < num_receivers; i++) {
+	      // create string such as I13/A inv32
+	      if (i == 1) {
+	        unused_loads = receivers[i] + " " + receivers_celltypes[i];
+	      } else {
+	        unused_loads = unused_loads + " " + receivers[i] + " " + receivers_celltypes[i];
+	      }
+            }
+            c->set_unused_loads(unused_loads);
 
-        // default to ramp if waveform not given
-        std::string waveform_str("ramp");
-        if (waveform) {
-            waveform_str = std::string(waveform);
+            // add to library
+            cktmgr.push_back(c);
         }
-        
-        std::string input_waveform = waveform_str + " " + to_string(ramp_time) ;
-        c->set_input_waveform(input_waveform);
-
-        // driver
-        c->set_driver(driver_input_output_str);
-        c->set_driver_celltype(driver_celltype);
-
-        // load (first receiver)
-        c->set_load(receiver_input_output_str);
-        c->set_load_celltype(receivers_celltypes[0]);
-
-        // Start with a fixed load
-        std::string load_interconnect = to_string(load_cap) + " 0 0";
-        c->set_load_interconnect(load_interconnect.c_str());
-
-	// add unused loads
-	std::string unused_loads;
-	for (int i = 1; i < num_receivers; i++) {
-	  // create string such as I13/A inv32
-	  if (i == 1) {
-	    unused_loads = receivers[i] + " " + receivers_celltypes[i];
-	  } else {
-	    unused_loads = unused_loads + " " + receivers[i] + " " + receivers_celltypes[i];
-	  }
-        }
-        c->set_unused_loads(unused_loads);
-
-        // add to library
-        cktmgr.push_back(c);
 
     }
 
