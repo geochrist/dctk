@@ -9,53 +9,52 @@ class Benchmarks {
 
 public:
 
-    Benchmarks() {
-        cpu_time = 0.0;
-        elapsed_time = 0.0;
-        incremental_memory = 0.0;
-        rms_delay_diff = -1.0;
-        rms_slew_diff = -1.0;
-        delay_pts = 0.0;
-        slew_pts = 0.0;
-        delay_outliers = 0;
-        slew_outliers = 0;
-    }
-    
     void dump_yaml(YAML::Emitter& emitter) {
         emitter << YAML::Key << "Statistics";
         emitter << YAML::BeginMap;
         emitter << YAML::Key << "elapsed_time" << YAML::Value << elapsed_time ;
         emitter << YAML::Key << "cpu_time" << YAML::Value << cpu_time ;
         emitter << YAML::Key << "incremental_memory" << YAML::Value <<  incremental_memory ;
-        emitter << YAML::Key << "rms_delay_diff" << YAML::Value <<  rms_delay_diff ;
-        emitter << YAML::Key << "rms_slew_diff" << YAML::Value <<  rms_slew_diff ;
-        emitter << YAML::Key << "delay_outliers" << YAML::Value <<  delay_outliers ;
-        emitter << YAML::Key << "slew_outliers" << YAML::Value <<  slew_outliers ;
-        emitter << YAML::Key << "delay_pts" << YAML::Value <<  delay_pts ;
-        emitter << YAML::Key << "slew_pts" << YAML::Value <<  slew_pts ;
+        emitter << YAML::Key << "cell_rms_delay_diff" << YAML::Value <<  cell_rms_delay_diff ;
+        emitter << YAML::Key << "cell_rms_slew_diff" << YAML::Value <<  cell_rms_slew_diff ;
+        emitter << YAML::Key << "net_rms_delay_diff" << YAML::Value <<  net_rms_delay_diff ;
+        emitter << YAML::Key << "net_rms_slew_diff" << YAML::Value <<  net_rms_slew_diff ;
+        emitter << YAML::Key << "cell_delay_outliers" << YAML::Value <<  cell_delay_outliers ;
+        emitter << YAML::Key << "cell_slew_outliers" << YAML::Value <<  cell_slew_outliers ;
+        emitter << YAML::Key << "net_delay_outliers" << YAML::Value <<  net_delay_outliers ;
+        emitter << YAML::Key << "net_slew_outliers" << YAML::Value <<  net_slew_outliers ;
+        emitter << YAML::Key << "cell_delay_pts" << YAML::Value <<  cell_delay_pts ;
+        emitter << YAML::Key << "cell_slew_pts" << YAML::Value <<  cell_slew_pts ;
+        emitter << YAML::Key << "net_delay_pts" << YAML::Value <<  net_delay_pts ;
+        emitter << YAML::Key << "net_slew_pts" << YAML::Value <<  net_slew_pts ;
         emitter << YAML::EndMap;
 
     }
     
     // in seconds
-    float cpu_time;
+    float cpu_time              = 0.0;
     // in seconds
-    float elapsed_time;
+    float elapsed_time          = 0.0;
     // in MB
-    float incremental_memory;
+    float incremental_memory    = 0.0;
     // in percentage
-    float rms_delay_diff;
+    float cell_rms_delay_diff   = -1.0;
+    float net_rms_delay_diff    = -1.0;
     // in percentage
-    float rms_slew_diff;
+    float cell_rms_slew_diff    = -1.0;
+    float net_rms_slew_diff      = -1.0;    
     // points for delay accuracy
-    float delay_pts;
+    float cell_delay_pts        = 0.0;
+    float net_delay_pts         = 0.0;
     // points for slew accuracy
-    float slew_pts;
+    float cell_slew_pts         = 0.0;
+    float net_slew_pts          = 0.0;    
 
     // number of outliers
-    unsigned int delay_outliers;
-    unsigned int slew_outliers;
-
+    unsigned int cell_delay_outliers = 0;
+    unsigned int net_delay_outliers  = 0;    
+    unsigned int cell_slew_outliers  = 0;
+    unsigned int net_slew_outliers   = 0;    
 };
 
 }

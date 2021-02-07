@@ -1,5 +1,5 @@
-/* ANSI-C code produced by gperf version 3.0.3 */
-/* Command-line: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/gperf -L ANSI-C -t -H attr_hash_func -N lookup_attr_name -C -I -k '*' -D attr_lookup  */
+/* ANSI-C code produced by gperf version 3.1 */
+/* Command-line: gperf -L ANSI-C -t -H attr_hash_func -N lookup_attr_name -C -I -k '*' -D attr_lookup  */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
       && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
@@ -25,7 +25,7 @@
       && ('w' == 119) && ('x' == 120) && ('y' == 121) && ('z' == 122) \
       && ('{' == 123) && ('|' == 124) && ('}' == 125) && ('~' == 126))
 /* The character set is not based on ISO-646.  */
-#error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
+#error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gperf@gnu.org>."
 #endif
 
 #line 1 "attr_lookup"
@@ -50,7 +50,7 @@ inline
 #endif
 #endif
 static unsigned int
-attr_hash_func (register const char *str, register unsigned int len)
+attr_hash_func (register const char *str, register size_t len)
 {
   static const unsigned short asso_values[] =
     {
@@ -204,7 +204,7 @@ attr_hash_func (register const char *str, register unsigned int len)
 }
 
 const struct libGroupMap *
-lookup_attr_name (register const char *str, register unsigned int len)
+lookup_attr_name (register const char *str, register size_t len)
 {
   static const struct libGroupMap wordlist[] =
     {
@@ -1704,7 +1704,7 @@ lookup_attr_name (register const char *str, register unsigned int len)
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {
-      unsigned int key = attr_hash_func (str, len);
+      register unsigned int key = attr_hash_func (str, len);
 
       if (key <= MAX_HASH_VALUE)
         {
