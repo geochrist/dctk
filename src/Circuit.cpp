@@ -304,7 +304,7 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
             }
 
             fs << " " << times[i] << "p " << voltage << "v";
-            total_sim_time = times[i] + tramp * 2.0 + 500.0;
+            total_sim_time = times[i] + tramp * 2.0 + 1000.0;
         }
         fs << ")\n" ;
 
