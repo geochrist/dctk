@@ -16,6 +16,8 @@ public:
         tot_cap_ = total_cap;
         min_len_ = 0.0;
         max_len_ = 0.0;
+        min_cap_ = 0.0;
+        max_cap_ = 0.0;
     }
 
     VRCData( const VRCData & other )
@@ -26,6 +28,8 @@ public:
         tot_cap_ = other.tot_cap_;
         min_len_ = other.min_len_;
         max_len_ = other.max_len_;
+        min_cap_ = other.min_cap_;
+        max_cap_ = other.max_cap_;
     }
     const VRCData & operator = (const VRCData & other)
     {
@@ -35,6 +39,8 @@ public:
         tot_cap_ = other.tot_cap_;
         min_len_ = other.min_len_;
         max_len_ = other.max_len_;
+        min_cap_ = other.min_cap_;
+        max_cap_ = other.max_cap_;
         return *this;
     }
 
@@ -45,6 +51,8 @@ public:
     double tot_cap_;	// layer total capacitance per unit length for min width
     double min_len_;    // layer min drivable length
     double max_len_;    // and max drivable length
+    double min_cap_;    // layer min drivable cap
+    double max_cap_;    // and max drivable cap
 };
 
 
@@ -232,6 +240,24 @@ public:
                                       max_layer_num, layer_data, total_cap, cnear_cfar_ratio, res_scale);
     }
 
+    RandomRCNet( const std::string & net_name, int pattern_id, const std::string & drv_node,
+                 const std::vector<std::string > & receivers,
+                 double total_load, int max_layer_num,
+                 const LayerRCData & layer_data)
+    {
+        net_index_ = net_name;
+        drv_node_ = drv_node;
+        pi_model_ = false;
+        for( std::vector< std::string >::const_iterator rcv_it = receivers.begin();
+                rcv_it != receivers.end(); ++rcv_it) {
+            std::string new_rcv = *rcv_it;
+            rcv_nodes_.push_back( new_rcv );
+        }
+        populate_stress_net_data( net_name, pattern_id, drv_node, receivers, total_load,
+                               max_layer_num, layer_data );
+    }
+
+
 
 
     RandomRCNet( const RandomRCNet & other )
@@ -302,9 +328,15 @@ public:
                             const std::string & drv_node, const std::vector<std::string > & receivers,
                             double total_cap, int max_layer_num, const LayerRCData & layer_data );
 
+    // method that creates a net in a specific pattern 
+    bool populate_stress_net_data( const std::string & net_name, int pattern_id,
+                                     const std::string & drv_node, const std::vector<std::string > & receivers,
+                                     double total_cap, int max_layer_num, const LayerRCData & layer_data );
+
     // add a segment to the net data, broken into smaller RC sections
-    // the segments is attached to an attachment node chosen randomly    
-    bool populate_rc_segment( std::string & attch_node, std::string & rcvr_node, int layer_indx,
+    // the segments is attached to an attachment node  that already exists in the net
+    // receiver node can ve a cell inpu tpin (rcv_node_type=2) or an internal net node (rcv_node_type=3)  
+    bool populate_rc_segment( std::string & attch_node, std::string & rcvr_node, int rcv_node_type, int layer_indx,
                             double attch_via_val, double rcvr_via_val, double seg_res, double seg_cap,
                             int & node_count, int & res_indx, int & cap_indx, int seg_num_pieces );
 
@@ -324,6 +356,11 @@ public:
                                      int max_layer_num, const LayerRCData & layer_data,
 				     std::vector<int> & net_layers,
                                      std::vector<double> & net_lengths  );
+    // create a pattern of segment lengths
+    bool create_pattern_stress_net( int pattern_id, double total_cap, int num_receivers,
+                                     int max_layer_num, const LayerRCData & layer_data,
+                                     std::vector<int> & net_layers,
+                                     std::vector<double> & net_lengths );
 
     void dump_spice_subckt_net( std::ofstream & ofs, double res_scale, double cap_scale ) const;
 
@@ -381,6 +418,13 @@ public:
                             double total_length, int max_layer_num, 
                             double total_cap, double cnear_cfar_ratio, double res_scale );
 
+    bool create_random_stress_net( const std::string& net_name,
+                            int stress_pattern_id,
+                            const std::string& drv_node,
+                            const std::string& driver_celltype,
+                            const std::vector<std::string> & receivers,
+                            const std::vector<std::string> & receivers_celltypes,
+                            double total_cap, int max_layer_num );
 
     bool add_new_port( const std::string & port_name, const char port_type );
 

@@ -16,6 +16,12 @@
 
 using namespace std;
 
+float rand_float(float from, float to) {
+  float rand_scale = float(rand()) / float(RAND_MAX);
+
+  return (to-from)*rand_scale + from;
+}
+
 LayerRCData::LayerRCData( std::string & tech_node )
 {
     res_scale_ = 1.0;
@@ -129,50 +135,52 @@ int LayerRCData::get_guided_layer_lengths( double max_total_len )
 {
     int num_lyrs = all_layer_data_.size();
 
+    std::cout << "Identifying wire length and cap ranges for all layers: max length " << max_total_len << std::endl;
+
     // group the layers based on their RC constant value
     std::vector<double> lyr_rc;
     std::vector<int> lyr_grp;
     double last_rc = 1.0e+10;
-    int last_indx = 0;
-    double avg_ratio = 0.0;
-    double new_ratio = 1.0;
+    int last_indx = -1;
     for(int i=0; i<num_lyrs; i++){
         double new_rc = all_layer_data_[i].tot_cap_ * all_layer_data_[i].lyr_res_;
         if(new_rc < last_rc){
-            if( last_indx > 1 ){
-                new_ratio = last_rc / new_rc;
-            }
             lyr_rc.push_back( new_rc );
             last_indx = last_indx + 1;
             last_rc = new_rc;
-            avg_ratio = avg_ratio + new_ratio;
         }
         lyr_grp.push_back( last_indx );
-        std::cout << "for layer " << i << " rc = " << last_rc << " grp indx = " << last_indx << std::endl;
+        // dbg: std::cout << "for layer " << i << " rc = " << last_rc << " grp indx = " << last_indx << std::endl;
     }
-    std::cout << "Identified " << last_indx << " metal rc distinct groups" << std::endl;
-    avg_ratio = avg_ratio / num_lyrs;
-    std::cout << "Identified avg rc improvement between metal layers to be " << avg_ratio << std::endl;
-
-    double total_ratio = 1.0;
-    for(int i=1; i<last_indx; i++){
-        total_ratio = total_ratio + std::pow( avg_ratio, i);
-    }
+    // dbg: std::cout << "Identified " << last_indx+1 << " distinct metal rc groups" << std::endl;
+    double avg_ratio = 2.5;
+    // dbg: std::cout << "Identified avg rc improvement between metal layers to be " << avg_ratio << std::endl;
 
     double base_len = max_total_len / std::pow(avg_ratio, last_indx);
-    std::cout << "Identified first group len to be " << base_len << std::endl;
+    // dbg: std::cout << "Identified first group len to be " << base_len << std::endl;
+    double last_cap = 0.0;
+    double last_len = 0.0;
+    double ith_len = 0.0;
+    double ith_cap = 0.0;
+    int last_lyr_grp = -1;
     for(int i= 0; i<num_lyrs; i++){
-        double last_len = 0.0;
-        double ith_len = base_len * std::pow( avg_ratio, lyr_grp[i] );
-        if( lyr_grp[i] > 1){
-            last_len = base_len * std::pow( avg_ratio, lyr_grp[i]-1 );
-        } else {
-            last_len = 0.0;
-        }
+        if( lyr_grp[i] > last_lyr_grp ){
+            // change of groups
+            last_len = ith_len;
+            last_cap = ith_cap;
+            last_lyr_grp = lyr_grp[i];
+            ith_len = base_len * std::pow( avg_ratio, lyr_grp[i] );
+            ith_cap = ith_len * all_layer_data_[i].tot_cap_;
+        } 
+
         all_layer_data_[i].min_len_ = last_len;
         all_layer_data_[i].max_len_ = ith_len;
+
+        all_layer_data_[i].min_cap_ = last_cap;
+        all_layer_data_[i].max_cap_ = ith_cap;
         
-        std::cout << "For layer " << i << " identified driving length range to be from " << last_len << " to " << ith_len << std::endl;
+        // dbg:  std::cout << "For layer " << i << " identified driving length range to be from " << all_layer_data_[i].min_len_ << " to " << all_layer_data_[i].max_len_<< std::endl;
+        // dbg: std::cout << "For layer " << i << " identified driving cap range to be from " << all_layer_data_[i].min_cap_ << " to " << all_layer_data_[i].max_cap_ << std::endl;
     }
     return 1;
 }
@@ -202,8 +210,9 @@ int LayerRCData::get_guided_layer_index_by_cap ( double net_cap ) const
     int num_lyrs = all_layer_data_.size();
     std::vector<int> proper_lyr_indices;
     for( int i=0; i<num_lyrs; i++ ){
-        double net_len = net_cap / all_layer_data_[i].tot_cap_;
-        if( all_layer_data_[i].min_len_ <= net_len && net_len <= all_layer_data_[i].max_len_ ){
+        // double net_len = net_cap / all_layer_data_[i].tot_cap_;
+        // if( all_layer_data_[i].min_len_ <= net_len && net_len <= all_layer_data_[i].max_len_ )
+        if( all_layer_data_[i].min_cap_ <= net_cap && net_cap <= all_layer_data_[i].max_cap_ ){
             proper_lyr_indices.push_back( i );
         }
     }
@@ -407,7 +416,7 @@ bool RandomRCNet::populate_rc_piece( std::string & from_node, std::string & to_n
     return true;
 }
 
-bool RandomRCNet::populate_rc_segment( std::string & attch_node, std::string & rcvr_node, int layer_indx,
+bool RandomRCNet::populate_rc_segment( std::string & attch_node, std::string & rcvr_node, int rcv_node_type, int layer_indx,
                             double attch_via_val, double rcvr_via_val, double seg_res, double seg_cap,
                             int & node_count, int & res_indx, int & cap_indx, int seg_num_pieces )
 {
@@ -440,7 +449,7 @@ bool RandomRCNet::populate_rc_segment( std::string & attch_node, std::string & r
     }
 
     // attach the via down to the receiver node
-    populate_new_node( rcvr_node, 2, -1 );
+    populate_new_node( rcvr_node, rcv_node_type, -1 );
     std::string last_node = net_index_ + ":" + std::to_string(node_count-1);
     RCDevice rcv_via( 1, res_indx, last_node, rcvr_node, rcvr_via_val);
     res_indx++;
@@ -448,6 +457,262 @@ bool RandomRCNet::populate_rc_segment( std::string & attch_node, std::string & r
 
     return true;
 }
+
+bool RandomRCNet::create_pattern_stress_net( int pattern_id, double total_cap, int num_receivers, 
+                                     int max_layer_num, const LayerRCData & layer_data,
+                                     std::vector<int> & net_layers,
+                                     std::vector<double> & net_lengths )
+{
+    switch (pattern_id) {
+        case 0: 
+            // straight nets, num_receivers must be 1,
+            // testing basic signal propagation. Most interesting case is very strong gate driving very small load
+        { 
+            net_lengths.clear();
+            net_layers.clear();
+            double cap_scale = layer_data.get_layer_cap_per_len(max_layer_num);
+            double cap_len = total_cap / cap_scale;
+            net_lengths.push_back( cap_len );
+            net_layers.push_back( max_layer_num );
+            break;
+        }
+        case 1:
+            // up-down nets that go between low layer and top layer several times
+            // number of actual receivers must be 1, total cap must be below half of the max cap in table
+            // max_layer_num must be top layer regardless of cap value
+            // lower layer is a middle layer
+            // testing accuracy of signal propagation with highly resistive nets
+        {
+            int num_segments = 4;
+            net_lengths.clear();
+            net_layers.clear();
+            int evn_lyr_num = max_layer_num;
+            int odd_lyr_num = int(max_layer_num / 2);
+            for (int i=0; i<num_segments; i++){
+                if( i%2 == 0){
+                    net_layers.push_back( evn_lyr_num );
+                    double cap_scale = layer_data.get_layer_cap_per_len(evn_lyr_num);
+                    double cap_len = total_cap / num_segments / cap_scale;
+                    net_lengths.push_back( cap_len );
+                } else {
+                    net_layers.push_back( odd_lyr_num );
+                    double cap_scale = layer_data.get_layer_cap_per_len(odd_lyr_num);
+                    double cap_len = total_cap / num_segments / cap_scale;
+                    net_lengths.push_back( cap_len );
+                }
+            }
+            break;
+        }
+        case 2:
+            // a group of net segments that are all connected at the driver end
+            // num_receivers must be high (10 recommended) , total cap must be below 75% of the max cap in table
+            // segment lengths are random but the longest one is the tested receiver (#0)
+            // all segments are at the same metal layer 
+            // testing accuracy with many receivers that are switching (drawing current) before the test receiver
+        {
+            net_lengths.clear();
+            net_layers.clear();
+            int num_segments = num_receivers;
+            for (int i=0; i<num_segments; i++){
+                net_layers.push_back( max_layer_num );
+            }
+            float main_seg_pct = rand_float(0.5, 0.75);
+            double cap_scale = layer_data.get_layer_cap_per_len( max_layer_num );
+            double cap_len = total_cap / cap_scale;
+            net_lengths.push_back( cap_len * main_seg_pct );
+            double rem_pctgs = 0.0;
+            for(int i = 1; i<num_segments; i++){
+                float new_seg_pct = rand_float(0.05, 0.95);
+                net_lengths.push_back( new_seg_pct );
+                rem_pctgs = rem_pctgs + new_seg_pct;
+            }
+            double len_scale = (1.0 - main_seg_pct) / rem_pctgs;
+            for(int i = 1; i<num_segments; i++){
+                net_lengths[i] = net_lengths[i] * len_scale * cap_len;
+            }
+            break;
+        }
+        case 3:
+            // a group of net segments that are all connected together at the end of a longer segment
+            // num_receivers must be avg (4), total cap must be below 75% of the max cap in table
+            // the main segment is the longest one (over half of net length) and is at top layer
+            // all other segmnets are at lower random layers.
+            // testing accuracy for a long propagation followed by strong lateral charging effects
+        {   
+            net_lengths.clear();
+            net_layers.clear();
+            int num_segments = num_receivers + 1;
+            net_layers.push_back( max_layer_num );
+            for (int i=1; i<num_segments; i++){
+                int seg_lyr = rand() % max_layer_num;
+                net_layers.push_back( seg_lyr );
+            }
+            float main_seg_pct = rand_float(0.5, 0.75);
+            double cap_scale = layer_data.get_layer_cap_per_len( max_layer_num );
+            double cap_len = total_cap / cap_scale;
+            net_lengths.push_back( cap_len * main_seg_pct );
+            double rem_pctgs = 0.0;
+            for(int i = 1; i<num_segments; i++){
+                float new_seg_pct = rand_float(0.05, 0.95);
+                net_lengths.push_back( new_seg_pct );
+                rem_pctgs = rem_pctgs + new_seg_pct;
+            }
+            double len_scale = (1.0 - main_seg_pct) / rem_pctgs;
+            for(int i = 1; i<num_segments; i++){
+                cap_scale = layer_data.get_layer_cap_per_len( net_layers[i] );
+                net_lengths[i] = net_lengths[i] * len_scale * total_cap / cap_scale;
+            }
+            break;
+        }
+        default:
+        {
+            std::cout << "Undefined stress test pattern id " << pattern_id << std::endl;
+            return false;
+        }
+    }
+    return true;
+}
+
+bool RandomRCNet::populate_stress_net_data( const std::string & net_name, int pattern_id,
+                                     const std::string & drv_node, const std::vector<std::string > & receivers,
+                                     double total_cap, int max_layer_num, const LayerRCData & layer_data )
+{
+    // we populate the net r and c elements in very different ways, depending on the pattern id
+    std::vector<int>  net_layers;
+    std::vector<double> net_lengths;
+    
+    // create a set of layer indices and random lengths such that total cap is matched
+    int num_receivers = receivers.size();
+    bool pat_rc = create_pattern_stress_net( pattern_id, total_cap, num_receivers,
+                                     max_layer_num, layer_data, net_layers, net_lengths );
+    if(pat_rc == false ){
+       return false;
+    }
+
+    std::string net_index_ = net_name;
+    int num_sections_per_segment = 4;  // divide every straight segment into 4 pieces
+    // initialize the node and device counters
+    int node_count = 0;
+    int res_count = 1;
+    int cap_count = 1;
+
+    // create the driver node first
+    std::string drv_node_name = drv_node;
+    populate_new_node( drv_node_name, 1, -1);
+
+    switch (pattern_id) {
+        case 0:
+        {
+        
+            // the only segment
+            double drv_via_val = layer_data.get_via_stack_res( -1, net_layers[0] );
+            double shape_res = layer_data.get_shape_layer_res(net_layers[0], net_lengths[0]);
+            double shape_cap = layer_data.get_shape_layer_cap(net_layers[0], net_lengths[0]);
+            std::string rcv_node_name = receivers[0];
+            populate_rc_segment( drv_node_name, rcv_node_name, 2, net_layers[0],
+                            drv_via_val, drv_via_val, shape_res, shape_cap, node_count,
+                            res_count, cap_count, num_sections_per_segment );
+            break;
+        }
+        case 1:
+        {
+            std::vector<double> via_vals;
+            int num_segments = net_layers.size();
+            via_vals.push_back( layer_data.get_via_stack_res( -1, net_layers[0] ) );
+            for( int i=0; i<num_segments-1; i++) {
+                double new_via = layer_data.get_via_stack_res( net_layers[i], net_layers[i+1] );
+                via_vals.push_back( new_via / 2.0 );
+            }
+            double rcv_via = layer_data.get_via_stack_res( -1, net_layers[num_segments-1] );
+            via_vals.push_back( rcv_via );
+
+            // create the segments: normally a segment ends in a receiver but for thsi one, the segments
+            // end in some intermediary nodes that are counted from 1000 up
+            int  conn_node_count = 1000;
+            std::string att_node_name = drv_node_name;
+            std::string rcv_node_name = net_index_ + ":" + std::to_string(conn_node_count);
+            for( int i=0; i<num_segments-1; i++) {
+                double drv_via_val = via_vals[i];
+                double rcv_via_val = via_vals[i+1];
+                double shape_res = layer_data.get_shape_layer_res(net_layers[i], net_lengths[i]);
+                double shape_cap = layer_data.get_shape_layer_cap(net_layers[i], net_lengths[i]);
+                populate_rc_segment( att_node_name, rcv_node_name, 3, net_layers[i],
+                            drv_via_val, rcv_via_val, shape_res, shape_cap, node_count,
+                            res_count, cap_count, num_sections_per_segment );
+                att_node_name = rcv_node_name;
+                conn_node_count += 1;
+                rcv_node_name = net_index_ + ":" + std::to_string(conn_node_count);
+            }
+            rcv_node_name = receivers[0];
+            double drv_via_val = via_vals[num_segments-1];
+            double rcv_via_val = via_vals[num_segments];
+            double shape_res = layer_data.get_shape_layer_res(net_layers[num_segments-1], net_lengths[num_segments-1]);
+            double shape_cap = layer_data.get_shape_layer_cap(net_layers[num_segments-1], net_lengths[num_segments-1]);
+            populate_rc_segment( att_node_name, rcv_node_name, 2, net_layers[num_segments-1],
+                            drv_via_val, rcv_via_val, shape_res, shape_cap, node_count,
+                            res_count, cap_count, num_sections_per_segment );
+
+            break;
+        }
+        case 2:
+        {
+            // the first segment
+            double drv_via_val = layer_data.get_via_stack_res( -1, net_layers[0] );
+            double shape_res = layer_data.get_shape_layer_res(net_layers[0], net_lengths[0]);
+            double shape_cap = layer_data.get_shape_layer_cap(net_layers[0], net_lengths[0]);
+            std::string rcv_node_name = receivers[0];
+            populate_rc_segment( drv_node_name, rcv_node_name, 2, net_layers[0],
+                            drv_via_val, drv_via_val, shape_res, shape_cap, node_count,
+                            res_count, cap_count, num_sections_per_segment );
+            // all the other segments connect at the same point as the first segment
+            std::string att_node_name = net_index_ + ":" + std::to_string(0);
+            double att_via_val = 0.01;
+            for( int i=1; i<num_receivers; i++ ){
+                rcv_node_name = receivers[i];
+                shape_res = layer_data.get_shape_layer_res(net_layers[i], net_lengths[i]);
+                shape_cap = layer_data.get_shape_layer_cap(net_layers[i], net_lengths[i]);
+                populate_rc_segment( att_node_name, rcv_node_name, 2, net_layers[i],
+                            att_via_val, drv_via_val, shape_res, shape_cap, node_count,
+                            res_count, cap_count, num_sections_per_segment );
+            }
+            break;
+        }
+        case 3:
+        {
+            // the first segment
+            double drv_via_val = layer_data.get_via_stack_res( -1, net_layers[0] );
+            double shape_res = layer_data.get_shape_layer_res(net_layers[0], net_lengths[0]);
+            double shape_cap = layer_data.get_shape_layer_cap(net_layers[0], net_lengths[0]);
+            std::string att_node_name = net_index_ + ":" + std::to_string(1000);
+            double att_via_val = 0.01;
+            populate_rc_segment( drv_node_name, att_node_name, 3, net_layers[0],
+                            drv_via_val, att_via_val, shape_res, shape_cap, node_count,
+                            res_count, cap_count, num_sections_per_segment );
+
+            for ( int i=0; i<num_receivers; i++ ){
+                shape_res = layer_data.get_shape_layer_res(net_layers[i+1], net_lengths[i+1]);
+                shape_cap = layer_data.get_shape_layer_cap(net_layers[i+1], net_lengths[i+1]);
+                double rcv_via_val = layer_data.get_via_stack_res( -1, net_layers[i+1] );
+                std::string rcv_node_name = receivers[i];
+                populate_rc_segment( att_node_name, rcv_node_name, 2, net_layers[i+1],
+                            att_via_val, rcv_via_val, shape_res, shape_cap, node_count,
+                            res_count, cap_count, num_sections_per_segment );
+            }
+            break;
+        }
+        default:
+        {
+            std::cout << "Undefined stress test pattern id " << pattern_id << std::endl;
+            return false;
+        }
+    }
+    return true;
+}
+
+            
+            
+            
+
 
 bool RandomRCNet::create_random_net_segment_lengths( double total_length, int num_receivers,
                                      std::vector<double> & net_lengths )
@@ -470,11 +735,12 @@ bool RandomRCNet::create_random_net_segment_lengths( double total_length, int nu
     for(int i=0; i<num_receivers; i++){
         double rcvr_len = rcv_pctgs[i] / sum_lengths * total_length;
         net_lengths.push_back( rcvr_len );
-        std::cout << "Segment " << i << " length " << rcvr_len << std::endl;
+        //dbg:  std::cout << "   Segment " << i << " length " << rcvr_len << std::endl;
     }
 
     return true;
 }
+
 
 bool RandomRCNet::create_random_net_segment_caps( double total_cap, int num_receivers,
                                      int max_layer_num, const LayerRCData & layer_data,
@@ -512,22 +778,26 @@ bool RandomRCNet::create_random_net_segment_caps( double total_cap, int num_rece
         // the first segment is on the max layer
         double cap_scale = layer_data.get_layer_cap_per_len(max_layer_num);
         double cap_len = 0.0;
+        double cap_seg = 0.0;
         if(cap_scale == 0.0){
             return false;
         } else {
-            cap_len = total_cap * rcv_pctgs[0] / cap_scale;
+            cap_seg = total_cap * rcv_pctgs[0];
+            cap_len = cap_seg / cap_scale;
             net_lengths.push_back( cap_len );
             net_layers.push_back( max_layer_num );
+            // dbg: std::cout << "   Segment " << 0 << " cap " << cap_seg << " percentage " << rcv_pctgs[0] << " layer " << max_layer_num << std::endl;
         }
 
         // create the rest of the segments on random layers, but not above the max layer
         for(int i=1; i<num_receivers; i++){
-            int rcvr_layer = rand() % max_layer_num;
+            cap_seg = total_cap * rcv_pctgs[i];
+            int rcvr_layer = layer_data.get_guided_layer_index_by_cap ( cap_seg );
             cap_scale = layer_data.get_layer_cap_per_len(rcvr_layer);
-            cap_len = total_cap * rcv_pctgs[i] / cap_scale;
+            cap_len = cap_seg / cap_scale;
             net_lengths.push_back( cap_len );
             net_layers.push_back( rcvr_layer );
-            std::cout << "Segment " << i << " length " << cap_len << " percentage " << rcv_pctgs[i] << std::endl;
+            // dbg: std::cout << "   Segment " << i << " cap " << cap_seg << " percentage " << rcv_pctgs[i] << " layer " << rcvr_layer << std::endl;
         }
     }
     return true;
@@ -543,7 +813,7 @@ bool RandomRCNet::populate_net_data( const std::string & net_name,
     }
 
     if( receivers.size() > 1 && max_layer_index < 1 ){
-        std::cout << "Warning: unable to route net with multiple receivers on first layer only. Changing max layer index to 1" << std::endl;
+        std::cout << "   Warning: unable to route net with multiple receivers on first layer only. Changing max layer index to 1" << std::endl;
         max_layer_index = 1;
     }
 
@@ -571,7 +841,7 @@ bool RandomRCNet::populate_net_data( const std::string & net_name,
     double shape_res = layer_data.get_shape_layer_res(max_layer_index, net_segment_lengths[0]);
     double shape_cap = layer_data.get_shape_layer_cap(max_layer_index, net_segment_lengths[0]);
     std::string rcv_node_name = receivers[0];
-    populate_rc_segment( drv_node_name, rcv_node_name, max_layer_index,
+    populate_rc_segment( drv_node_name, rcv_node_name, 2, max_layer_index,
                             drv_via_val, drv_via_val, shape_res, shape_cap, node_count,
                             res_count, cap_count, num_sections_per_segment );
 
@@ -585,7 +855,7 @@ bool RandomRCNet::populate_net_data( const std::string & net_name,
         // the segment layer
         int new_seg_layer = net_segment_layers[seg_indx];
 
-        std::cout << "Chosen attach node " << att_node_name << " on layer " << attach_node_layer << " new segment on layer " << new_seg_layer << std::endl;
+        // dbg:  std::cout << "   Chosen attach node " << att_node_name << " on layer " << attach_node_layer << " new segment on layer " << new_seg_layer << std::endl;
 
         double att_via_val = 0.01;
         if( new_seg_layer != attach_node_layer){
@@ -594,7 +864,7 @@ bool RandomRCNet::populate_net_data( const std::string & net_name,
         double rcv_via_val = layer_data.get_via_stack_res( -1, new_seg_layer );
         double shape_res = layer_data.get_shape_layer_res(new_seg_layer, net_segment_lengths[seg_indx]);
         double shape_cap = layer_data.get_shape_layer_cap(new_seg_layer, net_segment_lengths[seg_indx]);
-        populate_rc_segment( att_node_name, rcv_node_name, new_seg_layer,
+        populate_rc_segment( att_node_name, rcv_node_name, 2, new_seg_layer,
                             att_via_val, rcv_via_val, shape_res, shape_cap, node_count,
                             res_count, cap_count, num_sections_per_segment );
     }
@@ -837,12 +1107,6 @@ bool RCNetsData::dump_spice( std::ofstream & ofs ) const
  * Test
  * ****************************************************************************************/
 
-float rand_float(float from, float to) {
-  float rand_scale = float(rand()) / float(RAND_MAX);
-
-  return (to-from)*rand_scale + from;
-}
-
 double rand_cap( double from_val, double to_val )
 {
     // we want to generate random cap values that have an exponential kind of probability
@@ -852,8 +1116,10 @@ double rand_cap( double from_val, double to_val )
     if (from_val < 0.0) {
         from_val = 0.0;
     }
+    double base = 1.25;
+    double max_power = pow(base, 10.0);
     double rand_uniform = double(rand()) / double(RAND_MAX) * 10.0;
-    double rand_exp = pow(2.0, rand_uniform) / 1024.0;
+    double rand_exp = pow(base, rand_uniform) / max_power;
     return (to_val-from_val)*rand_exp + from_val;
 }
 
@@ -895,11 +1161,65 @@ float get_max_lib_load( dctk::CellLib* cell_lib )
     return max_lib_load;
 }
 
-bool create_random_nets_stress( int num_nets, int max_num_receivers, double max_len, int max_layer_index,
-                         RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr, char* waveform )
+
+bool get_driver_output_load_range( dctk::Cell * driver, float & largest_min_load, 
+                         float & smallest_max_load )
 {
-   std::cout << "Stress function under construction" << std::endl;
-   return false;
+    // dbg: std::cout << "Trying cell " << driver->get_name() << std::endl;
+    dctk::CellPin* driver_output_pin = driver->get_output_pin();
+
+    // need to find an input pin that drives output pin
+    dctk::CellArc* random_arc = driver_output_pin->get_random_arc();
+    if (random_arc == nullptr) {
+        return false;
+    } else {
+        // scale to ff upon return (assumes input lib cap is in pf)
+        random_arc->get_load_range(largest_min_load, smallest_max_load);
+    }
+
+    return true;
+}
+
+bool get_receiver_input_load( dctk::Cell * receiver, float & receiver_input_min_pin_cap, 
+                         float & receiver_input_max_pin_cap )
+{
+    // this is fine for single input gates
+    
+    dctk::CellPin* receiver_input_pin = nullptr;
+    dctk::CellPin* receiver_output_pin = nullptr;
+    dctk::CellArc* random_arc = nullptr;
+    while (receiver_input_pin == nullptr or receiver_output_pin==nullptr) {
+        receiver_output_pin = receiver->get_output_pin();
+
+        // need to find an input pin that drives output pin
+        random_arc = receiver_output_pin->get_random_arc();
+        if (random_arc == nullptr) {
+            receiver_input_pin = nullptr;
+        } else {
+            receiver_input_pin = random_arc->get_related_pin();
+        }
+    }
+
+    // get the min and max cap for the arc
+    float receiver_arc_max_pin_cap;
+    float receiver_arc_min_pin_cap;
+    random_arc->get_min_max_pin_cap(receiver_arc_min_pin_cap, receiver_arc_max_pin_cap);
+
+    // get the min and max cap for the input pin
+    receiver_input_min_pin_cap = receiver_input_pin->get_min_pin_cap();
+    receiver_input_max_pin_cap = receiver_input_pin->get_max_pin_cap();
+
+    return true;
+}
+
+
+
+
+bool create_random_nets_stress( int num_nets, RCNetsData & all_nets, dctk::CellLib* cell_lib, 
+                                dctk::CircuitPtrVec& cktmgr, char* waveform )
+{
+  // hidden from contestants
+  return true;
 }
 
 bool create_random_nets( int num_nets, int max_num_receivers, 
@@ -918,6 +1238,8 @@ bool create_random_nets( int num_nets, int max_num_receivers,
         // Driver
         //
         dctk::Cell* driver = nullptr;
+
+        std::cout << "Processing net " << i << std::endl;
 
         float ramp_time = 51.0;
         
@@ -948,6 +1270,7 @@ bool create_random_nets( int num_nets, int max_num_receivers,
                 largest_min_load *= scale_to_ff;
             }
         }
+        std::cout << "   Driver load range: min_load " << largest_min_load << " max_load " << smallest_max_load << std::endl;
 
         // Build driver node
         std::string driver_inst = "I" + std::to_string(inst_num);
@@ -1046,6 +1369,7 @@ bool create_random_nets( int num_nets, int max_num_receivers,
 // B: we do not need to reduce the minimum load!
         smallest_max_load -= total_receiver_max_pin_cap;
         largest_min_load = 0.0;
+        std::cout << "   After removing rcvrs input cap: min_load " << largest_min_load << " max_load " << smallest_max_load << std::endl;
 // B: check again
         if (smallest_max_load > 0.0 ){
 
@@ -1055,6 +1379,8 @@ bool create_random_nets( int num_nets, int max_num_receivers,
 
             // based on the chosen cap, identify an appropriate max layer
             int net_max_lyr = all_nets.layer_data_.get_guided_layer_index_by_cap( net_load_cap );
+
+            std::cout << "   Random net cap " << net_load_cap << " net_max_lyr " << net_max_lyr << std::endl;
 
             all_nets.create_random_net( net_name, driver_node, driver_celltype, receivers,
                                     receivers_celltypes, net_load_cap, net_max_lyr );
@@ -1236,6 +1562,7 @@ int main( int argc, char * const argv[] )
 
     // retrieve the maximum cap from the library
     float max_cap_lim = get_max_lib_load(cell_lib);
+    std::cout << "Max library cap is " << max_cap_lim << std::endl;
 
     // estimate the maximum length that can be driven for each metal layer
     // assuming that the max cap limit is for the top layer
@@ -1250,7 +1577,7 @@ int main( int argc, char * const argv[] )
     // seed random generator
     std::srand(std::time(nullptr));
     if (stress) {
-        create_random_nets_stress( n, 4, 1000.0, 14, all_nets, cell_lib, circuitMgr, waveform );
+        create_random_nets_stress( n, all_nets, cell_lib, circuitMgr, waveform );
     } else {
         create_random_nets( n, 4, all_nets, cell_lib, circuitMgr, waveform );
     }
