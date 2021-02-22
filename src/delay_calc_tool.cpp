@@ -56,8 +56,8 @@
 //
 
 // constants needed for scoring
-const float DELAY_PTS = 80.0 ;
-const float SLEW_PTS = 120.0 ;
+const float DELAY_PTS = 40.0 ;
+const float SLEW_PTS = 60.0 ;
 const float DELAY_PEN = 20.0 ;
 const float SLEW_PEN = 30.0 ;
 const float DELAY_TA = 2.0 ; // units of ps
@@ -180,9 +180,9 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
         measAccuracy_delay[cell_net] = sqrt(accumulated_delay_dx[cell_net] / N);
         measAccuracy_slew[cell_net] = sqrt(accumulated_slew_dx[cell_net] / N);
         measPTS_delay[cell_net] =
-            (1.0 - 2.0 * measAccuracy_delay[cell_net]) * DELAY_PTS - NO_delay[cell_net]/N * DELAY_PEN;        
+            (1.0 - 4.0 * measAccuracy_delay[cell_net]) * DELAY_PTS - NO_delay[cell_net]/N * DELAY_PEN;        
         measPTS_slew[cell_net] =
-            (1.0 - 2.0 * measAccuracy_slew[cell_net]) * SLEW_PTS - NO_slew[cell_net]/N * SLEW_PEN;
+            (1.0 - 4.0 * measAccuracy_slew[cell_net]) * SLEW_PTS - NO_slew[cell_net]/N * SLEW_PEN;
     }
     
     // store results
