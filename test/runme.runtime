@@ -1,0 +1,36 @@
+#!/bin/csh -f
+
+# Usage
+#    runme.runtime <testsuite_name>
+#
+
+if ("$1" == "") then
+  echo Usage:  $0 testsuite_name
+  exit
+endif
+
+# dataset name
+set dataset = $1
+
+# File containing Liberty models in CCS form
+set library = "../../asap7/asap7sc7p5t_27/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_201020.lib"
+
+# pointers to SPICE results
+set spice_decks = "spice_decks.$dataset"
+
+################################################################
+# This section is run once for each contestant
+################################################################
+
+# Run contestant's simulation
+#   input:  $dataset.circuits.yaml
+#   output: $dataset.dc.circuits.yaml
+../build/delay_calc_tool \
+  --circuits $dataset.circuits.yaml \
+  --liberty $library \
+  --spef $dataset.spef \
+  --dc_file $dataset.dc.circuits.yaml
+
+
+
+
