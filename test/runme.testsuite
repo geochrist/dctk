@@ -4,7 +4,7 @@
 #    run_testsuite <testsuite_name>
 #
 # Example:
-#    run_testsuite tau2020_testsuite0130
+#    run_testsuite tau2021_testsuite0306b
 
 if ("$1" == "") then
   echo Usage:  $0 testsuite_name
@@ -15,11 +15,10 @@ endif
 set dataset = $1
 
 # File containing Liberty models in CCS form
-set library = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_191031.postprocessed.lib"
+set library = "../../asap7/asap7sc7p5t_27/LIB/CCS/asap7sc7p5t_INVBUF_RVT_TT_ccs_201020.lib"
 
 # pointers to SPICE results
 set spice_decks = "spice_decks.$dataset"
-set spice_lib = "../../ASAP7_PDKandLIB_v1p6/lib_release_191006/asap7_7p5t_library/rev25/CDL/xAct3D_extracted/Extracted_netlists/asap7sc7p5t_INVBUF_RVT.sp.modified"
 
 ################################################################
 # This section is run once for each contestant
