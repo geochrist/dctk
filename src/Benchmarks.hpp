@@ -12,6 +12,8 @@ public:
     void dump_yaml(YAML::Emitter& emitter) {
         emitter << YAML::Key << "Statistics";
         emitter << YAML::BeginMap;
+        emitter << YAML::Key << "total_circuits" << YAML::Value << total_circuits ;
+        emitter << YAML::Key << "valid_circuits" << YAML::Value << valid_circuits ;
         emitter << YAML::Key << "elapsed_time" << YAML::Value << elapsed_time ;
         emitter << YAML::Key << "cpu_time" << YAML::Value << cpu_time ;
         emitter << YAML::Key << "incremental_memory" << YAML::Value <<  incremental_memory ;
@@ -30,7 +32,10 @@ public:
         emitter << YAML::EndMap;
 
     }
-    
+
+    // total/valid circuits
+    unsigned total_circuits     = 0;
+    unsigned valid_circuits     = 0;
     // in seconds
     float cpu_time              = 0.0;
     // in seconds

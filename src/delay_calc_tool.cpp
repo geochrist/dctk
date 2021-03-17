@@ -79,8 +79,8 @@ struct delay_slew
         : delay{d_R, d_F}, slew{s_R, s_F} {}
     // Checks if all 4 enties are valid
     bool is_valid(void) {
-        return (delay[RISE] >= -1.0 && delay[FALL] >= -1.0 &&
-                slew[RISE] >= -1.0 && slew[FALL] >= -1.0);
+        return (delay[RISE] > 0 && delay[FALL] > 0 &&
+                slew[RISE] > 0 && slew[FALL] > 0);
     }
 };
 
@@ -145,7 +145,7 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
         // if any of the spice results are invalid, we skip the circuit from inclusion
         if (!spice_cell.is_valid() || !spice_net.is_valid()) {
             skipped_circuits++;
-            std::cout << "Ignore circuit " << circuitMgr[i]->get_name() << std::endl;
+            std::cout << "Circuit " << circuitMgr[i]->get_name() << " failed SPICE sim. Skipping." << std::endl;
             continue;
         }
 
@@ -186,6 +186,8 @@ void analyze_results(dctk::CircuitPtrVec& circuitMgr, dctk::Benchmarks* benchmar
     }
     
     // store results
+    benchmarks->total_circuits = circuitMgr.size();
+    benchmarks->valid_circuits = circuitMgr.size() - skipped_circuits;
     benchmarks->cell_rms_delay_diff = measAccuracy_delay[CELL];
     benchmarks->cell_rms_slew_diff = measAccuracy_slew[CELL];
     benchmarks->cell_delay_outliers = NO_delay[CELL];
