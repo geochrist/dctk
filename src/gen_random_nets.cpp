@@ -1035,6 +1035,30 @@ bool RCNetsData::create_random_net_scaled( const std::string& net_name,
     return true;
 }
 
+bool RCNetsData::create_random_stress_net( const std::string& net_name,
+                                    int stress_pattern_id,
+                                    const std::string& drv_node,
+                                    const std::string& driver_celltype,
+                                    const std::vector<std::string> & receivers,
+                                    const std::vector<std::string> & receivers_celltypes,
+                                    double total_cap, int max_layer_num )
+{
+    RandomRCNet* new_net = nullptr;
+
+    if( have_net( net_name ) ) {
+        std::cout << "Error: net " << net_name << "is already present" << std::endl;
+        return false;
+    }
+
+   
+    new_net = new RandomRCNet( net_name, stress_pattern_id, drv_node, receivers, total_cap, max_layer_num, layer_data_);
+
+    all_nets_data_.insert( std::map<std::string, RandomRCNet& >::value_type( net_name, *new_net ) );
+
+    return true;
+}
+
+
 bool RCNetsData::have_net( const std::string & net_name) const
 {
     std::map< std::string, RandomRCNet &>::const_iterator net_it =
@@ -1215,12 +1239,213 @@ bool get_receiver_input_load( dctk::Cell * receiver, float & receiver_input_min_
 
 
 
-bool create_random_nets_stress( int num_nets, RCNetsData & all_nets, dctk::CellLib* cell_lib, 
+bool create_random_nets_stress( int total_num_nets, RCNetsData & all_nets, dctk::CellLib* cell_lib, 
                                 dctk::CircuitPtrVec& cktmgr, char* waveform )
 {
-  // hidden from contestants
-  return true;
+    int inst_num = 1;
+
+    float scale_to_ps = cell_lib->get_scale_to_ps();
+    float scale_to_ff = cell_lib->get_scale_to_ff();
+
+    std::vector<dctk::Cell*> driver_cells;
+
+    driver_cells.push_back(cell_lib->get_cell("INVx3_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("INVx6_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("INVx13_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("BUFx5_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("BUFx12_ASAP7_75t_R"));
+    driver_cells.push_back(cell_lib->get_cell("BUFx24_ASAP7_75t_R"));
+
+    std::vector<dctk::Cell*> receiver_cells;
+    std::vector<float> receiver_loads;
+    receiver_cells.push_back(cell_lib->get_cell("INVx2_ASAP7_75t_R"));
+    receiver_cells.push_back(cell_lib->get_cell("INVx8_ASAP7_75t_R"));
+    receiver_loads.push_back(4.0 * 0.00119678); //FO4 
+
+    // number of patterns and receivers per net per pattern
+    int num_patterns = 4;
+    int num_receivers_per_pattern[4] = {1, 1, 10, 4};
+    // the amount of cap we want to have on the net in order to still fit within slew limits
+    float net_cap_pctg_per_pattern[4] = {1.0, 0.75, 0.75, 0.5};
+    int test_per_stratus = int( total_num_nets / num_patterns ) + 1;
+
+    int net_indx = 0; // Curent net 
+    int num_nets = total_num_nets % num_patterns;
+
+    // for each pattern
+    for (int p=0; p<num_patterns; ++p){
+
+      num_nets = num_nets +  test_per_stratus;
+      bool break_pattern_net_gen = false;
+      while(net_indx < num_nets && break_pattern_net_gen == false){
+        bool break_pattern_net_gen = false;
+        int num_tests_per_driver = int(test_per_stratus / driver_cells.size()); 
+        for( unsigned int d = 0; d<driver_cells.size(); ++d) {
+  
+          // Driver
+          dctk::Cell* driver = driver_cells[d];
+          dctk::CellPin* driver_output_pin = driver->get_output_pin();
+          dctk::CellArc* driver_arc        = driver_output_pin->get_random_arc();
+          dctk::CellPin* driver_input_pin = driver_arc->get_related_pin();
+  
+          int num_tests_per_rcvr = int( num_tests_per_driver / receiver_cells.size() );
+          for( unsigned int r = 0; r<receiver_cells.size(); ++r) {
+            dctk::Cell* receiver = receiver_cells[r];
+            dctk::CellPin* receiver_output_pin = receiver->get_output_pin();
+            dctk::CellPin* receiver_input_pin  = receiver->get_random_input_pin();
+            float min_pin_cap, max_pin_cap;
+            get_receiver_input_load( receiver, min_pin_cap, max_pin_cap );
+            min_pin_cap *= scale_to_ff;
+            max_pin_cap *= scale_to_ff;
+    
+            // Find input slew and load ranges
+            std::vector<float> slew_values = driver_arc->get_slew_values();
+            std::vector<float> load_values = driver_arc->get_load_values();
+            int num_slew_bins = slew_values.size()-1;
+            int num_load_bins = load_values.size()-1;
+  
+            int num_tests_per_drv_rcvr_pair = num_tests_per_rcvr;
+            if (num_tests_per_drv_rcvr_pair == 0){
+              num_tests_per_drv_rcvr_pair = 1;
+            }
+  
+            // we create a few nets for this driver/receiver combination
+            for (int n=0; n<num_tests_per_drv_rcvr_pair; ++n) {
+              int s = rand() % num_slew_bins;
+              int l = rand() % num_load_bins;
+    
+              //-2 so we skip the largest slew and largest load
+              float s_min = slew_values[s] * scale_to_ps;
+              float s_max = slew_values[s+1] * scale_to_ps;
+      
+              float l_min = load_values[l] * scale_to_ff;
+              float l_max = load_values[l+1] * scale_to_ff;
+
+              // Random values
+              float ramp_time        = rand_float(s_min, s_max);
+              float total_cap        = rand_float(l_min, l_max);
+  
+              float max_net_cap = total_cap - num_receivers_per_pattern[p] * max_pin_cap;
+              if( max_net_cap > 0.0 ){
+                // we have some net cap remaining for the net itself in this pattern
+  
+                // Build driver node
+                std::string driver_inst = "I" + std::to_string(inst_num);
+                std::string driver_node = driver_inst + ":" + driver_output_pin->get_name();
+                std::string driver_celltype = driver->get_name(); // needed later
+                std::string driver_input_output_str =
+                    driver_inst + "/" + driver_input_pin->get_name() + "/" + driver_output_pin->get_name();
+                inst_num++;
+  
+                std::cout << "Driver Inst: " << driver_inst << std::endl;
+                std::cout << "Driver Node: " << driver_node << std::endl;
+                std::cout << "Driver CellType: " << driver_celltype << std::endl;
+                std::cout << "Driver InputOutputString: " << driver_input_output_str << std::endl;
+  
+                // build  the list of receivers
+                std::vector<std::string> receivers_nodenames;
+                std::vector<std::string> receivers_celltypes;
+                std::string receiver_input_output_str;
+                for( int z=0; z<num_receivers_per_pattern[p]; z++){
+                    std::string receiver_inst = "I" + std::to_string(inst_num);
+                    std::string receiver_node = receiver_inst + ":" + receiver_input_pin->get_name();
+                    inst_num++;
+              
+    
+                    receivers_nodenames.push_back( receiver_node );
+                    std::string receiver_celltype = receiver->get_name();
+                    receivers_celltypes.push_back( receiver_celltype );
+  
+                    if( z==0 ){
+                      // the tested receiver is the first one
+                      receiver_input_output_str = 
+                          receiver_inst + "/" + receiver_input_pin->get_name() + "/" + receiver_output_pin->get_name();
+                    
+                      std::cout << "Receiver Inst: " << receiver_inst << std::endl;
+                      std::cout << "Receiver Node: " << receiver_node << std::endl;
+                      std::cout << "Receiver CellType: " << receiver_celltype << std::endl;
+                      std::cout << "Receiver InputOutputString: " << receiver_input_output_str << std::endl;
+                    }
+                }
+                    
+  
+                // Net
+                std::string net_name = "net_" + std::to_string(net_indx);
+                ++net_indx;
+                
+  
+                std::cout << "Net Name: " << net_name << std::endl;
+  
+                max_net_cap = max_net_cap * net_cap_pctg_per_pattern[p];
+                float max_net_load = max_net_cap + num_receivers_per_pattern[p] * max_pin_cap;
+                int net_max_lyr = all_nets.layer_data_.get_guided_layer_index_by_cap( max_net_load );
+                
+                // create the actual net
+                std::cout << "Net Pattern: " << p << std::endl;
+                std::cout << "Receivers Number: " << num_receivers_per_pattern[p] << std::endl;
+                std::cout << "Ramp Time: " << ramp_time << std::endl;
+                std::cout << "Total Net Cap: " << max_net_cap << std::endl;
+                std::cout << "Max Net Layer: " << net_max_lyr << std::endl;
+                all_nets.create_random_stress_net( net_name, p, driver_node, driver_celltype,
+                                   receivers_nodenames, receivers_celltypes, max_net_cap, net_max_lyr );
+  
+  
+                // add to a circuit library
+                dctk::Circuit* c = new dctk::Circuit(net_name);
+  
+                // default to ramp if waveform not given
+                std::string waveform_str("ramp");
+                if (waveform) {
+                  waveform_str = std::string(waveform);
+                }
+  
+                std::string input_waveform = waveform_str + " " + to_string(ramp_time) ;
+                c->set_input_waveform(input_waveform);
+  
+                // driver
+                c->set_driver(driver_input_output_str);
+                c->set_driver_celltype(driver_celltype);
+  
+                // load (first receiver)
+                c->set_load(receiver_input_output_str);
+                c->set_load_celltype(receivers_celltypes[0]);
+  
+                // Start with a fixed load
+                std::string load_interconnect = to_string(max_net_cap) + " 0 0";
+                c->set_load_interconnect(load_interconnect.c_str());
+
+
+		// add unused loads
+		std::string unused_loads;
+		for (unsigned i = 1; i < receivers_nodenames.size(); i++) {
+		  // create string such as I13/A inv32
+		  if (i == 1) {
+		    unused_loads = receivers_nodenames[i] + " " + receivers_celltypes[i];
+		  } else {
+		    unused_loads = unused_loads + " " + receivers_nodenames[i] + " " + receivers_celltypes[i];
+		  }
+		}
+		c->set_unused_loads(unused_loads);
+		
+                // add to library
+                cktmgr.push_back(c);
+
+                if (net_indx >= num_nets ){
+                  break_pattern_net_gen = true;
+                  break;
+                }
+  
+              } // end of valid net cap scope
+            } // end of tests per stratus scope
+            if( break_pattern_net_gen == true ){ break; }
+          } // end of receiver cell scope
+          if( break_pattern_net_gen == true ){ break; }
+        } // end of driver cell scope
+      } // end of pattern scope
+    } // of while loop for total net number
+    return true;
 }
+
 
 bool create_random_nets( int num_nets, int max_num_receivers, 
                          RCNetsData & all_nets, dctk::CellLib* cell_lib, dctk::CircuitPtrVec& cktmgr, char* waveform )
