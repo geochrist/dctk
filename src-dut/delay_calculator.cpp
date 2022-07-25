@@ -190,7 +190,7 @@ int compute_delays(dctk::CellLib* cell_lib, dctk::CircuitPtrVec* circuitMgr, spe
 
     // Example on how to set return values for delay and slew
     int numCircuits = circuitMgr->size();
-    for (size_t i = 0; i < numCircuits; i++) {
+    for (size_t i = 0; i < (size_t) numCircuits; i++) {
         compute_delays_bilinear(cell_lib, (*circuitMgr)[i], spef);
     }
 

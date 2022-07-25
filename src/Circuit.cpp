@@ -252,7 +252,7 @@ void Circuit::write_spice_voltages(std::fstream& fs, CellLib& cellLib) {
         fs << " pwl(0p " << initial_rail_voltage << "v" ;
 
         size_t n = voltages.size();
-        float total_sim_time;
+        float total_sim_time = 0;
         for (size_t i = 0; i < n; i++) {
             float voltage;
             if (invert) {
