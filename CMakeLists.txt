@@ -54,13 +54,16 @@ add_library(dut src-dut/delay_calculator.cpp)
 
 # benchmarking executable
 add_executable(delay_calc_tool src/delay_calc_tool.cpp)
+add_executable(partition_timing_graph src/partition_timing_graph.cpp)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   target_link_libraries(delay_calc_tool dctk yaml-cpp libparse dut)
+  target_link_libraries(partition_timing_graph dctk yaml-cpp libparse dut)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   target_link_libraries(delay_calc_tool dctk yaml-cpp libparse dut stdc++fs)
+  target_link_libraries(partition_timing_graph dctk yaml-cpp libparse dut stdc++fs)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 # Random Net Generator
