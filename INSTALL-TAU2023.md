@@ -26,8 +26,8 @@ For the text below, assume:
 
   Multiple subdirectories will appear.
 
-  No need to compile, but you may want to test your download.
-  Follow instructions in the README.md. 
+  Follow instructions in the README.md to compile.
+  (It is required to compile for dctk to be able to access the code base.)
 
 ### yaml-cpp
 
@@ -38,11 +38,13 @@ For the text below, assume:
 
   To build it using standard cmake build process:
 
-    cd $DIR/../cpp-yaml
+    cd $DIR/../yaml-cpp
     mkdir build
     cd build
     cmake ..
+    setenv CFLAGS -Wno-shadow
     make
+
 
 ### src-liberty_parse-2.6
 
@@ -54,8 +56,17 @@ For the text below, assume:
   Then go through the standard configure build process:
 
     cd $DIR/src-liberty_parse-2.6
+    # see notes below if installing on recent Mac version
     ./configure
     make
+
+  **
+  ** Notes for Mac OSX
+  ** Latest gcc that comes with Mac OSX does not work.
+  ** Install a different compiler (e.g. homebrew gcc-11) and issue
+  **   setenv CC /opt/homebrew/bin/gcc-11 
+  ** After compilation, restore original environment
+  **
 
   (If the above 'make' command does not complete,
   please try 'make clean' before running 'make')
@@ -76,6 +87,7 @@ For the text below, assume:
     mkdir build
     cd build
     cmake ..
+    make
 
   The result should be build/delay_calc_tool executable
 
