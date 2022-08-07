@@ -12,7 +12,7 @@
 #include <sys/resource.h> /* for rusage */
 
 #include <yaml-cpp/yaml.h>
-#include <parser-spef.hpp>
+#include <ot/parser-spef/parser-spef.hpp>
 
 // dctk definitions
 #include "dctk.hpp"

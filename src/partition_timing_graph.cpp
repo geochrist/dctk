@@ -12,13 +12,20 @@
 #include <sys/resource.h> /* for rusage */
 
 #include <yaml-cpp/yaml.h>
-#include <parser-spef.hpp>
+#include <ot/parser-spef/parser-spef.hpp>
 
 // dctk definitions
 #include "dctk.hpp"
 
 // Liberty reader
 #include "liberty_reader.hpp"
+
+// Verilog reader
+#include "ot/verilog/verilog.hpp"
+
+// SDC reader
+#include "ot/sdc/sdc.hpp"
+
 
 // Benchmarks object definition
 #include "Benchmarks.hpp"
@@ -43,6 +50,14 @@ main(int argc, char **argv)
     dctk::CellLib* cell_lib = nullptr;
     int read_lib_retval = 0;
 
+    // Verilog
+    char* verilog_file = nullptr;
+    ot::vlog::Module verilog;
+    
+    // Constraints
+    char* constraints_file = nullptr;
+    ot::sdc::SDC constraints;
+    
     // SPEF
     char* spef_file = nullptr;
     spef::Spef* spef = nullptr;
@@ -59,6 +74,8 @@ main(int argc, char **argv)
     static struct option long_options[] = {
         {"liberty", required_argument, 0, 'l'},
         {"spef", required_argument, 0, 's'},
+        {"verilog", required_argument, 0, 'v'},
+        {"sdc", required_argument, 0, 'c'},
         {0,         0,                 0,  0 }
     };
 
@@ -75,6 +92,14 @@ main(int argc, char **argv)
         case 's':
             spef_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
             strcpy(spef_file, optarg);
+            break;
+        case 'v':
+            verilog_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(verilog_file, optarg);
+            break;
+        case 'c':
+            constraints_file = (char*)malloc((strlen(optarg)+1) * sizeof(char));
+            strcpy(constraints_file, optarg);
             break;
         case '?':
             break;
@@ -103,7 +128,14 @@ main(int argc, char **argv)
         cell_lib->dump();
     }
 
-    
+    // Read Verilog
+    if (verilog_file) {
+
+        printf("Reading Verilog file %s\n", verilog_file);
+        verilog = ot::vlog::read_verilog(verilog_file);
+        // TODO error checking?
+    }
+
     // Read Spef
     if (spef_file) {
 
@@ -113,6 +145,14 @@ main(int argc, char **argv)
             std::cerr << "Error during SPEF processing" << *spef->error << std::endl;
             exit(1);
         }
+    }
+
+    // Read Spef
+    if (constraints_file) {
+
+        printf("Reading SDC file %s\n", constraints_file);
+        constraints.read(constraints_file);
+        // TODO error checking?
     }
 
     // Run partitioninng

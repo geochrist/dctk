@@ -45,7 +45,7 @@ link_directories(../yaml-cpp/build)
 link_directories(src-liberty_parse-2.6)
 
 # Data model
-add_library(dctk src/Circuit.cpp src/liberty_reader.cpp src/CellLib.cpp src/Cell.cpp src/CellPin.cpp src/CellArc.cpp src/circuit_reader.cpp src/spice_lib_reader.cpp)
+add_library(dctk src/Circuit.cpp src/liberty_reader.cpp src/CellLib.cpp src/Cell.cpp src/CellPin.cpp src/CellArc.cpp src/circuit_reader.cpp src/spice_lib_reader.cpp src/ot/verilog/verilog.cpp src/ot/utility/tokenizer.cpp src/ot/sdc/sdc.cpp src/ot/sdc/tokenize.cpp src/ot/sdc/object.cpp src/ot/utility/os.cpp)
 
 # contestant's delay calculation code/library
 include_directories(src-dut)

@@ -5,7 +5,7 @@
 #include <yaml-cpp/yaml.h>
 #include "PiModel.hpp"
 #include "CellLib.hpp"
-#include <parser-spef.hpp>
+#include <ot/parser-spef/parser-spef.hpp>
 
 namespace dctk {
 

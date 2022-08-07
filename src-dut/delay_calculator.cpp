@@ -11,7 +11,7 @@
 #include "CellLib.hpp"
 #include "Circuit.hpp"
 #include "PiModel.hpp"
-#include <parser-spef.hpp>
+#include <ot/parser-spef/parser-spef.hpp>
 
 
 // code to split strings

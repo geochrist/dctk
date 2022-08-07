@@ -1,0 +1,19 @@
+#!/bin/csh -f
+
+set liberty = "../../OpenTimer/example/sizer/NangateOpenCellLibrary_typical.lib"
+set spef  = "../../OpenTimer/example/sizer/sizer.spef"
+set verilog  = "../../OpenTimer/example/sizer/sizer.v"
+set sdc  = "../../OpenTimer/example/sizer/sizer.sdc"
+
+../build/partition_timing_graph \
+  --liberty $liberty \
+  --spef $spef \
+  --verilog $verilog \
+  --sdc $sdc
+  
+  
+  
+
+
+
+
